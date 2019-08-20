@@ -1,0 +1,141 @@
+// colors //
+$primary-color:#84748b;
+$secondary-color:#84748b;  
+$background-color:#ccc4d4;
+$accent-color:#febf12;
+
+$details-background-color:#d5d1d7;
+
+$toggle-colors: #9f93a5,#aba0b0,#b7afbb,#c7c0c9,#d5d1d7,#e2e2e4;
+$toggle-special-colors: $secondary-color,#fdbe12,#a0b43a;
+$toggle-special-colors-open: #a7dbe8,#fee381, #cdd57f;
+$toggle-special-urls : 'M725/special_tab_img1.jpg','M725/special_tab_img2.jpg','M725/special_tab_img3.jpg';
+
+//$select-colors:#1bb1bf,#1ab0be,#1ab0be,#8dd8df,#afe4e9,#d1eff2;
+$scenario-thumbs: 'M725/4-image01_152128250.jpg',
+'M725/4-image02_157548522.jpg',
+'M725/4-image03_514416224.jpg',
+'M725/4-image04_516849402.jpg',
+'M725/4-image05_510009422.jpg',
+'M725/4-image06_509177454.jpg',
+'M725/4-image07_529544529.jpg',
+'M725/4-image08_493105524.jpg',
+'M725/4-image09_460773263.jpg',
+'M725/4-image10_493797683.jpg',
+'M725/4-image11_495910708.jpg',
+'M725/4-image12_515599308.jpg',
+'M725/4-images13_501194144.jpg',
+'M725/4-image14_530930207.jpg';
+
+$button-special-1:$accent-color;
+$button-special-2:#ffd366;
+//---------- Global -----------//
+$error-color: #FF4136;
+$warning-color: #FF851B;
+$base-text-color: #000;
+$link-color: #6b5b72;
+$link-color-visited: #167f89;
+$box-shadox-color: #999;
+$button-default-color: white;
+$button-default-color-hover: $secondary-color;
+$button-default-background-color: $secondary-color;
+$button-default-background-color-hover: white;
+$button-default-border-color: #dcdee1;
+$button-default-border-color-hover: #bbbfc5;
+
+
+//---------- Modules ----------//
+
+//Progress-bar
+$progressBar-color: grey;
+$progressBar-border-color: grey;
+
+//Admin Mode
+$adminMode-background-color: white;
+$adminMode-border-color: #e1e1e1;
+
+//Favorites
+$favorites-background-color: #f9f9f9;
+$favorites-icon-color: #e6ddb7;
+$favorites-icon-shadow-color: #333;
+$favorites-icon-color-hover: #efce4a;
+$favorites-icon-color-focus: #295376;
+$favorites-icon-fav-added-color: #efce4a; 
+
+
+//Sitemap
+$sitemap-link-background-color: #f1f1f1;
+$sitemap-checkmark-background-color: #3b3b3b;
+
+
+//---------- Widgets ----------//
+
+//Collapsible Box
+$collapsibleBox-background-color: $primary-color;
+$collapsibleBox-border-color: #aaa;
+$collapsibleBox-border-bottom-color: #666;
+$collapsibleBox-handle-color: #222;
+
+//Modal
+$modal-header-color: black;
+$modal-header-background-color: white;
+
+//Zoom
+$zoomin-focus-outline: #a6c8ff;
+
+
+//---------- Layout ----------//
+
+//Footer
+$footer-button-color: #fff;
+$footer-button-color-mobile: #fff;
+$footer-button-background-color: #555;
+$footer-button-color-hover: #fff;
+$footer-button-background-color-hover: #6e6e6e;
+$footer-text-color: #fff;
+$footer-page-of-text-color: #fff;
+$footer-page-of-text-color-mobile: $base-text-color;
+$footer-container-background-color: #555;
+$footer-button-border-color: #fff;
+$footer-button-color-disabled: #888;
+$footer-button-background-color-disabled: #e6e6e6;
+$footer-mobile-button-background-color: #555;
+
+//Header
+$header-background-color:white; 
+$header-text-color: black;
+$header-banner-title-color: #555;
+$header-module-name-color: $primary-color;
+$header-button-background-color: $background-color;
+$header-button-color-hover: $background-color;
+$header-button-background-color-hover: black;
+$header-button-color: black;
+//Top Navigation
+$top-nav-text-color: $base-text-color;
+$top-nav-button-color: $base-text-color;
+//mobile only
+$top-nav-button-color-mobile: $primary-color;
+$top-nav-button-background-color: white;
+$hamburger-menu-color-mobile: $primary-color;
+$hamburger-menu-color-hover-mobile:$secondary-color;
+
+//Toolbar
+$toolbox-link-color: $base-text-color;
+$toolbox-link-background-color: #fff;
+$toolbox-link-color-hover: black; 
+$toolbox-link-background-color-hover: $background-color;
+
+//Supermenu
+$supermenu-button-color: black;
+$supermenu-button-background-color: white;
+$supermenu-button-color-hover: black;
+$supermenu-button-background-color-hover: $secondary-color;
+$supermenu-dropdown-button-color: $base-text-color;
+$supermenu-dropdown-border-color: transparent;
+$supermenu-dropdown-button-background-color: $background-color;
+$supermenu-dropdown-button-color-hover: black;
+$supermenu-dropdown-button-background-color-hover: white;
+
+
+//mobile only
+$supermenu-link-color: #555;

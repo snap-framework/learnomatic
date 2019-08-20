@@ -1,0 +1,193 @@
+// normalize splash
+
+
+#wordmark, #canada-logo {
+    position:inherit;
+	height:inherit;
+    padding:inherit;
+    background-color: inherit;
+}
+
+#splash-content {
+    font-size:1em;
+    text-align:inherit;
+    top:inherit;
+    transform: translateY(0%);
+	h1{font-size: 1.0em;}
+	span {
+		display: inherit;
+		width:inherit;
+		height: inherit;
+		overflow:inherit;
+	}
+}
+	/* ----------------------------------------------------------------------------
+----------------------------------------SPLASH
+---------------------------------------------------------------------------- */
+
+.obfuscated{
+	display:none;
+	}
+	
+	
+/*Splash page*/
+.launchpage{
+	width: 1092px;
+    margin: 0 auto;
+    background: #e6e6e6;
+    overflow-y: scroll;
+    font-size: 14px;
+    line-height: 1.4375;
+    overflow-y: scroll;
+
+
+	header#wordmark {
+		background: url(./G180_new/top_Splash.jpg)no-repeat;
+		display: block;
+		height: 65px;
+		padding: 25px 0 0 25px;
+	}
+
+	main#splash-content{
+		background:url(./G180_new/G180_Splash.jpg)no-repeat center; 
+		background-size:1092px;
+		display:block;
+		padding: 10px 0px 0 0px;
+		height: 767px;
+		position:relative;
+		h1#title-area {
+			position:relative; 
+			margin:20% 0 50% 30%;
+			#title-welcome{display:none;
+		}
+		#coursename{
+			font-family: BebasNeueBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+			color:#2f2f2f;
+			.how{    font-size: 152px;    position: absolute;}
+			.les{    font-size: 152px;    position: absolute;}
+			.canadian{    
+				font-size: 61px;
+				position: absolute;
+				left: 222px;
+				white-space: nowrap;
+				top: 30px;
+				letter-spacing: -0.5px;
+			}
+			.rouages{
+			    font-size: 145px;
+				position: absolute;
+				left: 190px;
+				white-space: nowrap;
+				top: 4px;
+				letter-spacing: -0.5px;
+			}
+			.government{    
+				font-size: 67px;
+				position: absolute;
+				left: 222px;
+				top: 84px;
+				letter-spacing: -1.5px;
+			}
+			.du{
+				font-size: 233px;
+				position: absolute;
+				left: -1px;
+				top: 90px;
+				letter-spacing: -5.5px;				
+			}
+			.works{
+				font-size: 221px;
+				position: absolute;
+				top: 94px;
+				left: 4px;
+			}	
+			.gouvernementdu{
+				font-size: 66px;
+				position: absolute;
+				top: 141px;
+				left: 192px;}
+		}	
+			.canadafr{    
+				font-size: 160px;
+				position: absolute;
+				top: 164px;
+				left: 186px;}
+		
+
+	}
+		#subcoursename{
+			display:none; 
+			/*font-family: BebasNeueBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+			font-size: 36px;
+			color: #5462a5;*/
+		}			
+}
+	#launch-area{    
+		margin-left: 33%;
+		margin-right: 33%;
+		position: relative;
+		a{
+			background-image: url(./G180_new/btn_enter.png);
+			display: block;
+			width: 315px;
+			height: 40px;
+			padding: 25px 10px 25px 75px;
+			font-family: BebasNeueBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+			font-size: 30px;
+			color: white;
+			text-align: center;
+			&:hover, &:focus{
+				text-decoration:underline;
+
+			}			
+		}
+
+
+}	
+
+	footer#canada-logo {
+		background:url(./G180_new/top_Splash.jpg)no-repeat;
+		height:65px;
+
+		display:block;
+		padding:25px 0 0 25px;
+		text-align:inherit;
+
+
+		
+		&:after{
+			content:'Setting the Stage for Results';
+			display:block;			font-family: BebasNeueBold, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+			font-size: 36px;
+			color: #5462a5;
+			text-align:right;
+			padding-right:15px;
+			margin-top:-30px;
+			
+		}
+		&:before{
+			content: ' ';
+			display: block;
+			background-image: url(./G180_new/G180_logo.jpg);
+			width: 117px;
+			height: 50px;
+			position: absolute;
+			margin-left: 83px;
+			
+		}
+		img{
+			margin-top:15px;
+		}
+		
+		
+	}	
+}
+
+html[lang='fr']{
+	footer#canada-logo{
+		&:after{
+			content:'Orchestrer la mise en place des resultats';
+		}
+	}
+
+}

@@ -1,0 +1,97 @@
+
+/*-------------------------------------------------------------------------
+//-------------------------------- ICON---------------------------
+
+-------------------------------------------------------------------------*/
+
+body header #wb-bar .top-menu #wb-lng.visible-md ul.text-right #LOM-user a.login{
+	background-position: -445px 4px;
+}
+
+
+#LOM-login-container{
+    position: absolute;
+    z-index: 2;
+    background-color: white;
+    padding: 10px;
+    right: 0px;
+    //width: 300px;
+	label{
+		display:block;
+	}
+-webkit-box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);
+-moz-box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);
+box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);
+}
+
+
+// logout button
+
+body header #wb-bar .top-menu #wb-lng.visible-md ul.text-right a.LOM-logout{
+	background-color:transparent;
+	background-image:none;
+	&:hover,&:focus{
+		text-decoration:underline;
+	}
+}
+
+/*-------------------------------------------------------------------------
+//-------------------------------- PERMISSIONS---------------------------
+-------------------------------------------------------------------------*/
+
+html[data-role=user]{
+	.LOM-modetoggle, .LOM-dashboard{
+		display:none;
+	}
+}
+
+/*-------------------------------------------------------------------------
+//-------------------------------- WATCHER---------------------------
+-------------------------------------------------------------------------*/
+#LOM-watcher{
+    position: absolute;
+    border: #f1f1f1 solid 1px;
+    width: 35px;
+    height: 35px;
+    padding-left: 35px;
+	padding-top:8px;
+    overflow: hidden;
+	margin-top:-35px;
+	display:inline-block;
+	&:hover{
+		overflow:visible;
+		width:auto;
+		height:auto;
+		background-color:white;
+		z-index:2;
+		padding-right:10px;
+		opacity: 0.8;
+	}
+	&:before{
+		content:'';
+		position:absolute;
+		margin-left:-35px;
+		margin-top:-8px;
+		
+		@include iconpack(preview, md, normal);
+	}
+	
+}
+
+
+/*-------------------------------------------------------------------------
+//-------------------------------- reviewer---------------------------
+-------------------------------------------------------------------------*/
+
+html[data-role=reviewer]{
+	.LOM-mode-structure,.LOM-mode-settings,.ico-LOM-layout,.ico-SNAP-delete,.LOM-edit-view,.LOM-ui-handle,.ico-LOM-plus{
+		display:none!important;
+	}
+}
+
+html[data-role=designer]{
+	
+	.LOM-mode-structure,.LOM-mode-settings{
+		display:none!important;
+	}
+}

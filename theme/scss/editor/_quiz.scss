@@ -1,0 +1,74 @@
+/*----------------- QS -----------------------*/
+//----- opnly in editor
+.LOM-pageEdit-active {
+	.qs-elearning-activity,
+	.qs-question,
+	.qs-feedback,
+	.qs-right,
+	.qs-wrong,
+	.qs-generic{
+		display:block!important;
+	}	
+	.qs-submit,.qs-continue{
+		display:none;
+	}
+	.ra{
+		&:before{
+			content:'';
+			margin-top: -10px;
+    		margin-left: -30px;
+			@include iconpack(check, md, hover);
+		}
+	}
+	.qs-answers{
+		clear:both;
+		padding-left:30px;
+	
+		.LOM-element{
+		clear:both;
+		width:100%;
+		padding-top:7px;
+		margin-bottom:0px;
+	}
+		
+}
+
+
+	.LOM-element[data-lom-element="radiobtn"]{
+		cursor:pointer;
+		&[data-ra='ra']{
+			background-color:#eee;
+		}
+		&:hover{
+			background-color:#f9f9f9;
+			
+		}
+	}
+	
+}
+
+.qs-elearning-activity{
+	
+	display:block!important;
+	h2{
+		margin-top: 10px;
+		margin-left: 30px;
+		margin-bottom: 20px;
+	}
+
+	.qs-exercise{
+		margin-bottom:100px;
+	}
+	.qs-answer{
+		display:block;
+		.LOM-editable, form{display:inline-block;}
+	}
+
+}
+
+.qs-answer{
+		display:block;
+		.LOM-editable, form{display:inline-block;}
+	input{display:inline-block;}
+	}
+

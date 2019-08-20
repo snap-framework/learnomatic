@@ -1,0 +1,236 @@
+$element-background:white; 
+$element-border :#eee;
+$label-color:#555;
+
+$delete-color:#990000;
+/*-------------------------------------------------------------------------
+//-------------------------------- Edit bar/view---------------------------
+-------------------------------------------------------------------------*/
+.LOM-edit-view{
+    visibility: hidden;
+    position: absolute;
+	border-radius: 5px;
+	background-color: #fdfdfd;
+	
+    top: 0%;
+    right: 0%;
+	.LOM-editing &{
+		button:not(.ico-SNAP-save){
+			display:none;
+		}		
+	}
+	*:hover>&, &:focus{
+		visibility: visible;
+	}
+	.LOM-label{
+
+		border-color: transparent;
+		border: 2px solid transparent;
+		padding: 10px;
+		color:$label-color;
+
+
+		
+	}	
+}
+	//-------------- PENDING DELETE
+	html body #dynamic_content .LOM-pending-delete{
+		border:1px solid $delete-color;
+	}
+	
+/*-------------------------------------------------------------------------
+//-------------------------------- ELEMENTS---------------------------
+-------------------------------------------------------------------------*/
+.LOM-element {
+	position:relative;
+	display: block;
+
+	//------------ only when activated
+	.LOM-pageEdit-active &{
+		min-height:45px;
+		background-color:$element-background;
+
+		border-radius: 2px 5px 5px 5px;
+		border-width:1px;
+		border-color:$element-border;
+		margin-bottom:20px;			
+	}
+
+	
+	.LOM-pageEdit-active  .LOM-frame>&{
+		//specifically, elements DIRECTLY on the frame when editmode is active
+		
+		border-style:solid;
+		.LOM-element{
+			padding-left:20px;
+			//sub-elements border
+			border-style:dotted;
+		
+		}
+		
+	}
+}
+/*-------------------------------------------------------------------------
+//-------------------------------- Handles & SORTABLE---------------------------
+-------------------------------------------------------------------------*/
+.LOM-ui-handle{
+	display: inline-block;
+    position: absolute;
+	
+	background-color:$element-background;
+	
+    margin-left: -35px;
+	margin-top:0px;
+	top:0px;
+	left:0px;
+    width: 35px;
+    height: 35px;
+	
+	border-radius: 5px 0px 0px 5px;
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-color:$element-border;
+	
+	visibility:hidden;
+	
+	.LOM-pageEdit-active .LOM-frame>.LOM-element>&{border-style:solid;}
+	.LOM-pageEdit-active .LOM-frame>.LOM-element .LOM-element>&{border-style:dotted;}
+
+	.LOM-pageEdit-active .LOM-frame:hover>.LOM-element>&{visibility:visible;}		
+	.LOM-pageEdit-active .LOM-element:hover>.LOM-element>&{visibility:visible;}
+	.LOM-pageEdit-active .qs-exercise:hover>.LOM-element>&{visibility:visible;}
+	.LOM-pageEdit-active .qs-answers:hover .LOM-element>&{visibility:visible;}
+
+	@include iconpack(move, md, standard);
+	
+	&:hover{
+		background-position-y: -35px;
+		cursor: grab;
+	}
+
+	
+
+}
+
+
+
+.sortable-placeholder{
+	display:block;
+	min-height:100px;
+	margin-bottom:40px;
+	.LOM-structure-active &{
+		min-height:50px;
+		margin-bottom:5px;
+	}
+	width:auto;
+	border-radius: 5px;
+	border:1px solid $element-border;
+	background-color:$element-background;	
+		.qs-answers &,[data-lom-element="accordion"] &{
+			min-height:40px;
+			margin-bottom:0px;
+		}
+}
+
+
+
+
+
+/*-------------------------------------------------------------------------
+//-------------------------------- custom ELEMENTS---------------------------
+-------------------------------------------------------------------------*/
+
+//------------------general look--------------------
+/*-----------------  -----------------------*/
+
+
+
+html.LOM-hide-add{
+	.LOM-delete-on-save{
+		visibility:hidden;
+	}
+}
+
+/*----------------- ribbons -----------------------*/
+.LOM-element.ribbon-top{
+	padding-top:10px;
+}
+
+
+
+//placeholder default
+.LOM-delete-on-save {
+	html.LOM-preview &{
+		display:none;
+	}
+}
+
+
+/*----------------- Details -----------------------*/
+
+
+.LOM-pageEdit-active .LOM-element[data-LOM-element='accordion']{
+	padding-top:40px;
+	padding-left:40px;
+	.LOM-element[data-LOM-element='details']{
+		
+		margin-bottom:0px;
+		details{
+			//height:40px;
+			min-height:35px;
+			margin-bottom:0px;
+			
+			summary{
+				height:45px;
+				}
+		}
+	}
+}
+
+details,
+.LOM-frame,
+.LOM-holder{
+	&>button.ico-LOM-plus.LOM-delete-on-save{
+		opacity: 0.3;
+  		filter: alpha(opacity=30);
+	}
+}
+details:hover, .LOM-frame:hover, *:focus{
+	&>button.ico-LOM-plus.LOM-delete-on-save{
+
+		opacity: 1;
+  		filter: alpha(opacity=100);
+	}
+}
+
+.LOM-highlight-editables{
+
+	summary{
+		//padding-left:30px;
+		div.LOM-editable:before{
+			left: 0px;
+    		top: 5px;
+		}
+		&::-webkit-details-marker {
+		  //display:none;
+			visibility:hidden;
+		}
+	}
+}
+
+/*----------------- IMAGE -----------------------*/
+.LOM-gallery-selected{
+	border:3px solid black;
+}
+.LOM-pageEdit-active [data-lom-element='image']:hover{
+	
+	img{
+		cursor:pointer;
+	}
+}
+
+
+
+

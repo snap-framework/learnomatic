@@ -1,0 +1,77 @@
+<section class="modal-dialog modal-content overlay-def mfp-with-anim mfp-zoom-in">
+<header class="modal-header">
+<h2 class="modal-title">Add an element</h2>
+<button title="Close overlay (escape key)" type="button" class="mfp-close overlay-close">×<span class="wb-inv"> Close overlay (escape key)</span></button>
+</header>
+<div class="modal-body" id="elementpicker">
+	
+	<!--section data-element-type="default">
+		<h3>Default element</h3>
+		<p>This will load an element Picker </p>
+	</section-->		
+	
+	<section data-element-type="text">
+		<button class="snap-xl ico-LOM-texttool">
+			<h3>Text element</h3>
+			<p>Add text in your project.</p>
+		</button>
+	</section>	
+	<section data-element-type="image">
+		<button class="snap-xl ico-LOM-image">
+			<h3>Image element</h3>
+			<p>Add an image in your project.</p>
+		</button>
+		
+	</section>
+	<section data-element-type="custom">
+		<button class="snap-xl ico-LOM-custom">
+			<h3>Custom Element</h3>
+			<p>Add a custom HTML element in your project.</p>
+		</button>
+	</section>
+	<section data-element-type="accordion">
+		<button class="snap-xl ico-LOM-details">
+			<h3>Accordion</h3>
+			<p>Add collapsible boxes in your project.</p>
+		</button>
+	</section>
+	<section data-element-type="activity">
+		<button class="snap-xl ico-QS-activity">
+			<h3>Activity</h3>
+			<p>Add an activity in your project.</p>
+			<!-- <p>This will load an Activity: no intro, no outro </p> -->
+		</button>
+	</section>
+	<section data-element-type="activity" data-params='{"subtype":"exam"}'>
+		<button class="snap-xl ico-QS-exam">
+			<h3>Exam</h3>
+			<p>Add an exam in your project.</p>
+			<!-- <p>This will load an Exam: intro text, final feedback</p> -->
+		</button>
+	</section>
+	<section data-element-type="multiplechoice">
+		<button class="snap-xl ico-QS-radio">
+			<h3>Multiple Choice Question</h3>
+			<p>Add a question with a single possible right answer.</p>
+			<!-- <p>A question with radio buttons</p> -->
+		</button>
+	</section>
+	<section data-element-type="checkbox">
+		<button class="snap-xl ico-QS-checkbox">
+			<h3>Multiple Answers Question</h3>
+			<p>Add a question with multiple possible right answers.</p>
+			<!-- <p>A question with checkboxes</p> -->
+		</button>
+	</section>
+	
+	
+	
+	
+	
+	
+
+
+</div>
+<div class="modal-footer"><button type="button" id="ftrClose" class="btn btn-sm btn-primary pull-left popup-modal-dismiss" title="Close Close overlay (escape key)">Close<span class="wb-inv">Close overlay (escape key)</span></button></div>
+	<script>masterStructure.editor.loadElementList();</script>
+</section>

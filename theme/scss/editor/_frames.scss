@@ -1,0 +1,39 @@
+
+
+
+
+//------------------add button
+.LOM-frame>button.ico-LOM-plus.LOM-delete-on-save{
+		opacity: 0.3;
+  		filter: alpha(opacity=30);
+	
+}
+.LOM-frame:hover, *:focus{
+	&>button.ico-LOM-plus.LOM-delete-on-save{
+
+		opacity: 1;
+  		filter: alpha(opacity=100);
+	}
+}
+
+
+/*-------------------------------------------------------------------------
+//-------------------------------- LIGHTBOXES---------------------------
+-------------------------------------------------------------------------*/
+/*----------------- LAYOUT PICKER -----------------------*/
+#layoutpicker{
+	.LOM-page{
+	   background: white;
+	   display: block;
+	   margin: 0 auto;
+	   padding: 10px 25px;
+	   box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+	}
+	section{
+		margin:20px;
+	}
+	.row>section, .row>div{
+		padding:10px;
+		border:1px grey solid;
+	}
+}

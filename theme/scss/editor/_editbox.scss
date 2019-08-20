@@ -1,0 +1,43 @@
+
+
+/*-------------------------------------------------------------------------
+//-------------------------------- Editboxes---------------------------
+-------------------------------------------------------------------------*/
+/*----------------- CKE -----------------------*/
+
+
+//---when editboxes are editable
+.cke_editable,.LOM-highlight-editables .LOM-editable{
+	//border:dashed 1px #555;
+	summary>form>&{
+		display:inline-block; 
+	}
+	
+	&:hover:before{
+		
+		content: '';			
+		position: absolute;
+		@include iconpack(edit, md, disabled);
+		left: -35px;
+    	margin-top: -7px;
+
+		
+	}
+	
+}
+.LOM-overflow-warning{
+	color:#B00000;
+	//background-color:red;
+	&:before{
+		content: 'Text Overflow';
+		
+		background-color: white;
+		color: #B00000;
+		position: absolute;
+		left: 100%;
+		@include iconpack(warning, md, disabled);
+		
+    	padding-top: 35px;
+		
+	}
+}

@@ -1,0 +1,52 @@
+<section class="modal-dialog modal-content overlay-def mfp-with-anim mfp-zoom-in">
+<header class="modal-header">
+<h2 class="modal-title">Choose your layout</h2>
+<button title="Close overlay (escape key)" type="button" class="mfp-close overlay-close">×<span class="wb-inv"> Close overlay (escape key)</span></button>
+</header>
+<div class="modal-body" id="layoutpicker">
+	
+	
+	<section>
+		<h3>1 Frame</h3>
+		<button class="snap-lg ico-LAYOUT-layout_1fr_1" data-id="layout_1fr_1">Main Window</button>
+	</section>
+	<section>
+		<h3>2 Frame</h3>
+		<button class="snap-lg ico-LAYOUT-layout_2fr_1" data-id="layout_2fr_1">Top and Bottom</button>
+	</section>
+		
+	<section>
+		<h3>3 Frames</h3>
+		<button class="snap-lg ico-LAYOUT-layout_3fr_1" data-id="layout_3fr_1">Smaller Column on the right</button>
+		<button class="snap-lg ico-LAYOUT-layout_3fr_2" data-id="layout_3fr_2">Smaller Column on the left</button>
+		<button class="snap-lg ico-LAYOUT-layout_3fr_3" data-id="layout_3fr_3">Two Columns</button>
+
+	</section>
+		
+	<section>
+		<h3>4 Frames</h3>
+		<button class="snap-lg ico-LAYOUT-layout_4fr_1" data-id="layout_4fr_2">Smaller Column on the right</button>
+		<button class="snap-lg ico-LAYOUT-layout_4fr_2" data-id="layout_4fr_1">Smaller Column on the left</button>
+		<button class="snap-lg ico-LAYOUT-layout_4fr_3" data-id="layout_4fr_3">Two Columns</button>
+
+	</section>
+	<section>
+		<h3>5 Frames</h3>
+		<button class="snap-lg ico-LAYOUT-layout_5fr_1" data-id="layout_5fr_1">Three colums in middle</button>
+		<button class="snap-lg ico-LAYOUT-layout_5fr_2" data-id="layout_5fr_2">Three columns at the bottom</button>
+
+	</section>
+
+	
+	
+	
+	
+	
+	
+	
+
+
+</div>
+<div class="modal-footer"><button type="button" id="ftrClose" class="btn btn-sm btn-primary pull-left popup-modal-dismiss" title="Close Close overlay (escape key)">Close<span class="wb-inv">Close overlay (escape key)</span></button></div>
+	<script>masterStructure.editor.loadLayoutList();</script>
+</section>

@@ -1,0 +1,43 @@
+/*-------------------------------------------------------------------------
+//-------------------------------- 404 page---------------------------
+-------------------------------------------------------------------------*/
+.page404{
+	.save-edit-mode{display:none;}
+} 
+
+.LOM-404{
+	h1{
+		
+		display:block;
+		text-align:center;
+		line-height: 1.2em;
+		span.gigantic{
+			display: block;
+			color:#655555;
+			font-size: 6em;
+			line-height: 1.4em;
+		}
+		.LOM-title-404{
+			display: block;
+			font-size: 3em;
+			
+			line-height: 1.4em;
+			
+		}
+		span.editor-mode{
+			display:block;
+			color:#777;
+			font-size: 0.8em;
+		}
+	}
+	.wwyltd{
+		font-size: 1.5em;
+		text-align:center;
+	}
+	.LOM-preview-active & button{
+		display:none;
+	}
+
+	
+}
+

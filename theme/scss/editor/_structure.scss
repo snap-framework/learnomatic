@@ -1,0 +1,272 @@
+/*-------------------- STRUCTURE EDITING -------------------*/
+
+/*EDIT STUCTURE BUTTON OVERRIDE*/
+#wb-lng .edit-structure {
+	background:none!important;
+	text-indent: 0 !important;
+	overflow:hidden;
+	display: block !important;
+	padding-top:14px;
+}
+/*-------------------------------------------------------------------------
+//-------------------------------- STRUCTURE OBJECT---------------------------
+-------------------------------------------------------------------------*/
+#LOM-editable-structure-holder{
+	.dd-item{
+		//height:35px;
+		//width:35px;
+	}
+	.dd3-handle{
+		height:35px;
+		margin-left:-30px;
+		//width:35px;
+		&:before{
+			content: '';
+			//height:35px;
+			//width:35px;
+			@include iconpack(move, md, standard);
+			top:0px;
+			left:-3px;
+		}
+		
+	}
+	.dd3-content{
+		height:35px;
+		
+	}
+	
+	
+	.LOM-structure-edititem,.LOM-structure-removeitem,.LOM-structure-additem{
+		min-height:33px;
+		min-width:33px;
+		height:33px;
+		width:33px;
+		overflow:hidden;
+		text-indent:-9999px;
+		border:none;
+		margin-top: 1px;
+		border-radius:5px;
+		
+    	background-color: transparent;
+	    &:before{
+			content:'';
+			
+			
+			height: 33px;
+			width: 33px;
+			margin-top: -3px;
+			margin-left: -8px;
+			border:0px transparent solid;
+			background-color:transparent;
+		}
+	}
+	.LOM-structure-edititem:before{@include iconpack(edit, md, standard);}
+	.LOM-structure-removeitem:before{@include iconpack(delete, md, standard);}
+	.LOM-structure-additem:before{@include iconpack(plus, md, standard);} 
+	.LOM-structure-edititem:hover:before{@include iconpack(edit, md, hover);}
+	.LOM-structure-removeitem:hover:before{@include iconpack(delete, md, hover);}
+	.LOM-structure-additem:hover:before{@include iconpack(plus, md, hover);} 
+	
+	.dd3-handle{visibility:hidden;}
+	.dd3-item:hover .dd3-handle,.LOM-selected-sub .dd3-handle{visibility:visible;}
+	//.dd3-item:hover .dd3-content:before{display:none;}
+
+	
+	.isPage,.isSub{
+		//background-color:red;
+		.LOM-structure-additem{
+			//display:none;
+		}
+		>.dd3-content{
+			padding-left:35px;
+		}
+		>.dd3-content:before{
+			
+			width: 16px;
+			height: 17px;
+			display: block;
+			position: absolute;
+			content: '';
+			margin-top: 2px;
+			margin-left: -24px;
+			
+		}
+	}
+	.isPage>.dd3-content:before{background-image: url(base/isPage.png);}
+	.isSub>.dd3-content:before{background-image: url(base/isSub.png);}
+	.isSub.dd-collapsed>.dd3-content:before{background-image: url(base/isSub_closed.png);}
+	
+	
+	.isSub{
+		background-color:white;
+		ol{padding-bottom:1px;}
+		&>.dd3-content{
+			background:none;
+			border-bottom:0px solid transparent;
+			border-bottom-left-radius: 0px;
+			border-bottom-right-radius:0px;
+			cursor:pointer;
+		}
+		&>ol{
+			$some-grey:#c1c1c1;
+			border-left:1px solid $some-grey;
+			border-right:1px solid $some-grey;
+			border-bottom:1px solid $some-grey;
+		}
+		&.LOM-selected-sub{
+			background-color:#e1e1e1;
+			&:before{
+				$some-grey:#c1c1c1;
+				content: '';
+				display: block;
+				background-color: #e1e1e1;
+				position: absolute;
+				height: 100%;
+				margin-left: -20px;
+				width: 20px;
+				border-top: $some-grey 3px solid;
+				border-left: $some-grey 3px solid;
+				border-bottom: $some-grey 3px solid;
+				border-right: transparent 0px solid;
+				border-top-left-radius: 10px;
+				border-bottom-left-radius: 10px;
+			}
+		}
+	}
+	
+	[data-action="collapse"]{
+		height: 20px;
+		border-radius: 5px;
+		display: block;
+		//background-color:#e1e1e1;
+		&:hover{
+		background-color:#d1d1d1;
+		}
+	}
+}
+
+.LOM-structure-active{
+
+	/*#wb-bar, footer>.container, #wb-sm{
+		visibility:hidden;
+		height: 1px!important;
+		overflow: hidden;
+		padding: 0px;
+		margin: 0px;
+	}*/
+	main{
+		height:98vh;
+	}
+}
+
+
+
+/*-------------------------------------------------------------------------
+//-------------------------------- STRUCTURE PAGE---------------------------
+-------------------------------------------------------------------------*/
+
+
+
+/*-------------------------------------------------------------------------
+//-------------------------------- LOCAL VIEW---------------------------
+-------------------------------------------------------------------------*/
+.LOM-local-isFolder, .LOM-local-isPage{
+	position:relative;
+	display:block;
+	height:50px;
+	width:100%;
+	border:none;
+	border-radius:5px;
+	text-align:left;
+	margin-bottom: 2px;
+	&>span,&>button{
+		display:block;
+		height:100%;
+		width:100%;
+		padding:10px 20px 10px 40px;
+		border:none;
+		text-align:left;
+	}
+	&:before{
+		content: '';
+		position: absolute;
+		margin-top: 5px;
+		margin-left: 5px;
+	}
+	&:hover{
+		.LOM-ui-handle{
+			visibility:visible;
+		}
+	}
+}
+
+.LOM-local-isFolder{
+	&>button{
+		/*background-color:#f5f5e1;*/
+		background-color:#f1f1f1;
+	}
+	&:before{
+		//background-image: url(base/isSub.png);
+		@include iconpack(folderclosed, md, disabled);
+	}
+	&:focus, &:hover{
+		//background-color:#c1c1c1;
+		&:before{
+		@include iconpack(folder, md, disabled);
+			
+		}
+	}
+}
+
+.LOM-local-isPage{
+	background-color:white;
+	&:before{
+		//background-image: url(base/isPage.png);
+		@include iconpack(page, md, disabled);
+	}
+}
+[data-id='m98']{
+	button{
+		/*background-color:bisque!important;*/
+		opacity:0.3;
+	}
+	.LOM-edit-view{
+		display:none;
+	}
+	
+}
+input.LOM-newpage{
+	width:100%;
+}
+
+.LOM-folder-view{
+	position: absolute;
+    width: 80%;
+    clear: both;
+	padding-left:40px!important;
+}
+#folder-view-container{
+	overflow-x:hidden;
+	.ico-LOM-plus{
+		margin-top:30px;
+	}
+}
+
+.LOM-structure-rollback{
+position: absolute;
+position: absolute;
+    margin-left: -51px;
+    height: 100%;
+    width: 30px;
+    background-image: url(images/rollback.png);
+    background-position: center left;
+    background-repeat: no-repeat;
+    background-size: contain;
+    /* background-size: 100%; */
+    background-color: transparent;
+    border: 1px solid #c1c1c1;
+    text-indent: -999px;
+    border-radius: 5px;
+	
+	
+}

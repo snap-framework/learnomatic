@@ -1,0 +1,98 @@
+@mixin floating($direction,$background) {
+       
+    #{$direction}: calc(((100vw - 1170px)/-2) - 16px);   
+    width: calc((100vw - 1170px)/2 + 16px);    
+ 
+    
+    @include breakpoint-lt(large) {       
+        #{$direction}: calc((100vw - 970px)/-2 - 16px);
+        width: calc((100vw - 970px)/2 + 16px); 
+    }	
+    @include breakpoint-lt(medium) {             
+       #{$direction}: calc((100vw - 750px)/-2 - 16px);
+        width: calc((100vw - 750px)/2 + 16px); 
+    }
+    
+    @include breakpoint-lt(small) {      	
+    	#{$direction}: -16px;    	
+    	width: calc(100vw - 100% - 16px);
+    }
+//     @include breakpoint-lt(small) {      	
+//     	#{$direction}: -25px;    	
+//     	width: calc(100vw - 100% - 40px);
+//     }
+    @include breakpoint-lt(xxsmall) {      	          
+        width:0;
+    }
+    background-color:$background;
+    
+	@content; 
+	
+}
+@mixin floating_border($direction,$position,$size,$type,$color : null){
+	 width: calc(100% + (100vw - 1170px)/2 + 10px); 
+	 border-#{$position}:$size $type $color;   
+	 @include breakpoint-lt(large) {       
+        #{$direction}: calc(100% + (100vw - 970px)/-2 - 10px);
+        width: calc(100% + (100vw - 970px)/2 + 10px); 
+    }	
+    @include breakpoint-lt(medium) {             
+        #{$direction}: calc(100% + (100vw - 750px)/-2 - 10px);
+        width: calc(100% + (100vw - 750px)/2 + 10px); 
+    }
+    @include breakpoint-lt(small) {             
+        width: calc(100% + 10px); 
+    }	 
+     @include breakpoint-lt(xxsmall) {      	          
+        border:none;        
+    }
+}
+
+
+// Create an isosceles triangle
+// @param $pointing    : where the triangle is pointing (one of up[top], down[bottom], left, right)
+// @param $base-length : length of the base of the triangle
+// @param $altitude    : length of the height/altitude of the triangle *or* boolean true to specify an equilateral triangle
+// @param color        : color of the triangle
+@mixin triangleIso($pointing, $base-length, $altitude, $color,$importance: null) {
+
+	&:before, &:after {
+		content: '';
+		position: absolute;
+		width: 0;
+		height: 0;
+	}
+
+	// Map $pointing {up: top, down: bottom}
+	@if $pointing == up {
+		$pointing: top;
+	}
+	@else if $pointing == down {
+		$pointing: bottom;
+	}
+	// For an equilateral triangle, calculate the altitude (woohoo, geometry!)
+	@if $altitude == true {
+		$altitude: sqrt(3) / 2 * $base-length;
+	}
+  
+	@if $pointing == top or $pointing == bottom or $pointing == right {
+		&:after{	
+			$base-length: $base-length / 2;
+			$base: opposite-direction($pointing);
+			border: $base-length solid transparent $importance;
+			border-#{$base}: $altitude solid $color $importance;
+			border-#{$pointing}: 0 $importance;
+			
+		}
+	}
+	@else{
+		&:before{
+			$base-length: $base-length / 2;
+			$base: opposite-direction($pointing);
+			border: $base-length solid transparent $importance;
+			border-#{$base}: $altitude solid $color $importance;
+			border-#{$pointing}: 0 $importance;
+		}
+	}
+  // The base is made up of 2 opposite borders, so halve it
+}

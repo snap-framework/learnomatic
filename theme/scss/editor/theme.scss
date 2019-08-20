@@ -1,0 +1,35 @@
+ul.courselist{
+	li{
+		width:100%;
+		position:relative;
+		height:48px;
+		list-style:none;
+		margin-bottom:3px;
+		button{
+
+			display: inline-block;
+			margin-top:1px;
+			position:absolute;
+			&.course-download[lang=en]{margin-left:-135px; &:before{background-color:#ffcccc;}}
+			&.course-download[lang=fr]{margin-left:-90px; &:before{background-color:#ccccff;}}
+			&.course-delete{margin-left:-45px;}
+			
+		}
+		a{
+			
+			height: 100%;
+			display: inline-block;
+			min-width: 100%;
+			background-color: #fafafa;
+			padding: 0.5em;
+			border:1px solid #e1e1e1;
+			&:hover,&:focus{
+				background-color:#f1f1f1;
+			}
+		}
+		&[data-course="_default"]{
+			display:none; //
+			
+		}
+	} 
+} 

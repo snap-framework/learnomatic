@@ -1,0 +1,21 @@
+label[for=LOM-showHome],
+label[for=LOM-showHelp],
+label[for=LOM-showExit],
+label[for=LOM-showSitemap]{
+	padding-left:35px;
+	&:before{
+		content: '';
+		display: inline-block;
+		position: absolute;
+		height: 40px;
+		width: 40px;
+		margin-left: -45px;
+		margin-top: -15px;
+		background: url(../courses/_default/theme/base/ico_stack.png) no-repeat;
+	}
+}
+
+label[for=LOM-showHome]:before{background-position: 5px 4px;}
+label[for=LOM-showHelp]:before{background-position: -102px 4px;}
+label[for=LOM-showExit]:before{background-position: -154px 4px;}
+label[for=LOM-showSitemap]:before{background-position: -200px 4px;}
