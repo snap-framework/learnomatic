@@ -1,0 +1,53 @@
+/* line 2, scss/editor/theme.scss */
+ul.courselist li {
+  width: 100%;
+  position: relative;
+  height: 48px;
+  list-style: none;
+  margin-bottom: 3px;
+}
+/* line 8, scss/editor/theme.scss */
+ul.courselist li button {
+  display: inline-block;
+  margin-top: 1px;
+  position: absolute;
+}
+/* line 13, scss/editor/theme.scss */
+ul.courselist li button.course-download[lang=en] {
+  margin-left: -135px;
+}
+/* line 13, scss/editor/theme.scss */
+ul.courselist li button.course-download[lang=en]:before {
+  background-color: #ffcccc;
+}
+/* line 14, scss/editor/theme.scss */
+ul.courselist li button.course-download[lang=fr] {
+  margin-left: -90px;
+}
+/* line 14, scss/editor/theme.scss */
+ul.courselist li button.course-download[lang=fr]:before {
+  background-color: #ccccff;
+}
+/* line 15, scss/editor/theme.scss */
+ul.courselist li button.course-delete {
+  margin-left: -45px;
+}
+/* line 18, scss/editor/theme.scss */
+ul.courselist li a {
+  height: 100%;
+  display: inline-block;
+  min-width: 100%;
+  background-color: #fafafa;
+  padding: 0.5em;
+  border: 1px solid #e1e1e1;
+}
+/* line 26, scss/editor/theme.scss */
+ul.courselist li a:hover, ul.courselist li a:focus {
+  background-color: #f1f1f1;
+}
+/* line 30, scss/editor/theme.scss */
+ul.courselist li[data-course="_default"] {
+  display: none;
+}
+
+/*# sourceMappingURL=theme.css.map */
