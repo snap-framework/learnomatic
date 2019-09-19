@@ -129,6 +129,17 @@ define([
 				
 			}
 			
+			/*if($gallery.children(".row").last().children().length<4){
+				$gallery.children().last().append("<div class='col-md-3' id='LOM-img-upload'></div>");
+			}else{
+				$gallery.append("<div class='row'><div class='col-md-3' id='LOM-img-upload'></div></div>");
+			}*/
+			$gallery.append("<div class='row'><div class='col-md-3' id='LOM-img-upload'></div></div>");
+			
+			var $upload=$("#LOM-img-upload");
+			this.createUpload($upload);
+
+			
 			$(".LOM-img-btn").click(function(){
 				var newSrc=$(this).find("img").attr("src");
 				$("#LOM-src").attr("value", newSrc);
@@ -140,6 +151,58 @@ define([
 				var newSrc=$(this).find("img").attr("src");
 				that.$el.children("img").attr("src", newSrc);
 				$.magnificPopup.close();
+			});
+			
+		},
+		
+		createUpload:function($container){
+			var that=this;
+			$container.append("<h3>Upload Image</h3>")
+			$container.append("<label>Select image(max 500kb file size) <input type='file' name='file' id='file' /></label><span id='uploaded_image'></span>");
+			$container.append("<button class='snap-sm ico-LOM-upload'>Upload</button");
+			//$container.append(" <input type='hidden' id='info' name='info' value='upload_image'>");
+			$container.children("button").hide();
+			
+			var $file=$("#file");
+			$file.on("change", function(){
+				var fichier=this.files[0];
+				var filename=fichier.name;
+				var filext=filename.split('.').pop().toLowerCase();
+				if(jQuery.inArray(filext, ['gif', 'png', 'jpg', 'jpeg']) ===-1){
+					alert("wrong fily type");
+					return false;
+				}else{
+					if(fichier.size >500000){
+						alert("File too big");
+						return false;
+					}else{
+						var form_data=new FormData();
+						form_data.append("file", fichier);
+						form_data.append("action", "upload_image");
+						form_data.append("filename", that.editor.courseFolder);
+						$.ajax({
+							url: "../../editor.php",
+							method:"POST",
+							data:form_data,
+							contentType:false,
+							cache:false,
+							processData:false,
+							beforeSend:function(){
+								$("#uploaded_image").html("Image Uploading ... ")
+							},
+							success:function(data){
+								var newSrc="content/medias/images/"+data;
+								that.$el.children("img").attr("src", newSrc);
+								$.magnificPopup.close();
+							}
+							
+							
+						})
+					}
+					
+					
+					
+				}
 			});
 			
 		},

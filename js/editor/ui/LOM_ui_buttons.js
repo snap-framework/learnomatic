@@ -21,7 +21,7 @@ define(['utils','./../LOM_labels'], function (Utils, Labels) {
 				},
 				{
 					name:"deletepage",
-					icon:"SNAP-delete",
+					icon:"LOM-trash",
 					labels:Labels.tools.deletepage,
 					action:"things"
 				}

@@ -69,6 +69,9 @@ function dispatcher($json){
 			downloadZip($received);
 			break;
 			
+		case "upload_image":
+			uploadImage($received);
+			break;
 	}
 }
 
@@ -422,6 +425,27 @@ function updateSessions($json){
 		//
 		
 	}
+
+function uploadImage($received){
+	
+	
+	//echo $received->content;
+	
+
+	$imgName=$_FILES["file"]["name"];
+	$test=explode(".", $_FILES["file"]["name"]);
+	$imgExtension =end($test);
+	$folder= "courses/".$received->filename."/content/medias/images/";
+	move_uploaded_file($_FILES["file"]["tmp_name"], $folder.$imgName);
+	
+	
+	echo $imgName;
+	
+	
+	
+	
+	
+}
 function downloadZip($received){
   $filename = "download/".$received->content;
 
