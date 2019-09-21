@@ -71,31 +71,29 @@
 	function generateCourses(data){
 		var $el;
 		for (var i=0;i<data.length;i++){
-			appendCourse(data[i], (i===0)?true:false);
+			if(data[i]!=="_default" && data[i]!=="_download"){
+				appendCourse(data[i])
+			}
 
 		}
 	}
 
-	function appendCourse(data, isFirst){
+	function appendCourse(data){
 		$(".courselist").append("<li data-course='"+data+"'></li>")
 			$el=$(".courselist").children("li").eq($(".courselist").children("li").length-1);
-		if(!isFirst){			
 			$el.append("<a href='courses/"+data+"/index_en.html'>"+data+"</a>");
-		}else{
-			$el.append("<span>"+data+"</span>");
-		}
+		
 
 		// download
-		if(!isFirst){
+		
 			$el.append("<button class='course-download ico-LOM-download snap-xs' lang='en' title='Download English'>Download English</button>");
 			$el.append("<button class='course-download ico-LOM-download snap-xs' lang='fr' title='Download French'>Download French</button>");
 
-		}
 		$el.children(".course-download").click(function(){downloadCourse($(this).parent().attr("data-course"), $(this).attr("lang"));})			
 
 		
 		// DELETE
-		if(!isFirst){$el.append("<button class='course-delete ico-LOM-trash snap-xs' title='Delete'>X</button>");}
+		$el.append("<button class='course-delete ico-LOM-trash snap-xs' title='Delete'>X</button>");
 		$el.children(".course-delete").click(function(){deleteCourse($(this).parent().attr("data-course"));})			
 	}
 
@@ -121,9 +119,9 @@
 		
 	function startDownload(file){
 		
-		window.location = "download/"+file;
+		window.location = "courses/_download/"+file;
 		setTimeout(function (){
-			$.post( "editor.php", { action: "delete", filename:"download/"+file }, function(data){
+			$.post( "editor.php", { action: "delete", filename:"courses/_download/"+file }, function(data){
 			
 				//document.location=data;
 				console.log(data);

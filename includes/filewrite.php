@@ -16,7 +16,6 @@ function dispatcher($json){
 			fullWrite($received);
 			break;
     	case "readfolder":
-			//rewrite page
 			readFolder($received);
 			break;
     	case "moveFiles":
@@ -27,7 +26,6 @@ function dispatcher($json){
 			saveSettings($received);
 			break;
     	case "delete":
-			//rewrite page
 			deletePage($received);
 			break;
 		case "login":
@@ -363,7 +361,7 @@ function updateSessions($json){
 
 		// Initialize archive object
 		$zip = new ZipArchive();
-		$zip->open('download/'.$filename.'.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
+		$zip->open('courses/_download/'.$filename.'.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
 		// Create recursive directory iterator
 
@@ -388,7 +386,7 @@ function updateSessions($json){
 		
 		//now add the manifests
 		$lang=$received->content;
-		$path = "download/pkg_".$lang."/";
+		$path = "courses/_download/pkg_".$lang."/";
 		$rootPath = realpath($path);
 		
 		$files = new RecursiveIteratorIterator(
@@ -416,7 +414,7 @@ function updateSessions($json){
 		// Zip archive will be created only after closing object
 		$zip->close();	
 		do {
-			if (file_exists('download/'.$filename.'.zip')) {
+			if (file_exists('courses/_download/'.$filename.'.zip')) {
 				//echo "The file was found: " . date("d-m-Y h:i:s") . "<br>";
 				echo $filename.'.zip';
 				break;
@@ -447,7 +445,7 @@ function uploadImage($received){
 	
 }
 function downloadZip($received){
-  $filename = "download/".$received->content;
+  $filename = "courses/_download/".$received->content;
 
   if (file_exists($filename)) {
      /*header('Content-Type: application/zip');
