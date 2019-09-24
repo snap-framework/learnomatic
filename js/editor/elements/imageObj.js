@@ -191,9 +191,14 @@ define([
 								$("#uploaded_image").html("Image Uploading ... ")
 							},
 							success:function(data){
-								var newSrc="content/medias/images/"+data;
+								
+
+								data=JSON.parse(data);
+								var filename=data.filename;
+								console.log(data);
+								var newSrc="content/medias/images/"+filename;
 								that.$el.children("img").attr("src", newSrc);
-								//$.magnificPopup.close();
+								$.magnificPopup.close();
 							}
 							
 							

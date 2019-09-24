@@ -129,6 +129,14 @@ function readFolder($received){
 	}
 }
 
+
+function checkFolder($path, $folder){
+	if (!file_exists($path.$folder)) {
+		mkdir($path.$folder, 0777, true);
+	}
+}
+
+
 function courseList($received){
 
 	$dir = scandir('courses/');
@@ -432,6 +440,8 @@ function uploadImage($received){
 	
 	//echo $received->content;
 	
+	checkFolder("courses/".$received->filename."/content/", "medias");
+	checkFolder("courses/".$received->filename."/content/medias/", "images");
 
 	$imgName=$_FILES["file"]["name"];
 	$test=explode(".", $_FILES["file"]["name"]);
@@ -439,8 +449,10 @@ function uploadImage($received){
 	$folder= "courses/".$received->filename."/content/medias/images/";
 	move_uploaded_file($_FILES["file"]["tmp_name"], $folder.$imgName);
 	
+	$received->filename=$imgName;
 	
-	echo $imgName;
+	echo  json_encode($received);
+	
 	
 	
 	
