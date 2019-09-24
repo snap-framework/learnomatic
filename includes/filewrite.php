@@ -110,20 +110,23 @@ function deletePage($received){
 
 //this is to get a list of files
 function readFolder($received){
-	if ($handle = opendir($received->filename)) {
+	if (file_exists($received->filename)){
+		if ($handle = opendir($received->filename)) {
 
-		while (false !== ($entry = readdir($handle))) {
+			while (false !== ($entry = readdir($handle))) {
 
-			if ($entry != "." && $entry != ".." && preg_match($received->regex, $entry) && $entry != "thumbs.db") {
+				if ($entry != "." && $entry != ".." && preg_match($received->regex, $entry) && $entry != "thumbs.db") {
 
-				echo "$entry,";
+					echo "$entry,";
+				}
 			}
-		}
 
-		closedir($handle);
+			closedir($handle);
+		}
+		return $received;
+	}else{
+		echo "false";
 	}
-	
-	return $received;
 }
 
 function courseList($received){

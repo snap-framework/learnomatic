@@ -319,8 +319,9 @@ define([
 			$.post('../../editor.php', { action:"readfolder", filename: 'courses/'+this.courseFolder+'/'+customFolder, regex:"/^.*\.(html|htm)$/i" }, function(data){
 				//parse the jSON
 				//console.log(data);
-				
-				that.loadCustomLayouts(data.slice(0, -1), customFolder);
+				if(data !== "false"){
+					that.loadCustomLayouts(data.slice(0, -1), customFolder);
+				}
 
 				
 

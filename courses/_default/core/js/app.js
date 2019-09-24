@@ -1160,9 +1160,12 @@ define([
 						courseFolder:directory
 					});
 					that.editor.pageLoaded();
-					if ($("html").hasClass("page404")) {
-						that.editor.page404();
-					}
+					//Load custom 404 page for LOM
+					$(masterStructure).on("Framework:pageLoaded", function() {
+						if (this.editor.ui.currentMode.name === "pageEdit" && $("html").hasClass("page404")){
+							that.editor.page404();
+						}
+					});
 				});
 				
 			}

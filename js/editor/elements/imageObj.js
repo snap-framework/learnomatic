@@ -193,7 +193,7 @@ define([
 							success:function(data){
 								var newSrc="content/medias/images/"+data;
 								that.$el.children("img").attr("src", newSrc);
-								$.magnificPopup.close();
+								//$.magnificPopup.close();
 							}
 							
 							
