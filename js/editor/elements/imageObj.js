@@ -128,12 +128,6 @@ define([
 
 				
 			}
-			
-			/*if($gallery.children(".row").last().children().length<4){
-				$gallery.children().last().append("<div class='col-md-3' id='LOM-img-upload'></div>");
-			}else{
-				$gallery.append("<div class='row'><div class='col-md-3' id='LOM-img-upload'></div></div>");
-			}*/
 			$gallery.append("<div class='row'><div class='col-md-3' id='LOM-img-upload'></div></div>");
 			
 			var $upload=$("#LOM-img-upload");
@@ -149,9 +143,17 @@ define([
 			});
 			$(".LOM-img-btn").dblclick(function(){
 				var newSrc=$(this).find("img").attr("src");
-				that.$el.children("img").attr("src", newSrc);
-				$.magnificPopup.close();
+				that.changeImage(newSrc)
 			});
+			
+		},
+		
+		changeImage:function(filename){
+				
+				this.$el.children("img").attr("src", filename);
+				   this.storeValue();
+				   this.editor.savePage();
+				   this.closeLbx();
 			
 		},
 		
@@ -195,10 +197,13 @@ define([
 
 								data=JSON.parse(data);
 								var filename=data.filename;
-								console.log(data);
+								//console.log(data);
 								var newSrc="content/medias/images/"+filename;
-								that.$el.children("img").attr("src", newSrc);
-								$.magnificPopup.close();
+								
+								that.changeImage(newSrc);
+								
+								//that.$el.children("img").attr("src", newSrc);
+								//$.magnificPopup.close();
 							}
 							
 							
