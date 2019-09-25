@@ -86,6 +86,17 @@ define([
 		
 		prepareHtmlModes:function(){
 			$("#LOM-toolbox").prepend("<div class=\"LOM-modetoggle\"><div class='LOM-modes-title'>Modes</div></div>");
+			//init navigation
+			var that=this;
+			$(this.master).on("Framework:pageLoaded", function() {
+				var modeName=that.currentMode.name;
+				if(modeName !== "preview" && modeName !=="pageEdit"){
+					that.modes[0].select();
+					that.modes[0].activate();
+					
+				}
+			});
+	
 			return $(".LOM-modetoggle").eq(0);
 			
 			

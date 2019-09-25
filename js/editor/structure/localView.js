@@ -560,10 +560,7 @@ define([
 			if (params.lbx.action === "addpage" || params.lbx.action === "addfolder"){
 				if(typeof this.currentParent.depth ==="undefined" ){
 					//MASTER STRUCTURE
-					
 					newPosition=(this.master.subs[this.master.subs.length-1].sPosition==="m98")?"m98":"m"+(this.master.subs.length);
-
-					
 				}else{
 					//SUB
 					newPosition=this.currentParent.sPosition+"-"+this.currentParent.subs.length;
@@ -578,6 +575,7 @@ define([
 				sub.title=title;
 				sub.altTitle=altTitle;
 				this.generateList(this.currentParent);
+				$(".menu.supermenu>li>ul").html("");
 				this.master.generateSupermenu();
 				return sub;
 			}

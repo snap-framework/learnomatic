@@ -149,7 +149,6 @@ define([
 		},
 		
 		changeImage:function(filename){
-				
 				this.$el.children("img").attr("src", filename);
 				   this.storeValue();
 				   this.editor.savePage();

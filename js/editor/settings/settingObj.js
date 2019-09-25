@@ -155,7 +155,9 @@ define([
 							
 				case "seriesTitle_"+Utils.lang:
 
-					$("h2.series-title>a").eq(0).text(this.value);				
+				    $("h2.series-title>a").eq(0).text(this.value);
+                    //update core settings
+					CoreSettings["seriesTitle_"+Utils.lang]=this.value;
 					break;
 				case "showHome":
 						this.toggleButton("home");
@@ -185,7 +187,7 @@ define([
 					break;
 					
 					
-							 }
+				}
 			
 		},
 		toggleButton:function(className){
