@@ -209,7 +209,8 @@ define([
 		},		
 		delete:function(obj){
 			this.parent.deleteSub(obj);
-			this.generateList(this.currentParent);
+			
+			
 			
 		},		
 /*---------------------------------------------------------------------------------------------

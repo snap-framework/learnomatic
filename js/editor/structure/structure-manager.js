@@ -68,9 +68,8 @@ define([
 			var sPosition=$(obj).parent().parent().attr("data-id");
 			var sub= ObjSubUtils.findSub(Utils.getArrayFromString(sPosition));
 			this.initArchive();
-			sub.delete(this.archiveSub);
-			$(".menu.supermenu>li>ul").html("");
-			this.master.generateSupermenu();
+			this.findMoveRepository(sub);
+
 		},
 		
 		addPage:function(sPosition, title, altTitle, isPage){
@@ -98,14 +97,14 @@ define([
 			this.archiveSub=ObjSubUtils.findSub([98]);
 			if(!this.archiveSub){
 				$("[data-id=nav1]").eq(0).append("<li><a href='#' data-target='m98' tabindex='-1' role='menuitem'>Repository</a></li>");
-							this.master.levels[0].subs[this.master.levels[0].subs.length] = new ObjSub({
-								depth:0,
-								parentLevel: this.master.levels[0],
-								el: $("a[data-target=m98").eq(0),
-								router: this.master.router,
-								master:this.master,
-								wetMenu:cspsWetMenu
-							});
+					this.master.levels[0].subs[this.master.levels[0].subs.length] = new ObjSub({
+						depth:0,
+						parentLevel: this.master.levels[0],
+						el: $("a[data-target=m98").eq(0),
+						router: this.master.router,
+						master:this.master,
+						wetMenu:cspsWetMenu
+					});
 				var newSub=ObjSubUtils.findSub([98]);
 				newSub.altTitle="Dépôt";
 				newSub.viewed=true;
@@ -114,6 +113,23 @@ define([
 				return true;
 			}
 		},
+		findMoveRepository:function(sub){
+			var that=this;
+			var sub=sub
+			
+			$.post('../../editor.php', { action:"findrepository", folder: this.editor.courseFolder}, function(data){
+				//move to repository
+				sub.move(data);
+
+				//generate 
+				that.local.generateList(that.local.currentParent);
+				
+
+			}).fail(function() {
+				alert( "Posting failed." );
+			});				
+		},
+
 
 		updateSuperMenu:function(en_content, fr_content){
 			var file_en="courses/"+this.editor.courseFolder+"/content/supermenu/supermenu_en.html";

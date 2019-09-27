@@ -804,7 +804,7 @@ define([
 				var content="";
 				$.post('../../editor.php', { action:"delete", filename: "courses/"+this.courseFolder+"/"+filename, content: content }, function(data){
 
-					console.log(data);
+					//console.log(data);
 
 					//parse the jSON
 					//data = jQuery.parseJSON( data );

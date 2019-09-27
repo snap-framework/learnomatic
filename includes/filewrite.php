@@ -18,9 +18,13 @@ function dispatcher($json){
     	case "readfolder":
 			readFolder($received);
 			break;
+
     	case "moveFiles":
 			//move file from actionstack
 			moveFiles($received);
+			break;
+		case "findrepository":
+			findRepository($received);
 			break;
 		case "settings":
 			saveSettings($received);
@@ -154,72 +158,153 @@ function courseList($received){
 	
 }
 
+
+
 function moveFiles($received){
-	$sendback=array();
-	$conflicts=array();
+	$reposArray=array();
 	
-	$br=$received->br;
-	$exists=false;
-	$files=$received->filename;
-	$courseFolder=$received->folder;
-	error_reporting(E_ALL); ini_set('display_errors', 1);
-	foreach($files as $i => $item) {
-		$msg="";
-		//old files with their soon-to-be path
+	$courseFolder=$received->folder;//course folder
+	$contentFolder="./courses/".$courseFolder."/content/";//folder for the content;
+	$moveStack=$received->filename;//MOVE STACK
+	
+	//verify m97 exists
+	$targetPage="m97";
+	$newFolder=getFolderFromPage("m97")."/";
+	createFolder($contentFolder, $newFolder);
+	
+	
+	//now that m97 (transition) is ready, lets loop through the moves once.
+	foreach($moveStack as $i => $item) {
+		$page=$item->oldFile;
 		
-		$old_en=getPagePath($files[$i]->oldFile."_en.html",$courseFolder);
-		$old_fr=getPagePath($files[$i]->oldFile."_fr.html",$courseFolder);
+		//name folders
+		$fromFolderName=getFolderFromPage($page);
+		$toFolderName=getFolderFromPage("m97");
+		$folderFrom=$contentFolder.$fromFolderName."/";
+		$folderTo=$contentFolder.$toFolderName."/";
 		
-		//new files to be created
-		$new_en=getPagePath($files[$i]->newFile."_en.html",$courseFolder);
-		$new_fr=getPagePath($files[$i]->newFile."_fr.html",$courseFolder);
+		//do the files even exist?
+		$exist_en=file_exists($folderFrom.$page."_en.html");
+		$exist_fr=file_exists($folderFrom.$page."_fr.html");
+		//find a sweet spot in m97 only if both fr and en exist
+		if($exist_en || $exist_fr){
 		
-		//check exists EN and FR
-		$oldexists_en=file_exists($old_en);
-		$oldexists_fr=file_exists($old_fr);
-		
-		if($oldexists_en || $oldexists_fr){
-			//check the desination
-			if($files[$i]->newFile ==="m98"){
-			
-				$repository=findRepositorySpace($courseFolder);
-				$new_en=getPagePath($repository."_en.html",$courseFolder);
-				$new_fr=getPagePath($repository."_fr.html",$courseFolder);
-				$files[$i]->newFile=$repository;
-				
-			}
-			$exists_en=file_exists($new_en);
-			$exists_fr=file_exists($new_fr);
-			
-			if(!$exists_en && !$exists_fr){
 
-				if($oldexists_en){$msg =$msg.moveFile($files[$i]->oldFile."_en.html", $files[$i]->newFile."_en.html",$received);}
-				$msg =$msg."--" ;
-				if($oldexists_fr){$msg =$msg.moveFile($files[$i]->oldFile."_fr.html", $files[$i]->newFile."_fr.html",$received);}
-				
-			}else{
-				//-------- CONFLICT---
-				$conflictindex=sizeof($conflicts);
-				$conflicts[$conflictindex]["oldFile"]=$files[$i]->oldFile;
-				$conflicts[$conflictindex]["newFile"]=$files[$i]->newFile;
-				//$conflicts[$conflictindex]->newFile=$files[$i]->newFile;
-				$msg = $msg."don't move: ".$files[$i]->oldFile." X>".$files[$i]->newFile;
-			}
+			//figure out the name of the new position
+			$targetPage=findEmptySpace($contentFolder, "97");//send to a sweet spot in 97
+			echo "<br> empty space: ".$targetPage;
+			// FROM TO
+			array_push($reposArray, [$targetPage, $item->newFile]);
+
+			//move english
+			if ($exist_en){moveFile2($page."_en.html", $targetPage."_en.html", $folderFrom, $folderTo);}
+			//move French
+			if ($exist_fr){moveFile2($page."_fr.html", $targetPage."_fr.html", $folderFrom, $folderTo);}		
 			
 			
-		}else{
-			$msg =$msg."no files to move: ".$files[$i]->oldFile;
 		}
-		
-		$sendback[$i]=$msg;
-	}
-	$conflicts=moveConflicts($conflicts, $courseFolder);
 
-	// CLEAN UP!!! DELETE UNUSED FOLDERS
+
+	}
+
+	//print_r($reposArray);
+	//now we need to loop through m97
 	
-	echo json_encode($conflicts);
+	foreach($reposArray as $i => $item) {
+		$fromPage=$item[0];
+		$targetPage=$item[1];
+		
+		//name folders
+		$fromFolderName=getFolderFromPage("m97");
+		$toFolderName=getFolderFromPage($targetPage);
+		$folderFrom=$contentFolder.$fromFolderName."/";
+		$folderTo=$contentFolder.$toFolderName."/";		
+
+		echo "<br> move --- ".$folderFrom.$fromPage." to ".$folderTo.$targetPage;
+		
+		//lets create the folder in case it doesn'T exist
+		
+		createFolder($contentFolder."/", $toFolderName);
+		
+		//move english
+		moveFile2($fromPage."_en.html", $targetPage."_en.html", $folderFrom, $folderTo);
+		//move French
+		moveFile2($fromPage."_fr.html", $targetPage."_fr.html", $folderFrom, $folderTo);		
+		
+		
+
+	}	
 	
 }
+
+
+
+function createFolder($where, $what){
+	//verify folder
+	$checkExistFolder=file_exists($where.$what);
+	if(!$checkExistFolder){
+		//create folder
+		mkdir($where.$what, 0777);
+	}else{
+		//already exists
+	}
+}
+
+function getFolderFromPage($page){
+	$arr = explode("-", $page, 2);
+	$folder=$arr[0];
+	$folder=str_replace("m", "module", $folder);
+	return $folder;
+}
+
+function findRepository($received){
+	$folder = findEmptySpace($received->folder, "98");
+	echo $folder;
+	
+}
+
+function findEmptySpace($contentFolder, $folderNum){
+	for ($i=0; $i<=150; $i++){
+		$filename="m".$folderNum."-".$i;
+		
+		
+		
+ 		$currentPage=$contentFolder."module".$folderNum."/m".$folderNum."-".$i;
+		$cur_en=$currentPage."_en.html";
+		$cur_fr=$currentPage."_fr.html";
+		
+		//echo "<br>-check ".$cur_en." && ".$cur_fr." file exists: ".file_exists($cur_en);
+		
+		if(!file_exists($cur_en) && !file_exists($cur_fr)){
+			return "m".$folderNum."-".$i;
+		}else{
+			
+		}
+
+ 
+	} 	
+}
+
+function moveFile2($oldfile, $newFile, $from, $to){
+	echo "<p>move ".$from.$oldfile." to ".$to.$newFile."</p>"; 
+	if (file_exists ($from.$oldfile)){
+		
+		rename($from.$oldfile, $to.$newFile);
+		
+	}
+	
+	//
+	
+	
+}
+
+
+
+
+
+
+
+
 
 function copyCourse($received){
 	echo "test";
@@ -259,72 +344,10 @@ function recurse_copy($src,$dst) {
     closedir($dir); 
 } 
 
-function moveFile($from, $to, $courseFolder){
-	//move the actual thing
-	rename(getPagePath($from, $courseFolder), getPagePath($to, $courseFolder));
-	return "move ".$from." to ".$to;
-}
 
-function moveConflicts($conflicts, $courseFolder){
-	
-	// MAKE SURE THE FOLDER IS THERE
-	
-	$newConflicts=array();
-	foreach($conflicts as $i => $item) {
-		//echo "<br>".$item["oldFile"]."_en.html"."->"."m97-".$i."_en.html ->".$item["newFile"]."_en.html";
-		//echo "<br>".$item["oldFile"]."_fr.html"."->"."m97-".$i."_fr.html";
-		
-		$newConflicts[$i]["out_en"]= moveFile($item["oldFile"]."_en.html", "m97-".$i."_en.html", $courseFolder);
-		$newConflicts[$i]["out_fr"]= moveFile($item["oldFile"]."_fr.html", "m97-".$i."_fr.html", $courseFolder);
 
-	}
-	foreach($conflicts as $i => $item) {
-		$newConflicts[$i]["in_en"]=  moveFile("m97-".$i."_en.html", $item["newFile"]."_en.html", $courseFolder);
-		$newConflicts[$i]["in_en"]=  moveFile("m97-".$i."_fr.html", $item["newFile"]."_fr.html", $courseFolder);
 
-	}	
-	return $newConflicts;
-}
 
-function getPagePath($filename, $folder){
-	$genericPath="./courses/".$folder."/content/";
-	//$genericPath="./content_test/";
-
-	$module="";
-	//---------extract the module
-	$aPosition=explode("-",substr($filename, 1, -8));
-	$aPosition=intval($aPosition[0]);
-	$module=strval( $aPosition );
-
-	
-	//create if it doesnt exist
-
-	mkdir($genericPath."module".$module, 0777);
-	
-	return $genericPath."module".$module."/".$filename;
-}
-function saveSettings($received){
-	
-}
-function findRepositorySpace($folder){
-	//loop through m98-0 to m98-99 and find a sweet spot
-	for ($i=0; $i<=99; $i++){
-		$filename="m98_".$i;
-		
- 		$currentPage=getPagePath($filename."_en.html", $folder);
-		
-		
-		$repositoryExists=file_exists($currentPage);
-		//echo "<br>".$currentPage." exists(".$repositoryExists.")";
-		
-		if(!$repositoryExists){
-			//echo "<br>---page : ".$filename;
-			return $filename;
-		}
- 
-	} 
-	
-}
 function getRole($received){
 	$users=getUsers();
 	foreach($users as $key => $value) {
