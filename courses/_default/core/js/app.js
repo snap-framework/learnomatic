@@ -1231,8 +1231,8 @@ define([
 			var filename=this.actionStack;
 			//console.error("action stack - app.js call to PHP");
 			$.post('../../editor.php', { action:"moveFiles", filename: filename, content: "", folder:this.editor.courseFolder }, function(data){
-				//console.log( JSON.parse(data));
-				//console.log(data); //doesnt like to be parsed apparently...
+
+				//console.log(data); 
 						}).fail(function() {
 							alert( "Posting failed." );
 						});	

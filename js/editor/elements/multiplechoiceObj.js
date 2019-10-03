@@ -85,8 +85,10 @@ define([
 
 				
 				//save the html
-				this.elements[i].storeValue();
+				//this.elements[i].storeValue();
 			}
+			this.storeValue();
+			this.editor.savePage();
 
 		},
 		

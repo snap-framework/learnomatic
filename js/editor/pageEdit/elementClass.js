@@ -352,7 +352,7 @@ define([
 			if(storeEditsCheck || this.newHtml!==this.originalHtml){
 				this.originalHtml=this.newHtml;
 				this.isModified=true;
-								this.parent.storeValue();
+				this.parent.storeValue();
 			}else{
 				//this is not inside an element
 			}
@@ -1139,6 +1139,13 @@ define([
 		   
 		   
 	   },
+	   firstLoad:function(){
+		   this.setAnimations();
+		   
+	   },
+	   postCleanup:function(){
+		   return false;
+	   },
 
 	   loadClean:function(){
 		   this.connectDom();
@@ -1152,13 +1159,6 @@ define([
 			   this.$el.removeAttr("style");
 		   }
 		   
-	   },
-	   firstLoad:function(){
-		   this.setAnimations();
-		   
-	   },
-	   postCleanup:function(){
-		   return false;
 	   },
 	   		
 		cleanElements:function(){

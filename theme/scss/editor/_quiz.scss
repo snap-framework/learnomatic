@@ -1,6 +1,17 @@
 /*----------------- QS -----------------------*/
 //----- opnly in editor
 .LOM-pageEdit-active {
+
+	// little error messages
+	.qs-right, .qs-wrong, .qs-generic,.LOM-element[data-lom-element="radiobtn"][data-ra]{
+		&:after{
+				font-size:0.7em;
+				opacity:0.7;
+			
+		}
+		
+	}	
+	
 	.qs-elearning-activity,
 	.qs-question,
 	.qs-feedback,
@@ -36,15 +47,38 @@
 
 	.LOM-element[data-lom-element="radiobtn"]{
 		cursor:pointer;
+		margin-bottom:3px;
 		&[data-ra='ra']{
-			background-color:#eee;
+			//background-color:#eee; 
+			-webkit-box-shadow: 0px 0px 3px 1px rgba(0,119,0,1);
+			-moz-box-shadow: 0px 0px 3px 1px rgba(0,119,0,1);
+			box-shadow: 0px 0px 3px 1px rgba(0,119,0,1);
+			&:after{
+				content:'[Correct]';
+			}
+			input{
+				
+			}
+		}
+		&[data-ra='wa']{
+			&:after{
+				content:'[Incorrect] Click to set as Correct';
+			}
 		}
 		&:hover{
 			background-color:#f9f9f9;
 			
 		}
 	}
-	
+
+	.qs-right, .qs-wrong, .qs-generic{
+		form,&:after{
+		display:inline-block;
+		}}
+	.qs-right:after{content:'[This will appear on a correct answer]';}
+	.qs-wrong:after{content:'[This will appear on a wrong answer]';}
+	.qs-generic:after{content:'[This will appear on any answer]';}
+
 }
 
 .qs-elearning-activity{

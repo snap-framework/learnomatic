@@ -102,6 +102,7 @@ define([
 				this.isActivated=false;
 				this.refreshInfo();
 				this.storeValue();
+				this.parentElement.storeValue();
 				if(!this.isRogue){
 					this.parentElement.$el.removeClass("LOM-editing");
 				}
@@ -196,14 +197,7 @@ define([
 			}
 			return this.isModified;
 		},	
-		
-		/* ----
-		 * Load a clean version of the editBox
-		 */
-		loadClean:function(){
-			$("#"+this.id).html(this.newHtml);
-			
-		},
+
 		destroy:function(preserve){
 			
 			$("#"+this.id).remove();

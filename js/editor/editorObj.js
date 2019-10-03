@@ -228,7 +228,6 @@ define([
 		deactivateEditors : function(){
 			for(var i=0;i<this.edits.length;i++){
 				if (this.edits[i].isActivated){
-					this.edits[i].storeValue();
 					this.edits[i].deactivate();
 				}
 			}			
@@ -703,8 +702,8 @@ define([
 			var modifiedFlag=false;
 			var i;
 			//start by disabling the editors
-			this.deactivateEditors();
-			
+			this.deactivateEditors();	
+
 
 			//if there IS a layout... 
 			if(this.layout!==false){
@@ -712,7 +711,7 @@ define([
 				if(this.layout.isModified){
 					this.layout.loadClean();
 					modifiedFlag=true;
-				}				
+				}
 				//load clean frames html
 				for (i=0;i<this.layout.frames.length;i++){
 					if(this.layout.frames[i].isModified || this.layout.isModified){
@@ -721,16 +720,12 @@ define([
 						modifiedFlag=true;
 					}
 					this.layout.frames[i].cleanElements();
-				}			
+				}	
 			}
-			
+
 			//load Clean Editboxes
-			for (i=0;i<this.edits.length;i++){
-				if(this.edits[i].isModified || 
-				   modifiedFlag){
-					this.edits[i].loadClean();
-				}
-			}	
+			//this has already been done when we disabled them.
+
 			this.lastCleanBeforeSave();
 		},
 		
@@ -740,9 +735,7 @@ define([
 		 */
 		savePage: function(getTemplate) {
 			getTemplate=(typeof getTemplate !== "undefined")?getTemplate:false;
-
 			this.loadClean(); //reloads all the layouts, frames elements and edits
-			
 			//write the file and init WB back to life
 			this.writeFile(getTemplate);
 			if(this.layout!==false){
