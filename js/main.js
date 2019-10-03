@@ -1,4 +1,6 @@
+	"use strict";
 $("document").ready(function(){
+
 		$.post( "editor.php", { action: "getcourses", content:"" }, function(data){
 			generateCourses(JSON.parse(data));
 		} );
@@ -9,7 +11,7 @@ $("document").ready(function(){
 			
        		e.preventDefault();
 			//check if there's a file
-			if( document.getElementById("userfile").files.length == 0 ){
+			if( document.getElementById("userfile").files.length === 0 ){
     			alert("no files selected");
 			}else{
 				initFolder("Please enter a folder name", true);
@@ -23,18 +25,17 @@ $("document").ready(function(){
 	
 
 	function generateCourses(data){
-		var $el;
 		for (var i=0;i<data.length;i++){
-			if(data[i]!=="_default" && data[i]!=="_download"){
-				appendCourse(data[i])
+			if(data[i]!=="_default" && data[i]!=="_download" && data[i]!=="_system"){
+				appendCourse(data[i]);
 			}
 
 		}
 	}
 
 	function appendCourse(data){
-		$(".courselist").append("<li data-course='"+data+"'></li>")
-			$el=$(".courselist").children("li").eq($(".courselist").children("li").length-1);
+		$(".courselist").append("<li data-course='"+data+"'></li>");
+			var $el=$(".courselist").children("li").eq($(".courselist").children("li").length-1);
 			$el.append("<a href='courses/"+data+"/index_en.html'>"+data+"</a>");
 		
 
@@ -43,22 +44,21 @@ $("document").ready(function(){
 			$el.append("<button class='course-download ico-LOM-download snap-xs' lang='en' title='Download English'>Download English</button>");
 			$el.append("<button class='course-download ico-LOM-download snap-xs' lang='fr' title='Download French'>Download French</button>");
 
-		$el.children(".course-download").click(function(){downloadCourse($(this).parent().attr("data-course"), $(this).attr("lang"));})			
+		$el.children(".course-download").click(function(){downloadCourse($(this).parent().attr("data-course"), $(this).attr("lang"));});
 
 		
 		// DELETE
 		$el.append("<button class='course-delete ico-LOM-trash snap-xs' title='Delete'>X</button>");
-		$el.children(".course-delete").click(function(){deleteCourse($(this).parent().attr("data-course"));})			
+		$el.children(".course-delete").click(function(){deleteCourse($(this).parent().attr("data-course"));});	
 	}
 
 	function deleteCourse(course){
 		//deletecourse
 		$.post( "editor.php", { action: "deletecourse", content:"courses/"+course }, function(data){
 			if(data==="true"){
-				var $course=$("[data-course="+course+"]");
 				$("[data-course="+course+"]").remove();
 			}
-		})
+		});
 	}
 
 	function downloadCourse(course, lang){
@@ -68,7 +68,7 @@ $("document").ready(function(){
 			
 			//console.log(data);
 			startDownload(data);
-		})
+		});
 	}
 		
 	function startDownload(file){
@@ -79,7 +79,7 @@ $("document").ready(function(){
 			
 				//document.location=data;
 				console.log(data);
-			})
+			});
 
 		}, 10000);
 		
@@ -118,7 +118,7 @@ $("document").ready(function(){
 		}
 
 		if ($("[data-course='"+folder+"']").length>0){
-			return "Please use a unique folder name"
+			return "Please use a unique folder name";
 		}
 
 		return true;
@@ -141,7 +141,7 @@ $("document").ready(function(){
 		}
 		return true;
 
-	};
+	}
 		
 	function uploadCourse(obj){
 		
@@ -151,8 +151,8 @@ $("document").ready(function(){
 	function addCourse(folder){
 		
 		$.post( "editor.php", { action: "addcourses", content:folder }, function(data){
-
+			data=data;
 			appendCourse(folder, false);
-		})
+		});
 
 	}

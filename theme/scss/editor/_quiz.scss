@@ -3,7 +3,9 @@
 .LOM-pageEdit-active {
 
 	// little error messages
-	.qs-right, .qs-wrong, .qs-generic,.LOM-element[data-lom-element="radiobtn"][data-ra]{
+	.qs-right, .qs-wrong, .qs-generic, 
+	.LOM-element[data-lom-element="radiobtn"][data-ra='ra'],
+	.LOM-element[data-lom-element="radiobtn"]:not([data-ra='ra']){
 		&:after{
 				font-size:0.7em;
 				opacity:0.7;
@@ -60,9 +62,10 @@
 				
 			}
 		}
-		&[data-ra='wa']{
+		&:not([data-ra='ra']){
 			&:after{
 				content:'[Incorrect] Click to set as Correct';
+				
 			}
 		}
 		&:hover{

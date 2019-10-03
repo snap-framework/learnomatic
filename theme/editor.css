@@ -5838,12 +5838,14 @@ summary > form > .cke_editable, summary > form > .LOM-highlight-editables .LOM-e
 }
 
 /*----------------- QS -----------------------*/
-/* line 7, scss/editor/_quiz.scss */
-.LOM-pageEdit-active .qs-right:after, .LOM-pageEdit-active .qs-wrong:after, .LOM-pageEdit-active .qs-generic:after, .LOM-pageEdit-active .LOM-element[data-lom-element="radiobtn"][data-ra]:after {
+/* line 9, scss/editor/_quiz.scss */
+.LOM-pageEdit-active .qs-right:after, .LOM-pageEdit-active .qs-wrong:after, .LOM-pageEdit-active .qs-generic:after,
+.LOM-pageEdit-active .LOM-element[data-lom-element="radiobtn"][data-ra='ra']:after,
+.LOM-pageEdit-active .LOM-element[data-lom-element="radiobtn"]:not([data-ra='ra']):after {
   font-size: 0.7em;
   opacity: 0.7;
 }
-/* line 15, scss/editor/_quiz.scss */
+/* line 17, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .qs-elearning-activity,
 .LOM-pageEdit-active .qs-question,
 .LOM-pageEdit-active .qs-feedback,
@@ -5852,11 +5854,11 @@ summary > form > .cke_editable, summary > form > .LOM-highlight-editables .LOM-e
 .LOM-pageEdit-active .qs-generic {
   display: block !important;
 }
-/* line 23, scss/editor/_quiz.scss */
+/* line 25, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .qs-submit, .LOM-pageEdit-active .qs-continue {
   display: none;
 }
-/* line 27, scss/editor/_quiz.scss */
+/* line 29, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .ra:before {
   content: '';
   margin-top: -10px;
@@ -5865,90 +5867,90 @@ summary > form > .cke_editable, summary > form > .LOM-highlight-editables .LOM-e
   width: 35px;
   height: 35px;
 }
-/* line 34, scss/editor/_quiz.scss */
+/* line 36, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .qs-answers {
   clear: both;
   padding-left: 30px;
 }
-/* line 38, scss/editor/_quiz.scss */
+/* line 40, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .qs-answers .LOM-element {
   clear: both;
   width: 100%;
   padding-top: 7px;
   margin-bottom: 0px;
 }
-/* line 48, scss/editor/_quiz.scss */
+/* line 50, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .LOM-element[data-lom-element="radiobtn"] {
   cursor: pointer;
   margin-bottom: 3px;
 }
-/* line 51, scss/editor/_quiz.scss */
+/* line 53, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .LOM-element[data-lom-element="radiobtn"][data-ra='ra'] {
   -webkit-box-shadow: 0px 0px 3px 1px #007700;
   -moz-box-shadow: 0px 0px 3px 1px #007700;
   box-shadow: 0px 0px 3px 1px #007700;
 }
-/* line 56, scss/editor/_quiz.scss */
+/* line 58, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .LOM-element[data-lom-element="radiobtn"][data-ra='ra']:after {
   content: '[Correct]';
 }
-/* line 64, scss/editor/_quiz.scss */
-.LOM-pageEdit-active .LOM-element[data-lom-element="radiobtn"][data-ra='wa']:after {
+/* line 66, scss/editor/_quiz.scss */
+.LOM-pageEdit-active .LOM-element[data-lom-element="radiobtn"]:not([data-ra='ra']):after {
   content: '[Incorrect] Click to set as Correct';
 }
-/* line 68, scss/editor/_quiz.scss */
+/* line 71, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .LOM-element[data-lom-element="radiobtn"]:hover {
   background-color: #f9f9f9;
 }
-/* line 75, scss/editor/_quiz.scss */
+/* line 78, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .qs-right form, .LOM-pageEdit-active .qs-right:after, .LOM-pageEdit-active .qs-wrong form, .LOM-pageEdit-active .qs-wrong:after, .LOM-pageEdit-active .qs-generic form, .LOM-pageEdit-active .qs-generic:after {
   display: inline-block;
 }
-/* line 78, scss/editor/_quiz.scss */
+/* line 81, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .qs-right:after {
   content: '[This will appear on a correct answer]';
 }
-/* line 79, scss/editor/_quiz.scss */
+/* line 82, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .qs-wrong:after {
   content: '[This will appear on a wrong answer]';
 }
-/* line 80, scss/editor/_quiz.scss */
+/* line 83, scss/editor/_quiz.scss */
 .LOM-pageEdit-active .qs-generic:after {
   content: '[This will appear on any answer]';
 }
 
-/* line 84, scss/editor/_quiz.scss */
+/* line 87, scss/editor/_quiz.scss */
 .qs-elearning-activity {
   display: block !important;
 }
-/* line 87, scss/editor/_quiz.scss */
+/* line 90, scss/editor/_quiz.scss */
 .qs-elearning-activity h2 {
   margin-top: 10px;
   margin-left: 30px;
   margin-bottom: 20px;
 }
-/* line 93, scss/editor/_quiz.scss */
+/* line 96, scss/editor/_quiz.scss */
 .qs-elearning-activity .qs-exercise {
   margin-bottom: 100px;
 }
-/* line 96, scss/editor/_quiz.scss */
+/* line 99, scss/editor/_quiz.scss */
 .qs-elearning-activity .qs-answer {
   display: block;
 }
-/* line 98, scss/editor/_quiz.scss */
+/* line 101, scss/editor/_quiz.scss */
 .qs-elearning-activity .qs-answer .LOM-editable, .qs-elearning-activity .qs-answer form {
   display: inline-block;
 }
 
-/* line 103, scss/editor/_quiz.scss */
+/* line 106, scss/editor/_quiz.scss */
 .qs-answer {
   display: block;
 }
-/* line 105, scss/editor/_quiz.scss */
+/* line 108, scss/editor/_quiz.scss */
 .qs-answer .LOM-editable, .qs-answer form {
   display: inline-block;
 }
-/* line 106, scss/editor/_quiz.scss */
+/* line 109, scss/editor/_quiz.scss */
 .qs-answer input {
   display: inline-block;
 }

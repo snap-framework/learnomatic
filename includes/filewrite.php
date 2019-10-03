@@ -534,9 +534,9 @@ function checkSessions($received){
 	$json->users->$user=json_decode('{"page":"'.$page.'","timestamp":"'.time().'"}');
 		
 	//echo json_encode($json);
-	$received->filename="sessions.js";
+	$received->filename="courses/_system/sessions.js";
 	$received->content=json_encode($json);
-	$newFile=fopen("sessions.js", "w") or die("Unable to open file ");
+	$newFile=fopen("courses/_system/sessions.js", "w") or die("Unable to open file ");
 	fwrite($newFile, json_encode($json));
 	fclose($newFile);
 	
@@ -555,7 +555,7 @@ function closeSession($received){
 		$json=getSessions();
 	$json=updateSessions($json);
 	unset($json->users->$delete);
-	$newFile=fopen("sessions.js", "w") or die("Unable to open file ");
+	$newFile=fopen("courses/_system/sessions.js", "w") or die("Unable to open file ");
 	fwrite($newFile, json_encode($json));
 	fclose($newFile);
 }
@@ -569,7 +569,7 @@ function getUsers(){
 	
 }
 function getSessions(){
-	$json = file_get_contents('sessions.js');
+	$json = file_get_contents('courses/_system/sessions.js');
 	
 	$obj = json_decode($json);
 	return $obj;
