@@ -54,11 +54,9 @@ define([
 					case "activity":
 						newObj=new ElementActivityObj(options);
 						break;
-					/*
 					case "exam":
 						newObj=new ElementExamObj(options);
 						break;
-					*/
 					case "multiplechoice":
 						newObj=new ElementMultiplechoiceObj(options);
 						break;

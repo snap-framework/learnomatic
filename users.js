@@ -30,6 +30,24 @@
 			"password":"", 
 			"role":"manager"
 		},
+		"mlamontagne":{	
+			"name":"Myriam",
+			"lastname":"Lamontagne",
+			"password":"", 
+			"role":"manager"
+		},
+		"sbose":{	
+			"name":"Subir",
+			"lastname":"Bose",
+			"password":"", 
+			"role":"manager"
+		},
+		"cdaaboul":{	
+			"name":"Charles",
+			"lastname":"Daaboul",
+			"password":"", 
+			"role":"manager"
+		},
 		"admin_vtimbro":{	
 			"name":"Vincent",
 			"lastname":"Timbro",

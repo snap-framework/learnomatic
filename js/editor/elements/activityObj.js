@@ -81,6 +81,7 @@ define([
 		  this.$activite.children("h2").text(this.typeName);
 		  this.$activite.find(".yougot").text(this.labels.yougot);
 		  this.$activite.find(".qs-start").attr("value", this.labels.begin);
+		  this.$activite.children(".qs-exercise").attr("data-feedback-type", "none");
 
 	  },
 	  domActivity:function(){
