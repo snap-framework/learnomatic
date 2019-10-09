@@ -20,6 +20,12 @@ define(['utils','./../LOM_labels'], function (Utils, Labels) {
 					action:"things"
 				},
 				{
+					name:"savetemplate",
+					icon:"SNAP-save",
+					labels:Labels.tools.template,
+					action:"things"
+				},
+				{
 					name:"deletepage",
 					icon:"LOM-trash",
 					labels:Labels.tools.deletepage,

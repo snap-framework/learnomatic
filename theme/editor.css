@@ -4948,6 +4948,14 @@ html:not(.LOM-pageEdit-active) .LOM-delete-on-save, html:not(.LOM-pageEdit-activ
 }
 
 /*-------------------------------------------------------------------------
+//-------------------------------- reminder---------------------------
+-------------------------------------------------------------------------*/
+/* line 32, scss/editor/_pageedit.scss */
+.LOM-pageEdit-active .LOM-reminder {
+  background-color: #e5e5e5;
+}
+
+/*-------------------------------------------------------------------------
 //-------------------------------- DASHBOARD---------------------------
 -------------------------------------------------------------------------*/
 /* line 7, scss/editor/_dashboard.scss */
@@ -5857,7 +5865,7 @@ summary > form > .cke_editable, summary > form > .LOM-highlight-editables .LOM-e
   display: block !important;
 }
 /* line 27, scss/editor/_quiz.scss */
-.LOM-pageEdit-active .qs-submit, .LOM-pageEdit-active .qs-continue {
+.LOM-pageEdit-active .qs-submit, .LOM-pageEdit-active .qs-continue, .LOM-pageEdit-active .qs-start {
   display: none;
 }
 /* line 31, scss/editor/_quiz.scss */
@@ -5920,39 +5928,43 @@ summary > form > .cke_editable, summary > form > .LOM-highlight-editables .LOM-e
 .LOM-pageEdit-active .qs-generic:after {
   content: '[This will appear on any answer]';
 }
-
 /* line 89, scss/editor/_quiz.scss */
+.LOM-pageEdit-active [data-lom-subtype="exam"] .qs-feedback {
+  display: none !important;
+}
+
+/* line 95, scss/editor/_quiz.scss */
 .qs-elearning-activity {
   display: block !important;
 }
-/* line 92, scss/editor/_quiz.scss */
+/* line 98, scss/editor/_quiz.scss */
 .qs-elearning-activity h2 {
   margin-top: 10px;
   margin-left: 30px;
   margin-bottom: 20px;
 }
-/* line 98, scss/editor/_quiz.scss */
+/* line 104, scss/editor/_quiz.scss */
 .qs-elearning-activity .qs-exercise {
   margin-bottom: 100px;
 }
-/* line 101, scss/editor/_quiz.scss */
+/* line 107, scss/editor/_quiz.scss */
 .qs-elearning-activity .qs-answer {
   display: block;
 }
-/* line 103, scss/editor/_quiz.scss */
+/* line 109, scss/editor/_quiz.scss */
 .qs-elearning-activity .qs-answer .LOM-editable, .qs-elearning-activity .qs-answer form {
   display: inline-block;
 }
 
-/* line 108, scss/editor/_quiz.scss */
+/* line 114, scss/editor/_quiz.scss */
 .qs-answer {
   display: block;
 }
-/* line 110, scss/editor/_quiz.scss */
+/* line 116, scss/editor/_quiz.scss */
 .qs-answer .LOM-editable, .qs-answer form {
   display: inline-block;
 }
-/* line 111, scss/editor/_quiz.scss */
+/* line 117, scss/editor/_quiz.scss */
 .qs-answer input {
   display: inline-block;
 }

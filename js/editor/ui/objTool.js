@@ -75,6 +75,9 @@ define([
 				case "deletepage":
 					this.editor.deletePage();
 					break;
+				case "savetemplate":
+					this.editor.saveTemplate();
+					break;
 				case "globalview":
 					this.editor.structure.initGlobalView();
 					break;

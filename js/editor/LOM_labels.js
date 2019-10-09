@@ -255,6 +255,25 @@ define(['utils'], function (Utils) {
 			}
 			
 			
+		},
+		interface:{
+			prompts:{
+				getfilename:(Utils.lang === "en")?
+					"Please enter the Template Name":
+					"Veuillez entrer le nom du gabarit",
+				invalidChar:(Utils.lang === "en")?
+					"Invalid character":
+					"Caractère invalide",
+				enterValid:(Utils.lang === "en")?
+					"Please enter a valid character.":
+					"Veuillez entrer un caractère valide.",
+				noEmpty:(Utils.lang === "en")?
+					"You cannot leave this answer empty.":
+					"Vous ne pouvez pas laisser une réponse vide.",
+				resetTextValue:(Utils.lang === "en")?
+					"Do you want to reset the text values?11#":
+					"Est-ce que vous souhaitez réinitialiser les valeurs des textes?"
+			}
 		}
 	};
 

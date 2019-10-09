@@ -24,7 +24,7 @@
 	.qs-generic{
 		display:block!important;
 	}	
-	.qs-submit,.qs-continue{
+	.qs-submit,.qs-continue,.qs-start{
 		display:none;
 	}
 	.ra{
@@ -84,6 +84,12 @@
 	.qs-wrong:after{content:'[This will appear on a wrong answer]';}
 	.qs-generic:after{content:'[This will appear on any answer]';}
 
+	//will return once the final feedback is fixed
+	[data-lom-subtype="exam"]{
+		.qs-feedback{
+			display:none!important;
+		}
+	}
 }
 
 .qs-elearning-activity{

@@ -64,7 +64,10 @@ define([
 						newObj=new ElementRadiobtnObj(options);
 						break;
 					case "checkbox":
-						newObj=new ElementCheckboxObj(options);
+						options.type="radiobtn";
+						options.params={"subtype": "checkbox"};		
+						//console.log(params)
+						newObj=new ElementRadiobtnObj(options);
 						break;
 					default:
 						//default

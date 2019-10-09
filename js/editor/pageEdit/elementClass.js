@@ -134,7 +134,6 @@ define([
 ---------------------------------------------------------------------------------------------*/			   
 	   getParams:function(options){
 		   if(typeof options.params !== "undefined"){
-			   
 			   this.subtype=(typeof options.params.subtype !== "undefined")?options.params.subtype:null;
 			  
 		   }

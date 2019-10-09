@@ -9,8 +9,14 @@ define([
 		initialize: function(options) {
 			
 			this.options=options;
-			this.autoLoaded=["radiobtn", "radiobtn", "radiobtn"];
-			this.autoAddElement="radiobtn";
+			//console.log(this.subtype);
+			if(this.subtype==="multipleanswers"){
+				this.autoLoaded=["checkbox", "checkbox", "checkbox"];
+				this.autoAddElement="checkbox";
+			}else{
+				this.autoLoaded=["radiobtn", "radiobtn", "radiobtn"];
+				this.autoAddElement="radiobtn";
+			}
 			this.autoAddButton=false;
 		},
 
@@ -25,6 +31,9 @@ define([
 	   initDom:function(){
 		   var $ex;
 		   $ex=this.$el.find(".qs-question").attr("id", "act_"+this.id);
+		   if(this.subtype==="multipleanswers"){
+			   this.$el.find(".qs-question").attr("data-question-type", "type-2");
+		   }
 	   },		
 		
 		
@@ -45,9 +54,9 @@ define([
 			return params;
 			
 		},		
-	   initializeConfigFiles:function(params){
+	   /*initializeConfigFiles:function(params){
 		   this.getQuestionList(params);
-	   },	
+	   },*/	
 	   submitCustomConfig:function(params){
    			this.submitCorrectAnswer($("#"+params.lbx.targetId).find("input[name=ra]:checked").attr("data-id"));
 		   
@@ -55,7 +64,7 @@ define([
 	   },
 		
 		//---------------------CORRECT ANSWER---------------------------
-
+/*
 		getQuestionList:function(params){
 			this.connectDom();
 		   var $target=$("#"+params.lbx.targetId);
@@ -70,7 +79,7 @@ define([
 				if(isRight){$target.find("[data-id='"+radio.id+"']").prop("checked", true);}
 			}
 			
-		},
+		},*/
 		submitCorrectAnswer:function(answerId){
 			
 			var $radio;

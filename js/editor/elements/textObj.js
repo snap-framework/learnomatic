@@ -24,7 +24,7 @@ define([
 	   },
 		
 	   initDom:function(){
-		   if(this.$el.find("h1").length>0){
+		   if(this.$el.find("h1").length>0 && this.subtype === "title"){
 		   	this.permissions.editButtons.delete=false;
 		   }
 		   return false;

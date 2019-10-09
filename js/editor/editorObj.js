@@ -4,6 +4,7 @@ define([
 	'labels',
 	'settings-core',
 	'utils',
+	'./helpers/LOM-utils',
 	'modules/BaseModule',
 	'./ui/ui-manager',
 	'./settings/settings-manager',
@@ -18,7 +19,7 @@ define([
 	'./../plugins/jquery-ui/ui/widgets/sortable'
 	
 	
-], function($,labels, CoreSettings, Utils, BaseModule, UImanager,SettingsManager, LOMLabels, LOMButtons,  CKEDITOR,  EditBoxObj, LayoutObj, ElementObj,RolesManager, Structure, Sortable) {
+], function($,labels, CoreSettings, Utils, LOMUtils, BaseModule, UImanager,SettingsManager, LOMLabels, LOMButtons,  CKEDITOR,  EditBoxObj, LayoutObj, ElementObj,RolesManager, Structure, Sortable) {
 	'use strict';
 
 	return BaseModule.extend({
@@ -269,6 +270,9 @@ define([
 				$(".LOM-scratch").click(function() {
 				  that.blankPage();
 				});
+				$(".LOM-template").click(function() {
+				  that.popTemplatePicker();
+				});
 			});
 			
 		},
@@ -303,6 +307,10 @@ define([
 			
 			$( document ).trigger( "open.wb-lbx", [[{src: "../../templates/LOM-Layouts/layout_picker.html",type: "ajax"}]]);
 		},
+		popTemplatePicker:function(){
+			
+			$( document ).trigger( "open.wb-lbx", [[{src: "../../templates/LOM-Layouts/template_picker.html",type: "ajax"}]]);
+		},
 		loadLayoutList:function(){
 			var defaultFolder="../../templates/LOM-Layouts/";
 			var customFolder="content/templates/layouts/";
@@ -329,6 +337,58 @@ define([
 			});					
 			
 		},
+		loadTemplateList:function(){
+			$("#templatepicker").prepend("<section id='LOM_language_template'></section>");
+			var customFolder="content/templates/pages/";
+			var that=this;
+			$.post('../../editor.php', { action:"readfolder", filename: 'courses/'+this.courseFolder+'/'+customFolder, regex:"/^.*\.(html|htm)$/i" }, function(data){
+				//parse the jSON
+				if(data !== "false" && typeof data !=="undefined" && data!==""){
+					that.loadCustomPages(data.slice(0, -1), customFolder);
+				}
+
+				
+
+			}).fail(function() {
+				alert( "Posting failed." );
+			});
+			var targetPath=this.master.currentSub.pagePath();
+			if(Utils.lang ==="fr"){
+				targetPath=targetPath.replace("_fr", "_en");
+			}else{
+				targetPath=targetPath.replace("_en", "_fr");
+			}
+
+			
+			$.ajax({
+				
+					url:targetPath,
+					error: function()
+					{
+					   //alert('file does not exists');
+					},
+					success: function(data)
+					{
+						//alert('file exists');
+						var $holder=$("#LOM_language_template");
+						$holder.append("<h3>Default Page Templates</h3>");
+						var otherlang=(Utils.lang ==="fr")?"english":"french";
+
+						
+						var title = $($.parseHTML(data)).find('h1').children(".LOM-editable").text();
+
+						
+						$holder.append("<button class=\"snap-lg ico-LOM-language-template\" data-id=\"\">Load "+otherlang+" version: \""+title+"\"</button>");
+						
+						$holder.find(".ico-LOM-language-template").click(function(){
+							
+							$(CoreSettings.contentContainer).html(data);
+							that.finishLoadingPageTemplate();
+						});
+					}
+				});
+			
+		},
 		loadChosenLayout:function(filename){
 		    //maybe I need to save content?
 			this.layout.change(filename);
@@ -353,7 +413,113 @@ define([
 			});
 			
 
-		},		
+		},	
+		loadCustomPages:function(pages, folder){
+			var that=this;
+			var aPages=pages.split(",");
+			$("#templatepicker").append("<section id='LOM_custom_templates'></section>");
+			var $holder=$("#LOM_custom_templates");
+			$holder.append("<h3>Saved Page  Templates</h3>");
+			
+			for (var i=0;i<aPages.length;i++){
+				//
+				$holder.append("<button class=\"snap-lg ico-LOM-custom\" data-id=\""+aPages[i]+"\">"+aPages[i]+"</button>");
+			}
+			$holder.find(".ico-LOM-custom").click(function(){
+				that.loadChosenPage(folder+$(this).attr("data-id"));
+				});
+			
+
+		},	
+		loadChosenPage:function(filename){
+			var that=this;
+		    //maybe I need to save content?
+			$(CoreSettings.contentContainer).load(filename, 
+			function (responseText, textStatus) {
+				if (textStatus === "success") {
+					that.finishLoadingPageTemplate();
+
+				}
+				if (textStatus === "error") {
+					 // oh noes!
+				}
+			});
+			//close the popper
+			
+
+		},	
+		finishLoadingPageTemplate:function(){
+			$.magnificPopup.close();
+			this.resetPageTextValues();
+			this.pageLoaded();
+			this.savePage();
+			this.ui.modes[1].activate(); //select ? 
+			
+		},
+		resetPageTextValues:function(){
+			var that=this;
+			var resetText=this.labels.interface.prompts.resetTextValue;
+			
+			if(confirm(resetText)){
+				
+				$(CoreSettings.contentContainer).find(".LOM-editable").each(function() {
+					var lorem;
+					var $parentElement=$(this).closest(".LOM-element");
+					var elementType=$parentElement.attr("data-lom-element");
+					switch (elementType){
+						case "details":
+
+							lorem = "[ACCORDION TITLE]";
+							break;
+						case "radiobtn":
+
+							lorem = "[Option xxxx]";
+							break;
+						case "multiplechoice":
+							console.log($(this).closest("legend").length);
+							
+							
+							if($(this).closest("legend").length>0){
+								//this is a question text
+								lorem=(Utils.lang==="fr")?"[Insérer le texte de question]":"[Insert Question Text]";
+							}
+							if($(this).closest(".qs-right").length>0){
+								//this is a bad feedback
+								lorem=(Utils.lang==="fr")?"<p>Bonne réponse.</p>":"<p>Correct.</p>";
+							}
+							if($(this).closest(".qs-wrong").length>0){
+								//this is a bad feedback
+								lorem=(Utils.lang==="fr")?"<p>Mauvaise réponse.</p>":"<p>Incorrect.</p>";
+							}
+							if($(this).closest(".qs-generic").length>0){
+								//this is a bad feedback
+								lorem=(Utils.lang==="fr")?"<p>Rétroaction générique</p><p>Passez à la prochaine question.</p>":"<p>Generic feedback</p><p>Next Question.</p>";
+							}
+							if($(this).closest(".qs-start-activity").length>0){
+								//this is a bad feedback
+								lorem=(Utils.lang==="fr")?"<p>Instructions... la note de passage est 70%.</p>":"<p>Instructions ... Passing mark is 70%</p>";
+							}
+							
+							break;
+						case "text":
+									   
+							lorem=that.lorem(1, true, true);
+							//page title
+							if ($parentElement.attr("data-lom-subtype") ==="title"){
+								lorem=that.master.currentSub.title;
+							}
+							break;
+						default :
+							lorem=$(this).html();
+									   }
+					$(this).html(lorem);
+				  
+				});
+					
+					
+					
+			}
+		},
 		
 /*---------------------------------------------------------------------------------------------
 		-------------------------UTILS
@@ -392,8 +558,11 @@ define([
 		/*
 		 * @returns qty lines of LOREM IPSUM
 		 */				
-		lorem: function(qty){
-			var endString="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
+		lorem: function(qty, pTag, reminder){
+			var endString="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+			//add a p Tag. add a reminder
+			var pTagHtml=(reminder)?"<p class='LOM-reminder'>":"<p>";
+			endString=(pTag)?pTagHtml+endString+"</p>":endString;
 			qty=(typeof qty === "undefined")?1:qty;
 			if(qty>1){
 				endString+="\n"+this.lorem(qty-1);
@@ -644,18 +813,17 @@ define([
 /*---------------------------------------------------------------------------------------------
 		-------------------------PAGE TEMPLATES
 ---------------------------------------------------------------------------------------------*/	
-		getTemplate:function(){
-			
-			var person = prompt("Please enter the Template Name", this.parent.currentSub.sPosition+"_"+$("html").attr("lang"));
+	    saveTemplate:function(){
+			var filename = LOMUtils.promptFilename(this.labels.interface.prompts.getfilename, this.parent.currentSub.sPosition+"_"+Utils.lang);
 			//sending "something" to savepage gives it that extra templat-ey feel
-			this.savePage(person);
+			if (filename !== false){
+
+				this.savePage(filename);
+			}
 							   
 		},
-		cleanTemplate:function(){
-			
-		},
 		
-		
+
 /*---------------------------------------------------------------------------------------------
 		-------------------------CLEANUP AND SAVE
 ---------------------------------------------------------------------------------------------*/	
@@ -755,28 +923,27 @@ define([
 			
 			
 			//var bkp=content;
-			if(getTemplate!== false){
-				/*
-				$(".LOM-editable").text("template text");
-				$("h1").children(".LOM-editable").text(getTemplate);
+			if(typeof getTemplate !== "undefined" && getTemplate!==false && getTemplate!=="false" && getTemplate!==null){
 				
 				content=$(CoreSettings.contentContainer).html();
-				
-				filename="LOM/templates/"+this.parent.currentSub.sPosition+"_"+$("html").attr("lang")+".html";
-				*/
+				this.originalHtml=content;
+				this.updateHtml("content/templates/pages/"+getTemplate+".html");
+			}else{
+				this.originalHtml=content;
+				this.updateHtml();
 			}
-			this.originalHtml=content;
-			this.updateHtml(content);
+			
+			
 
 		},
-		updateHtml:function(){
+		updateHtml:function(templatefilename){
 			var that=this;
 			var content=this.originalHtml;
-			var filename=this.parent.currentSub.pagePath();
+			var filename=(typeof templatefilename === "undefined")?this.parent.currentSub.pagePath():templatefilename;
 			
 			this.roles.checkSessions();
 			
-			console.log("-----------save--------------"+filename);
+			console.log("-----------save--------------");
 			$.post('../../editor.php', { action:"page", filename: "courses/"+this.courseFolder+"/"+filename, content: content }, function(data){
 					//$(CoreSettings.contentContainer).html(bkp);
 					//parse the jSON
@@ -796,6 +963,7 @@ define([
 				var filename=this.parent.currentSub.pagePath();
 				var content="";
 				$.post('../../editor.php', { action:"delete", filename: "courses/"+this.courseFolder+"/"+filename, content: content }, function(data){
+					data=data;
 
 					//console.log(data);
 

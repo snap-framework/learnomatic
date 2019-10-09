@@ -20,7 +20,6 @@ define([
 		   
 	   },
 	   postCleanup:function(){
-		   console.log(this.$el);
 		   this.$el.children("details").children("summary").removeClass("wb-details-inited");
 		   //var $radio=this.$el.children("input");
 		   //$radio.removeAttr("disabled");
