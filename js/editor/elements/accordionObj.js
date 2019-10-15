@@ -21,8 +21,27 @@ define([
 		   this.storeElementsValues();
 	   },
 
+		initDom:function(){
+			if (this.subtype ==="tabs"){
+				this.$el.removeClass("wb-tabs");
+			}
+		},
 		
-		
+	   removeBeforeSave:function(){
+		   this.$el.children(".LOM-delete-on-save").remove();
+			if (this.subtype ==="tabs"){
+				this.$el.addClass("wb-tabs");
+			}
+		   
+		   
+	   },
+	   afterLoad:function(){
+		   
+			if (this.subtype ==="tabs"){
+				this.$el.removeClass("wb-tabs");
+			}
+		   return false;
+	   },
 		//-------------------------
 		doSomething:function(){
 			

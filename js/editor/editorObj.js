@@ -30,7 +30,10 @@ define([
 			this.courseFolder=options.courseFolder;
 			
 			this.isPage404=null;
-			this.originalHtml=$(CoreSettings.contentContainer).html();
+			$.get(this.master.currentSub.pagePath(), function( data) {
+				// my_var contains whatever that request returned
+				that.originalHtml=data;
+			});
 			
 			this.expertMode=null;
 			
@@ -942,7 +945,7 @@ define([
 			var filename=(typeof templatefilename === "undefined")?this.parent.currentSub.pagePath():templatefilename;
 			
 			this.roles.checkSessions();
-			
+			this.originalHtml=content;
 			console.log("-----------save--------------");
 			$.post('../../editor.php', { action:"page", filename: "courses/"+this.courseFolder+"/"+filename, content: content }, function(data){
 					//$(CoreSettings.contentContainer).html(bkp);

@@ -103,6 +103,14 @@ define(['utils'], function (Utils) {
 				move:(Utils.lang === "en")?
 					"Move Element":
 					"Déplacer Élément"
+			},
+			default: {
+				details:(Utils.lang === "en")?
+					"[Accordion]":
+					"[Accordéon]",
+				tabs:(Utils.lang ==="en")?
+					"[Tab]":
+					"[Onglet]"
 			}
 		},
 		page404:{

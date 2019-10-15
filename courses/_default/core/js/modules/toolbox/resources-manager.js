@@ -284,7 +284,7 @@ define([
 		-------------------------WIDGETS // CSPS-REPLACE
 ---------------------------------------------------------------------------------------------*/			
 		initSnippets:function(){
-			var $snippet=this.$data.children("[id]");
+			var $snippet=this.$data.find("[id]");
 			var id;
 			for (var snippet=0;snippet<$snippet.length;snippet++){
 				id=$snippet.eq(snippet).attr("id");

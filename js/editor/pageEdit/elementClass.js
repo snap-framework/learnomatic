@@ -242,9 +242,13 @@ define([
 			   
 			   this.refreshInfo();
 			   this.connectDom();
+			   this.firstInitCustom();
 			   this.creationMode="existing";
 		   }
 		   this.storeValue();
+	   },
+	   firstInitCustom:function(){
+		   return false;
 	   },
 /*---------------------------------------------------------------------------------------------
 -------------------------DOM attach and set
@@ -412,7 +416,9 @@ define([
 		   this.$el.children(".LOM-delete-on-save").remove();
 		   
 	   },
-   
+	   beforeUpdate:function(){
+		   return false;
+	   },
 	   
 /*---------------------------------------------------------------------------------------------
 -------------------------EDIT BAR
