@@ -26,16 +26,13 @@ define([
 				this.$el.removeClass("wb-tabs");
 			}
 		},
-		
-	   removeBeforeSave:function(){
-		   this.$el.children(".LOM-delete-on-save").remove();
+
+		customRemoveBeforeSave:function(){
 			if (this.subtype ==="tabs"){
 				this.$el.addClass("wb-tabs");
-			}
-		   
-		   
-	   },
-	   afterLoad:function(){
+			}			
+		},
+	   customAfterLoad:function(){
 		   
 			if (this.subtype ==="tabs"){
 				this.$el.removeClass("wb-tabs");

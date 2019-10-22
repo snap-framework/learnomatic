@@ -87,7 +87,7 @@ define([
 
 			this.storeValue();
 		},
-		afterLoad:function(){
+		customAfterLoad:function(){
 			this.setRadioClick();
 		},
 		

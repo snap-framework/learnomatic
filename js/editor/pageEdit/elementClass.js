@@ -117,7 +117,8 @@ define([
 				   exam : false,
 				   multiplechoice : false,
 				   radiobtn : false,
-				   checkbox : false
+				   checkbox : false,
+				   lightbox : false
 			   },
 			   sortable:true,
 			   functionalities:{
@@ -406,16 +407,23 @@ define([
 				this.addSortable();
 			}	
 
-		   this.afterLoad();
+		   this.customAfterLoad();
 
 	   },
-	   afterLoad:function(){
+	   customAfterLoad:function(){
 		   return false;
 	   },
 	   removeBeforeSave:function(){
+		   for (var i=0;i<this.elements.length;i++){
+			   this.elements[i].removeBeforeSave();
+		   }
 		   this.$el.children(".LOM-delete-on-save").remove();
-		   
+		   this.customRemoveBeforeSave();
 	   },
+	   customRemoveBeforeSave:function(){
+		   return false;
+	   },
+	   //this might not be used anymore
 	   beforeUpdate:function(){
 		   return false;
 	   },
@@ -715,8 +723,9 @@ define([
 		   }
 		   this.submitCustomConfig(params);
 		   this.storeValue();
-		   this.editor.savePage();
 		   this.closeLbx();
+		   this.editor.savePage();
+		   
 	   },
    		
 	   submitCustomConfig:function(params){

@@ -13,8 +13,9 @@ define([
 	'./../elements/examObj',
 	'./../elements/multiplechoiceObj',
 	'./../elements/radiobtnObj',
-	'./../elements/checkboxObj'
-], function($, CoreSettings, BaseClass, ElementTextObj,ElementImageObj,ElementCustomObj,ElementAccordionObj,ElementDetailsObj, ElementActivityObj, ElementExamObj, ElementMultiplechoiceObj, ElementRadiobtnObj, ElementCheckboxObj) {
+	'./../elements/checkboxObj',
+	'./../elements/lightboxObj'
+], function($, CoreSettings, BaseClass, ElementTextObj,ElementImageObj,ElementCustomObj,ElementAccordionObj,ElementDetailsObj, ElementActivityObj, ElementExamObj, ElementMultiplechoiceObj, ElementRadiobtnObj, ElementCheckboxObj, ElementLightboxObj) {
 	'use strict';
 	return BaseClass.extend({
 		initialize: function(options) {
@@ -68,6 +69,9 @@ define([
 						options.params={"subtype": "checkbox"};		
 						//console.log(params)
 						newObj=new ElementRadiobtnObj(options);
+						break;
+					case "lightbox":
+						newObj=new ElementLightboxObj(options);						
 						break;
 					default:
 						//default

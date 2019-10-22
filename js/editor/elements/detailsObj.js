@@ -18,14 +18,15 @@ define([
 		   
 		   
 		   
-	   },
-	   postCleanup:function(){
-		   this.$el.children("details").children("summary").removeClass("wb-details-inited");
-		   
+	   },	
+
+	   customRemoveBeforeSave:function(){
+		   this.$el.children("summary").removeClass("wb-details-inited");
+		   return false;
 	   },		
 	   initDom:function(){
 
-		   this.$el.children("details").removeAttr("open");
+		   this.$el.removeAttr("open");
 		   return false;
 	   },		
 	   connectDom:function(){

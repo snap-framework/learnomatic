@@ -261,6 +261,25 @@ details:hover, .LOM-frame:hover, *:focus{
 	}
 }
 
+#LOM-clickable-action{
+
+	&[data-action-type='navigate'] option:not(.LOM-action-navigate){display:none;}
+	&[data-action-type='lightbox'] option:not(.LOM-action-lightbox){display:none;}
+}
 
 
+.LOM-pageEdit-active .LOM-element[data-lom-element='lightbox']{
+	.mfp-hide{display:block!important;}
+	.LOM-popup-ID{
+		position: absolute;
+		right: 0px;
+		border: 1px #e1e1e1 solid;
+		border-radius: 5px;
+		background-color: white;
+		padding: 12px;
+		&:before{
+			content:'Lightbox ID: ';
+		}
+	}
+}
 

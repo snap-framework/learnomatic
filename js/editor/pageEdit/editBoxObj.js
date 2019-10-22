@@ -51,7 +51,32 @@ define([
 			return CKEDITOR.instances[this.id].getData();
 		},
 		
+		saveUpdate:function(){
+			var value=this.getValue();
+			var $editBoxContent=$($.parseHTML(this.getValue()));
+			//are there any calls to lightboxes here?
+			if($editBoxContent.find("a[href*=_lbx]").length>0){
 
+				value=this.updateLightbox($editBoxContent);
+				//update value!
+				
+			}
+
+		   
+			
+			
+			var oldHtml=this.editor.originalHtml;
+			$(CoreSettings.contentContainer).after("<div id='LOM-temp'></div>");
+			$("#LOM-temp").hide().append(oldHtml);
+			var $edit=$("#LOM-temp").find("#"+this.id);
+			
+			$edit.html(value);
+
+			this.editor.originalHtml=$("#LOM-temp").html();
+			$("#LOM-temp").remove();
+			this.editor.updateHtml();
+		   return false;
+		},
 /*---------------------------------------------------------------------------------------------
 		-------------------------LAUNCH CKE
 ---------------------------------------------------------------------------------------------*/	
@@ -64,7 +89,6 @@ define([
 				this.initCKE();
 				this.isActivated=true;
 				this.refreshInfo();//why twice??
-
 				this.$el.next().change(function (e) {
 					that.keyPress(e); 
 					
@@ -125,20 +149,8 @@ define([
 		focusOut:function(event){
 			event=event;
 			//var currentValue
-			var oldHtml=this.editor.originalHtml;
-			$(CoreSettings.contentContainer).after("<div id='LOM-temp'></div>");
-			$("#LOM-temp").hide().append(oldHtml);
-			var $edit=$("#LOM-temp").find("#"+this.id);
-			
-			$edit.html(this.getValue());
+			this.saveUpdate();
 
-			this.editor.originalHtml=$("#LOM-temp").html();
-			$("#LOM-temp").remove();
-			this.editor.updateHtml();
-			if(this.parentElement.type==="text"){
-				//might need to tweak this for custom buttons
-				//this.parentElement.autoEdit();
-			}
 			
 			
 		},
@@ -214,6 +226,20 @@ define([
 			this.newHtml=null;
 			this.config=null;
 			
+		},
+		updateLightbox:function($content){
+			var $lbxList=$content.find("a[href*='_lbx']");
+			var $lbx;
+			for (var i=0;i<$lbxList.length;i++){
+				$lbx=$lbxList.eq(i);
+				if($($lbx.attr("href")).length>0){
+					$lbx.addClass("wb-lbx").removeClass("wb-lbx-inited");
+					//console.log(this.$el);
+					//this.$el.next().find("a[href*='_lbx']").addClass("wb-lbx-inited")
+				}
+			}
+
+			return $content.html();
 		},
 
 /*---------------------------------------------------------------------------------------------

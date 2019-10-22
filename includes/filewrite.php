@@ -79,20 +79,30 @@ function dispatcher($json){
 
 //open the file, validate it and return the object
 function prepareFile($filename){
+	
 	$folder=substr($filename, 0,strrpos($filename, '/'));
-	 //echo "<br>".substr($filename, $start);
-	mkdir($folder);
+	createFolders($filename);
 	$newFile=fopen($filename, "w") or die("Unable to open file ");
+
 	return $newFile;
 	
 }
 
-
+function createFolders($path){
+	//$path=str_replace("world","Peter",$path);
+	$cumulative="courses";
+	$aFolder=explode("/",$path);
+	foreach($aFolder as $folder ) {
+		if (strpos($folder, '.') <= 0 && $folder !=="courses") {		
+			checkFolder($cumulative."/", $folder);
+			$cumulative=$cumulative."/".$folder;
+		}
+	}	
+}
 
 //this is to rewrite an entire page
 function fullWrite($received){
 	//prepare the file
-	echo $received->filename;
 	$page=prepareFile($received->filename);
 	fwrite($page, $received->content);
 	fclose($page);

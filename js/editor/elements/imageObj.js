@@ -23,10 +23,25 @@ define([
 		   var that=this;
 		   this.$el=$("#"+this.id);
 		   this.$holder=this.getHolder();
-		   
-			this.$el.children("img").click(function(){
+			this.$el.find("img").click(function(){
 				that.configClicked();
 			});
+	   },
+		customRemoveBeforeSave:function(){
+			if (this.$el.children().is("a")){
+				var $link=this.$el.children("a[data-lom-lbx");
+				$link.removeClass("wb-lbx-inited");
+				$link.addClass("wb-lbx");
+				
+			}			
+		},
+	   customAfterLoad:function(){
+		   if (this.$el.children().is("a")){
+				var $link=this.$el.children("a[data-lom-lbx]");
+				$link.removeClass("wb-lbx");
+				
+			}			   
+		   return false;
 	   },		
 /*---------------------------------------------------------------------------------------------
 -------------------------CONFIGURATION
@@ -54,6 +69,8 @@ define([
 				//parse the jSON
 				//console.log(data);
 				that.loadGallery(data, params);
+
+				that.configClickable();
 				
 
 			}).fail(function() {
@@ -143,13 +160,13 @@ define([
 			});
 			$(".LOM-img-btn").dblclick(function(){
 				var newSrc=$(this).find("img").attr("src");
-				that.changeImage(newSrc)
+				that.changeImage(newSrc);
 			});
 			
 		},
 		
 		changeImage:function(filename){
-				this.$el.children("img").attr("src", filename);
+				this.$el.find("img").attr("src", filename);
 				   this.storeValue();
 				   this.editor.savePage();
 				   this.closeLbx();
@@ -158,7 +175,7 @@ define([
 		
 		createUpload:function($container){
 			var that=this;
-			$container.append("<h3>Upload Image</h3>")
+			$container.append("<h3>Upload Image</h3>");
 			$container.append("<label>Select image(max 500kb file size) <input type='file' name='file' id='file' /></label><span id='uploaded_image'></span>");
 			$container.append("<button class='snap-sm ico-LOM-upload'>Upload</button");
 			//$container.append(" <input type='hidden' id='info' name='info' value='upload_image'>");
@@ -189,7 +206,7 @@ define([
 							cache:false,
 							processData:false,
 							beforeSend:function(){
-								$("#uploaded_image").html("Image Uploading ... ")
+								$("#uploaded_image").html("Image Uploading ... ");
 							},
 							success:function(data){
 								
@@ -206,13 +223,126 @@ define([
 							}
 							
 							
-						})
+						});
 					}
 					
 					
 					
 				}
 			});
+			
+		},
+/*---------------------------------------------------------------------------------------------
+-------------------------CLICKABLE
+---------------------------------------------------------------------------------------------*/			
+
+		configClickable:function(){
+			var that=this;
+			var $body=$("#custom_lbx");
+			$body.append("<div id='LOM-clickable-action-container'></div>");
+			var $action=$("#LOM-clickable-action-container");
+			$action.append("<h3>Clickable Actions</h3>");
+			$action.append("<label>Action type: <select id='LOM-clickable-action-type' class='LOM-action-type'></select></label>");
+			$action.append("&nbsp;<label>Action: <select id='LOM-clickable-action' class='LOM-action'></select></label>");
+			
+			var $actionType=$("#LOM-clickable-action-type");
+			var $actionSelect=$("#LOM-clickable-action");
+			$actionSelect.hide();
+			$actionType.append("<option value='null'>No action</option>");
+			$actionSelect.append("<option value='null' class='LOM-action-null'>n/a</option>");
+			var i=0;
+			
+			//LIGHTBOXES
+			var listLightbox=this.editor.getElementsByType("lightbox");
+			if(listLightbox.length>0){
+				$actionType.append("<option value='lightbox'>Lightbox to open :</option>");
+
+				for(i=0;i<listLightbox.length;i++){
+					var lbxId=listLightbox[i].id+"_lbx";
+					$actionSelect.append("<option class='LOM-action-lightbox' value='"+lbxId+"'>Lightbox ID "+lbxId+"</option>");
+				}
+			}
+			
+			/*
+			//NAVIGATE
+			$actionType.append("<option value='navigate'>Navigate to:</option>");
+			for (i=0;i<this.editor.master.flatList.length;i++){
+				var navId=this.editor.master.flatList[i].sPosition;
+				var navTitle=this.editor.master.flatList[i].title;
+				$actionSelect.append("<option class='LOM-action-navigate' value=\""+navId+"\">Navigate to "+navTitle+"</option>");				
+			}
+			*/
+			
+			$actionType.change(function() {
+				$actionSelect.attr("data-action-type", this.value);
+				var $first=$actionSelect.children(".LOM-action-"+this.value).eq(0);
+				$actionSelect.val($first.val());
+				if(this.value==="null"){
+					$actionSelect.hide();
+				}else{
+					$actionSelect.show();
+				}
+				that.adjustAction($actionSelect);
+
+
+			});
+			$actionSelect.change(function() {
+				that.adjustAction($(this));
+			});
+			this.actionPreset($actionType, $actionSelect);
+			
+		},
+		adjustAction:function($action){
+			this.connectDom();
+			var $img=this.$el.find("img").eq(0);
+			var type=$action.attr("data-action-type");
+			if($img.parent().is("a")){
+				$img.unwrap();
+			}
+			switch(type){
+				case "null":
+					//unwrap
+
+					break;
+				case "lightbox":
+					//wrap
+					if(!$img.parent().is("a")){
+						$img.wrap("<a href='#"+$action.val()+"' data-lom-lbx='wb-lbx' onclick='return false;'></a>");
+
+					}else{
+						$img.parent("a").attr("data-lom-lbx", "wb-lbx");
+					}
+					break;
+				case "navigate":
+					//wrap
+					if(!$img.parent().is("a")){
+						$img.wrap("<a href='#' onclick=\"fNav('"+$action.val()+"');return false;\"></a>");
+					}else{
+						//$img.addClass("wb-lbx");
+					}
+					break;
+					   }
+
+				this.storeValue();
+			//this.editor.savePage();
+			
+		},
+		actionPreset:function($type,$action){
+			var $img=this.$el.find("img");
+			if(!$img.parent().is("a")){
+				$type.val("null");
+				$action.val("null");
+				return false;
+				
+			}else{
+				if($img.parent().attr("data-lom-lbx") === "wb-lbx"){
+					$type.val("lightbox");
+					$action.show();
+
+					$action.val($img.parent().attr("href").substring(1));
+				}
+			}
+			
 			
 		},
 /*---------------------------------------------------------------------------------------------

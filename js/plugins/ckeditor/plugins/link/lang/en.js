@@ -59,7 +59,7 @@ CKEDITOR.plugins.setLang( 'link', 'en', {
 	targetPopup: '<popup window>',
 	targetPopupName: 'Popup Window Name',
 	title: 'Link',
-	toAnchor: 'Link to anchor in the text',
+	toAnchor: 'Link to Element',
 	toEmail: 'E-mail',
 	toUrl: 'URL',
 	toPhone: 'Phone',

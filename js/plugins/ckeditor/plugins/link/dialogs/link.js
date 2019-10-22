@@ -393,7 +393,7 @@
 								],
 								setup: function( data ) {
 									this.clear();
-									this.add( '' );
+									this.add('');
 
 									if ( anchors ) {
 										for ( var i = 0; i < anchors.length; i++ ) {

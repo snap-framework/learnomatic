@@ -72,12 +72,13 @@ define([
 		 * @Fires up everytime the page is loaded
 		 */
 		
-		pageLoaded : function(){	
+		pageLoaded : function(){
 			var mode;
-						
 			if (!this.initialized){
 				this.initialized=true;
 				this.firstPageLoad();
+			}else{
+				this.elements=[];
 			}
 			mode=this.ui.currentMode.name;
 			if(mode==="pageEdit"){
@@ -87,8 +88,10 @@ define([
 				this.sortable=new Sortable();		
 				this.parent.resourcesManager.cleanUp();
 				this.activateEditors();
+				this.resetLbx();
+				
 			}
-			
+
 		},
 		
 		/*
@@ -134,7 +137,11 @@ define([
 				labels:this.labels
 			});
 		},
+		resetLbx:function(){
+			//only in text element;.
+			var $lbx=$(CoreSettings.contentContainer).find("[data-lom-element='text']").find(".wb-lbx").removeClass("wb-lbx");
 
+		},
 /*---------------------------------------------------------------------------------------------
 		-------------------------HOUSE KEEPING
 ---------------------------------------------------------------------------------------------*/	
@@ -479,9 +486,6 @@ define([
 							lorem = "[Option xxxx]";
 							break;
 						case "multiplechoice":
-							console.log($(this).closest("legend").length);
-							
-							
 							if($(this).closest("legend").length>0){
 								//this is a question text
 								lorem=(Utils.lang==="fr")?"[Insérer le texte de question]":"[Insert Question Text]";
@@ -673,6 +677,16 @@ define([
 			this.savePage();
 			this.elementMode="";
 		},
+		getElementsByType:function(type){
+			var elementStack=[];
+			for(var i=0;i<this.elements.length;i++){
+				if (this.elements[i].type === type){
+					elementStack[elementStack.length]=this.elements[i];
+				}
+			}
+			return elementStack;
+		},
+		
 /*---------------------------------------------------------------------------------------------
 		-------------------------ELEMENT PICKERS
 ---------------------------------------------------------------------------------------------*/				
@@ -923,8 +937,6 @@ define([
 			//call the file;
 			
 			var content=$(CoreSettings.contentContainer).html();
-			
-			
 			//var bkp=content;
 			if(typeof getTemplate !== "undefined" && getTemplate!==false && getTemplate!=="false" && getTemplate!==null){
 				
@@ -953,6 +965,7 @@ define([
 					data=data;
 					//console.log(data);
 					that.parent.initWbs();
+				that.resetLbx();
 
 				}).fail(function() {
 					alert( "Posting failed." );

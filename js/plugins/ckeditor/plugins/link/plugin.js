@@ -384,6 +384,8 @@
 					} );
 				}
 			}
+			
+			
 			// Retrieve all "fake anchors" within the scope.
 			i = 0;
 
@@ -396,6 +398,15 @@
 				}
 			}
 
+			// csps-sj tweak
+			var popups= masterStructure.editor.getElementsByType("lightbox");
+
+			for (var i=0;i<popups.length;i++){
+				anchors.push( {
+						name: null,
+						id: popups[i].id+"_lbx"
+					} );
+			}
 			return anchors;
 		},
 
