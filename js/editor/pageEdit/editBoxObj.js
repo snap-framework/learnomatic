@@ -53,7 +53,7 @@ define([
 		
 		saveUpdate:function(){
 			var value=this.getValue();
-			var $editBoxContent=$($.parseHTML(this.getValue()));
+			var $editBoxContent=this.$el.next();
 			//are there any calls to lightboxes here?
 			if($editBoxContent.find("a[href*=_lbx]").length>0){
 
@@ -238,7 +238,7 @@ define([
 					//this.$el.next().find("a[href*='_lbx']").addClass("wb-lbx-inited")
 				}
 			}
-
+			
 			return $content.html();
 		},
 
