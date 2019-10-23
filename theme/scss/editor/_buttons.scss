@@ -91,7 +91,7 @@ $o-button-types:(
 
 
 @each $size, $size-value in $o-button-types{
-	button.snap-#{$size},input[type='button'].snap-#{$size}{
+	button.snap-#{$size},input[type='button'].snap-#{$size},input[type='file'].snap-#{$size}{
 		//colors, border radius
 		background-color:$btn-bg-color;
 		border-color:$btn-border-color;

@@ -21,6 +21,14 @@ $("document").ready(function(){
 			
 			
      });
+	$(".btn-submit").hide();
+	$("#userfile").change(function(){
+		if($(this).val()===""){
+			$(".btn-submit").hide();
+		}else{
+			$(".btn-submit").show();
+		}
+	});
 	});
 	
 

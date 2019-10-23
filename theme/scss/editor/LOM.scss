@@ -1,3 +1,6 @@
+
+@import "../editor/_buttons";
+
 ul.courselist{
 	li{
 		width:100%;
@@ -26,6 +29,9 @@ ul.courselist{
 			&:hover,&:focus{
 				background-color:#f1f1f1;
 			}
+			&:visited{
+				color:black;
+			}
 		}
 		&[data-course="_default"]{
 			display:none; //
@@ -33,3 +39,30 @@ ul.courselist{
 		}
 	} 
 } 
+header{
+	&:before{
+		display:block;
+		display: block;
+		position: absolute;
+		width: 85px;
+		height: 85px;
+		margin-top: -38px;
+		margin-left: -20px;
+		background-image: url(images/LOM-logo.png);
+
+	}
+	h1{padding-left:80px;}
+}
+body{background-color:white;}
+
+#userfile{
+	//@include iconpack(move, md, standard);	
+    background-color: #fdfdfd;
+    border-color: #e1e1e1;
+    border-radius: 8px;	
+	border-style:solid;
+	border-width:1px;
+	padding-top:8px;
+	cursor:pointer;
+	
+}

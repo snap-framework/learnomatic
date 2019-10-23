@@ -159,8 +159,12 @@ define([
 				
 			});
 			$(".LOM-img-btn").dblclick(function(){
-				var newSrc=$(this).find("img").attr("src");
-				that.changeImage(newSrc);
+			   var popParams={};
+			   //send title and action
+			   	popParams.lbx=that.defaultLbxSettings("Configuration", "config", "Save Configuration");
+			   	popParams.config=that.configLbxSettings();	
+				that.submitConfig(popParams);
+
 			});
 			
 		},
@@ -324,7 +328,6 @@ define([
 					   }
 
 				this.storeValue();
-			//this.editor.savePage();
 			
 		},
 		actionPreset:function($type,$action){
@@ -333,12 +336,11 @@ define([
 				$type.val("null");
 				$action.val("null");
 				return false;
-				
 			}else{
 				if($img.parent().attr("data-lom-lbx") === "wb-lbx"){
 					$type.val("lightbox");
+					$action.attr("data-action-type", "lightbox");
 					$action.show();
-
 					$action.val($img.parent().attr("href").substring(1));
 				}
 			}

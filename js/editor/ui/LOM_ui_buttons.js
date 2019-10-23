@@ -37,12 +37,13 @@ define(['utils','./../LOM_labels'], function (Utils, Labels) {
 			name:"structure",
 			labels: Labels.modes.structure,
 		 	tools:[
-				{
+				/*{
 					name:"localview",
 					icon:"LOM-newpage",
 					labels:Labels.tools.localView,
 					action:"things"
-				}/*,
+				}*/
+				/*,
 				{
 					name:"globalview",
 					icon:"LOM-plus",

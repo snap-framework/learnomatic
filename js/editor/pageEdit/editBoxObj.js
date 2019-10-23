@@ -259,8 +259,7 @@ define([
 					//return editorConfig;
 				}
 			}
-			
-			if(this.$el.parent().is("h1, h2, h3, h4, summary, label")){
+			if(this.$el.parent().is("h2, h3, h4, summary, label")){
 				this.isRestricted=true;
 				//RESTRICTED
 				editorConfig.enterMode=CKEDITOR.ENTER_BR;
