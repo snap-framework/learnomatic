@@ -3,62 +3,67 @@ define([
     'jquery',
 	'settings-core',
 	'./../pageEdit/elementClass'
-], function($, CoreSettings, ElementClass) {
+], function ($, CoreSettings, ElementClass) {
 	'use strict';
 	return ElementClass.extend({
-		initialize: function(options) {
+		initialize: function (options) {
 			
-			this.options=options;
+			this.options = options;
 			//console.log(this.subtype);
-			if(this.subtype==="multipleanswers"){
-				this.autoLoaded=["checkbox", "checkbox", "checkbox"];
-				this.autoAddElement="checkbox";
-			}else{
-				this.autoLoaded=["radiobtn", "radiobtn", "radiobtn"];
-				this.autoAddElement="radiobtn";
+			if (this.subtype === "multipleanswers") {
+				this.autoLoaded = ["checkbox", "checkbox", "checkbox"];
+				this.autoAddElement = "checkbox";
+			} else {
+				this.autoLoaded = ["radiobtn", "radiobtn", "radiobtn"];
+				this.autoAddElement = "radiobtn";
 			}
-			this.autoAddButton=false;
+			this.autoAddButton = false;
 		},
 
 		
-	   changePermissions:function(){
-		   this.permissions.editButtons.add=true;
-		   this.permissions.editButtons.config=true;
-		   this.permissions.subElements.radiobtn=true;
+		changePermissions: function () {
+			this.permissions.editButtons.add = true;
+			this.permissions.editButtons.config = true;
+			this.permissions.editButtons.classPicker = false;
+			this.permissions.subElements.radiobtn = true;
 	   },
 		
 
-	   initDom:function(){
+		initDom: function () {
 		   var $ex;
-		   $ex=this.$el.find(".qs-question").attr("id", "act_"+this.id);
-		   if(this.subtype==="multipleanswers"){
+			$ex = this.$el.find(".qs-question").attr("id", "act_" + this.id);
+			if (this.subtype === "multipleanswers") {
 			   this.$el.find(".qs-question").attr("data-question-type", "type-2");
 		   }
+           this.$el.find(".qs-submit").text(this.labels.type.submit);
 	   },		
 		
 		
 /*---------------------------------------------------------------------------------------------
 -------------------------CONFIGURATION
 ---------------------------------------------------------------------------------------------*/			
-	   changeDefaultLbxSettings:function(params){
-		   params.title="Question Configuration";
-		   params.saveBtn="save the whole thing";
+		changeDefaultLbxSettings: function (params) {
+			params.title = "Question Configuration";
+			params.saveBtn = "save the whole thing";
 		 return params;
 	   },
-		changeDefaultConfigSettings:function(params){
-		   params.$paramTarget=this.$el.find(".qs-answers");
-			params.files=["../../templates/LOM-Elements/element_config_radio.html"];
-			params.attributes= {				   "data-random-answers": [
+		changeDefaultConfigSettings: function (params) {
+			params.$paramTarget = this.$el.find(".qs-answers");
+			params.files = ["../../templates/LOM-Elements/element_config_radio.html"];
+			params.attributes = {
+				"data-random-answers": [
 					   "True",
-					   "False"]};
+					"False"
+				]
+			};
 			return params;
 			
 		},		
 	   /*initializeConfigFiles:function(params){
 		   this.getQuestionList(params);
 	   },*/	
-	   submitCustomConfig:function(params){
-   			this.submitCorrectAnswer($("#"+params.lbx.targetId).find("input[name=ra]:checked").attr("data-id"));
+		submitCustomConfig: function (params) {
+			this.submitCorrectAnswer($("#" + params.lbx.targetId).find("input[name=ra]:checked").attr("data-id"));
 		   
 		   	return params;
 	   },
@@ -80,15 +85,15 @@ define([
 			}
 			
 		},*/
-		submitCorrectAnswer:function(answerId){
+		submitCorrectAnswer: function (answerId) {
 			
 			var $radio;
 			var radioId;
 
-			for(var i=0;i<this.elements.length;i++){
-				$radio= this.elements[i].$el.children("input");
-				radioId=$radio.attr("id");
-				radioId=radioId.replace("answer_", "");
+			for (var i = 0; i < this.elements.length; i++) {
+				$radio = this.elements[i].$el.children("input");
+				radioId = $radio.attr("id");
+				radioId = radioId.replace("answer_", "");
 				
 				this.elements[i].setCorrect(answerId === radioId);
 
@@ -105,13 +110,13 @@ define([
 		//------------------------------------------------		
 
 
-	   postCleanup:function(){
+		postCleanup: function () {
 		   
 		   this.$el.find(".qs-submit").removeAttr("disabled").removeClass("qs-disabled");
 	   },
 		
 		//-------------------------
-		doSomething:function(){
+		doSomething: function () {
 			
 			
 		}

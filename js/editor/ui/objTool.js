@@ -1,77 +1,78 @@
 define([
-	
-    'jquery',
+
+	'jquery',
 	'labels',
 	'settings-core',
 	'utils',
 	'modules/BaseModule'
-	
-], function($,labels, CoreSettings, Utils, BaseModule) {
+
+], function ($, labels, CoreSettings, Utils, BaseModule) {
 	'use strict';
 
 	return BaseModule.extend({
-		initialize: function(options) {
+		initialize: function (options) {
 			//var that=this;
-			
-			this.parent=options.parent;
-			this.editor=this.parent.editor;
-			
-			this.name=options.name;
-			
-			this.$el=null;
-			this.$modes=this.parent.$modes;
-			this.$dashboard=this.parent.$dashboard;			
-			
-			this.icon=options.icon;
-			this.labels=options.labels;
+
+			this.parent = options.parent;
+			this.editor = this.parent.editor;
+
+			this.name = options.name;
+
+			this.$el = null;
+			this.$modes = this.parent.$modes;
+			this.$dashboard = this.parent.$dashboard;
+
+			this.icon = options.icon;
+			this.labels = options.labels;
 
 		},
-/*---------------------------------------------------------------------------------------------
-		-------------------------DOM SETUP
----------------------------------------------------------------------------------------------*/			
-		generateButtonHtml:function(){
-			var html="<button class=\"ico-"+this.icon+" snap-xs\" title=\""+this.labels+"\">"+this.labels+"</button>";
+		/*---------------------------------------------------------------------------------------------
+				-------------------------DOM SETUP
+		---------------------------------------------------------------------------------------------*/
+		generateButtonHtml: function () {
+			var html = "<button class=\"ico-" + this.icon + " snap-xs\" title=\"" + this.labels + "\">" + this.labels + "</button>";
 			this.$dashboard.append(html);
-			this.$el=this.$dashboard.children(".ico-"+this.icon).eq(0);
+			this.$el = this.$dashboard.children(".ico-" + this.icon).eq(0);
 
 			this.attachHoverState();
 			this.attachClickEvent();
 			this.hide();
 			return true;
 		},
-		attachHoverState:function(){
+		attachHoverState: function () {
 			this.$el.hover(
-			  function() {
-				$( this ).removeClass("snap-xs").addClass("snap-sm");
-			  }, function() {
-				$( this ).removeClass("snap-sm").addClass("snap-xs");
-			  }
+				function () {
+					$(this).removeClass("snap-xs").addClass("snap-sm");
+				},
+				function () {
+					$(this).removeClass("snap-sm").addClass("snap-xs");
+				}
 			);
 		},
-		attachClickEvent:function(){
-			var that=this;
-			this.$el.click(function(){
+		attachClickEvent: function () {
+			var that = this;
+			this.$el.click(function () {
 				that.actionDispatcher();
-				
-			});	
+
+			});
 		},
 
-/*---------------------------------------------------------------------------------------------
-		-------------------------
----------------------------------------------------------------------------------------------*/					
-		hide:function(){
+		/*---------------------------------------------------------------------------------------------
+				-------------------------
+		---------------------------------------------------------------------------------------------*/
+		hide: function () {
 			this.$el.hide();
 		},
-		show:function(){
+		show: function () {
 			this.$el.show();
-		},		
-/*---------------------------------------------------------------------------------------------
-		-------------------------actions
----------------------------------------------------------------------------------------------*/			
-		actionDispatcher:function(){
-			
-			
-			switch(this.name){
+		},
+		/*---------------------------------------------------------------------------------------------
+				-------------------------actions
+		---------------------------------------------------------------------------------------------*/
+		actionDispatcher: function () {
+
+
+			switch (this.name) {
 				case "deletepage":
 					this.editor.deletePage();
 					break;
@@ -86,20 +87,17 @@ define([
 					break;
 				case "layout":
 					this.editor.popLayoutPicker();
-					
+
 					break;
-							}
-			
-			
+			}
+
+
 		},
-		
-	
-
-		doSomething:function(){
 
 
+		doSomething: function () {
 
-		
+
 		}
 	});
 });

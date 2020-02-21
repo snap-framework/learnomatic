@@ -1,42 +1,40 @@
-define(['utils','./../LOM_labels'], function (Utils, Labels) {
+define(['utils', './../LOM_labels'], function (Utils, Labels) {
 	'use strict';
-	
-/* liste des constantes du framework */
 
-	var buttons = [
-		{
-			name:"preview",
+	/* liste des constantes du framework */
+
+	var buttons = [{
+			name: "preview",
 			labels: Labels.modes.preview,
-		 	tools:[]
+			tools: []
 		},
 		{
-			name:"pageEdit",
+			name: "pageEdit",
 			labels: Labels.modes.pageEdit,
-		 	tools:[
-				{
-					name:"layout",
-					icon:"LOM-layout",
-					labels:Labels.tools.layout,
-					action:"things"
+			tools: [{
+					name: "layout",
+					icon: "LOM-layout",
+					labels: Labels.tools.layout,
+					action: "things"
 				},
 				{
-					name:"savetemplate",
-					icon:"SNAP-save",
-					labels:Labels.tools.template,
-					action:"things"
+					name: "savetemplate",
+					icon: "SNAP-save",
+					labels: Labels.tools.template,
+					action: "things"
 				},
 				{
-					name:"deletepage",
-					icon:"LOM-trash",
-					labels:Labels.tools.deletepage,
-					action:"things"
+					name: "deletepage",
+					icon: "LOM-trash",
+					labels: Labels.tools.deletepage,
+					action: "things"
 				}
 			]
-		}, 
+		},
 		{
-			name:"structure",
+			name: "structure",
 			labels: Labels.modes.structure,
-		 	tools:[
+			tools: [
 				/*{
 					name:"localview",
 					icon:"LOM-newpage",
@@ -51,26 +49,14 @@ define(['utils','./../LOM_labels'], function (Utils, Labels) {
 					action:"things"
 				}*/
 			]
-		}, 
-		/*{
-			name:"theme",
-			labels: Labels.modes.theme,
-		 	tools:[
-				{
-					name:"test",
-					icon:"QS-checkbox",
-					labels:Labels.tools.test,
-					action:"things"
-				}
-			]
-		},*/
+		},
+
 		{
-			name:"settings",
+			name: "settings",
 			labels: Labels.modes.settings,
-		 	tools:[
-			]
+			tools: []
 		}
-					
+
 	];
-return buttons;
+	return buttons;
 });

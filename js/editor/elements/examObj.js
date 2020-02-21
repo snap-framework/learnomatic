@@ -1,21 +1,21 @@
 define([
-	
-    'jquery',
+
+	'jquery',
 	'settings-core',
 	'./../pageEdit/elementClass'
-], function($, CoreSettings, ElementClass) {
+], function ($, CoreSettings, ElementClass) {
 	'use strict';
 	return ElementClass.extend({
-		initialize: function(options) {
-			
-			this.options=options;
+		initialize: function (options) {
+
+			this.options = options;
 		},
-	 
-		
+
+
 		//-------------------------
-		doSomething:function(){
-			
-			
+		doSomething: function () {
+
+
 		}
 	});
 });

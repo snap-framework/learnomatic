@@ -270,3 +270,18 @@ position: absolute;
 	
 	
 }
+
+/*------------------ Not-LOM warning box -------------------*/
+
+#not-LOM-warning{
+    position: fixed;
+    width: 200px;
+    height: auto;
+    right: 0px;
+    top: 20%;
+    padding: 15px;
+    
+    .glyphicon span{
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+}

@@ -63,7 +63,7 @@ $delete-color:#990000;
 		border-style:solid;
 		.LOM-element{
 			padding-left:20px;
-			//sub-elements border
+			//b-elements border
 			border-style:dotted;
 		
 		}
@@ -98,10 +98,11 @@ $delete-color:#990000;
 	.LOM-pageEdit-active .LOM-frame>.LOM-element>&{border-style:solid;}
 	.LOM-pageEdit-active .LOM-frame>.LOM-element .LOM-element>&{border-style:dotted;}
 
-	.LOM-pageEdit-active .LOM-frame:hover>.LOM-element>&{visibility:visible;}		
-	.LOM-pageEdit-active .LOM-element:hover>.LOM-element>&{visibility:visible;}
-	.LOM-pageEdit-active .qs-exercise:hover>.LOM-element>&{visibility:visible;}
-	.LOM-pageEdit-active .qs-answers:hover .LOM-element>&{visibility:visible;}
+	.LOM-pageEdit-active .LOM-frame:hover>.LOM-element>&{visibility:visible!important;}		
+	.LOM-pageEdit-active .LOM-element:hover>.LOM-element>&{visibility:visible!important;}
+	.LOM-pageEdit-active .qs-exercise:hover>.LOM-element>&{visibility:visible!important;}
+	.LOM-pageEdit-active .qs-answers:hover .LOM-element>&{visibility:visible!important;}
+	.LOM-pageEdit-active .LOM-holder:hover>.LOM-element>&{visibility:visible!important;}
 
 	@include iconpack(move, md, standard);
 	
@@ -141,7 +142,9 @@ $delete-color:#990000;
 /*-------------------------------------------------------------------------
 //-------------------------------- custom ELEMENTS---------------------------
 -------------------------------------------------------------------------*/
-
+.LOM-attr-label.LOM-attr-text{
+	text-transform: capitalize;
+}
 //------------------general look--------------------
 /*-----------------  -----------------------*/
 
@@ -172,7 +175,7 @@ html.LOM-hide-add{
 .LOM-pageEdit-active .LOM-element[data-LOM-subtype='tabs']>details>summary::-webkit-details-marker{display:none;}
 .LOM-pageEdit-active .LOM-element[data-LOM-element='accordion']{
 	padding-top:40px;
-	padding-left:40px;
+	padding-left:20px;
 	details.LOM-element[data-LOM-element='details']{
 		&[open].LOM-fake-open{
 			div.LOM-holder{display:none;}
@@ -248,7 +251,53 @@ details:hover, .LOM-frame:hover, *:focus{
 
 	}
 }
+/*----------------- CAROUSEL -----------------------*/
+.LOM-pageEdit-active .LOM-element[data-lom-element='carousel']{
+	padding-top:45px;
+	//padding-top:10px;
+	&:before{
+		content: 'CAROUSEL';
+		position: absolute;
+		//margin-left: -41px;
+		margin-top: -52px;
+		width: auto;
+		padding: 10px;
+		border: 1px solid #ddd;
+		border-bottom: transparent;
+		border-right: transparent;
+		border-top-right-radius: 5px;
+		background-color: white;
 
+	}
+	
+	li.control.tab-count,li.control.plypause{
+		display:none;
+	}
+	
+	[role="tablist"]{
+		display:none;
+	}
+}
+
+
+.LOM-pageEdit-active .LOM-element[data-lom-element='panel']{
+	padding-top:45px;
+	//padding-top:10px;
+	&:before{
+		content: 'Panel';
+		position: absolute;
+		//margin-left: -41px;
+		margin-top: -52px;
+		width: auto;
+		padding: 10px;
+		border: 1px solid #ddd;
+		border-bottom: transparent;
+		border-right: transparent;
+		border-top-right-radius: 5px;
+		background-color: white;
+
+	}
+}
 
 /*----------------- IMAGE -----------------------*/
 .LOM-gallery-selected{
@@ -277,9 +326,78 @@ details:hover, .LOM-frame:hover, *:focus{
 		border-radius: 5px;
 		background-color: white;
 		padding: 12px;
+		color:black;
 		&:before{
 			content:'Lightbox ID: ';
 		}
 	}
 }
 
+/*----------------- VIDEOS -----------------------*/
+#LOM-video-files{
+	margin-bottom:30px;
+	select{
+		display:none;
+	}
+}
+
+.btn-selected{
+	background-color:#f1f1f1!important;
+	    border-width: 5px;
+}
+
+.upload-status progress{
+    height: 15px;
+}
+
+.modal-body .row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#LOM-video-upload h3, #LOM-audio-upload h3{
+    margin-top: 0px;
+}
+
+/*----------------- markers -----------------------*/
+
+.markers{
+display: block;
+    width: 100%;
+    height: 16px;
+    margin-top: -55px;
+    position: absolute;
+	.marker{
+       margin-top: -16px;
+			position: absolute;
+			z-index: 1;
+			padding: 0;
+			width: 15px;
+			height: 15px;
+			/* overflow: hidden; */
+			white-space: nowrap;
+			/* text-indent: -9999px; */
+			border: 1px grey solid;
+			border-radius: 50%;
+			display: inline-block;
+		span{
+			position:absolute;
+			background-color:white;
+			margin-top: -35px;
+			padding:2px;
+			display:none;
+		}
+		&:hover, &:focus{
+			border-width:2px;
+			span{display:block;}
+		}
+	}
+}
+
+figure figcaption .marker-hover{
+	border-color:#555!important;}
+
+.link-as-button{ 
+	background-color:red;
+	display:block;
+}

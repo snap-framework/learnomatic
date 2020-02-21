@@ -5,7 +5,7 @@ $base-text-color: #222;
 $link-color: #295376;
 $link-color-visited: #7834bc;
 $box-shadox-color: #999;
-$button-default-color: #fff;
+$button-default-color: #555;
 $button-default-color-hover: #fff;
 $button-default-background-color: #3b3b3b;
 $button-default-background-color-hover: #4f4f4f;
@@ -96,16 +96,16 @@ $header-text-color: #666;
 $header-banner-title-color: #555;
 $header-module-name-color: #eee;
 $header-button-background-color: transparent;
-$header-button-color-hover: #fff;
+$header-button-color-hover: #000;
 $header-button-background-color-hover: #eee;
-$header-button-color: #fff;
+$header-button-color: #555;
 //Top Navigation
 $top-nav-text-color: $base-text-color;
 $top-nav-button-color: $base-text-color;
 //mobile only
 $top-nav-button-color-mobile: #fff;
 $top-nav-button-background-color: #777;
-$hamburger-menu-color-mobile: #fff;
+$hamburger-menu-color-mobile: $button-default-color;
 
 //Toolbar
 $toolbox-link-color: $base-text-color;

@@ -6,7 +6,8 @@ function dispatcher($json){
 	}	
 	//$file=prepareFile()
 	switch ($received->action) {
-
+		case "test":
+			break;
 		case "supermenu":
 			//Same for now, eventually deal with multi-linguality, backups etc...
 			fullWrite($received);
@@ -279,7 +280,7 @@ function findEmptySpace($contentFolder, $folderNum){
 		
 		
 		
- 		$currentPage=$contentFolder."module".$folderNum."/m".$folderNum."-".$i;
+ 		$currentPage= $contentFolder."module".$folderNum."/m".$folderNum."-".$i;
 		$cur_en=$currentPage."_en.html";
 		$cur_fr=$currentPage."_fr.html";
 		
@@ -471,18 +472,19 @@ function updateSessions($json){
 function uploadImage($received){
 	
 	
-	//echo $received->content;
-	
-	checkFolder("courses/".$received->filename."/content/", "medias");
-	checkFolder("courses/".$received->filename."/content/medias/", "images");
+
+	$folder="courses/".$received->filename."/".$received->location;
+
+	createFolders($folder);
 
 	$imgName=$_FILES["file"]["name"];
 	$test=explode(".", $_FILES["file"]["name"]);
 	$imgExtension =end($test);
-	$folder= "courses/".$received->filename."/content/medias/images/";
-	move_uploaded_file($_FILES["file"]["tmp_name"], $folder.$imgName);
+	
+	$uploaded=move_uploaded_file($_FILES["file"]["tmp_name"], $folder.$imgName);
 	
 	$received->filename=$imgName;
+	$received->uploaded=$uploaded;
 	
 	echo  json_encode($received);
 	
