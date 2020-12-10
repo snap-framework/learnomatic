@@ -1,0 +1,41 @@
+<fieldset style="margin-bottom: 15px; border: none; padding-top: 0;" class="exam-only">
+    <legend style="font-size: 16px; margin-bottom: 0;">
+        <p><strong>Feedback Type</strong></p>
+    </legend>
+    <p>
+        <input type="radio" name="feedback-type" id="feedback-type-instant" value="instant">
+        <label for="feedback-type-instant">Show feedback after each question and a recap at the end of the exam</label>
+    </p>
+    <p>
+        <input type="radio" name="feedback-type" id="feedback-type-deferred" value="deferred">
+        <label for="feedback-type-deferred">Show only a recap at the end of the exam</label>
+    </p>
+</fieldset>
+<p class="exam-only">
+    <label for="score">Minimum score needed for success (%) </label>
+    <input type="number" min="0" max="100" name="score" id="score">
+</p>
+<p class="exam-only" style="margin-bottom: 25px;">
+    <input type="checkbox" name="trigger-completion" id="trigger-completion">
+    <label for="trigger-completion">Trigger course completion on successful completion of the exam?</label>
+</p>
+<fieldset style="border: none; padding-top: 0;">
+    <legend style="font-size: 16px; margin-bottom: 0;">
+        <p><strong>Randomize questions</strong></p>
+    </legend>
+    <p>
+        <input type="radio" name="random-questions" id="random-questions-yes" value="true">
+        <label for="random-questions-yes">Yes <span class="tip">(question are randomized in each pool, each the exam is started)</span></label>
+    </p>
+    <p>
+        <input type="radio" name="random-questions" id="random-questions-no" value="false">
+        <label for="random-questions-no">No <span class="tip">(questions are show in the order you see them in the editor)</span></label>
+    </p>
+</fieldset>
+
+<style>
+    .tip {
+        font-weight: 400;
+        font-size: 13px;
+    }
+</style>

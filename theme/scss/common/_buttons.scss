@@ -1,0 +1,47 @@
+$Lom-Is-Active:true;
+@mixin getIconsNew($name, $icon-color){}//this is a placeholder
+@import "./../../../courses/_default/core/scss/icons/iconpacks/_iconpacks";
+@import "./_iconpack-layout";
+
+@mixin getcodeLOM($name, $new-color){
+
+    $icon-color:encodecolor($new-color);
+    @include getIconsLayouts($name, $icon-color);
+
+}//icons Layout
+
+$o-icoLOM-packs: (
+    LAYOUT:(
+        0: layout_1fr_1,
+        1: layout_2fr_1,
+        2: layout_3fr_1,
+        3: layout_3fr_2,
+        4: layout_3fr_3,
+        5: layout_4fr_1,
+        6: layout_4fr_2,
+        7: layout_4fr_3,
+        8: layout_5fr_1,
+        9: layout_5fr_2
+    )
+
+);
+
+
+
+@each $pack-name, $pack in $o-icoLOM-packs {
+    @each $index, $value in $pack{
+          button[class*=snap-], input[type='button'][class*=snap-], input[type='file'][class*=snap-]{
+            &.ico-#{$pack-name}-#{$value}{ 
+                &:before{
+
+                    @include getcodeLOM($value, #6c6c6c);
+
+                }
+                &:focus:before,&:hover:before{
+
+                    @include getcodeLOM($value, #404040);
+                }
+            }
+        }
+    }
+}

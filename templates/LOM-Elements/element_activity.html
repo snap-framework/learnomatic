@@ -1,45 +1,66 @@
 <section class="LOM-element ribbon-top activity" data-LOM-element="activity">
-	<!-- This element is an activity... no intro, no final feedback -->
-		<!--this is an activity-->
-		<div class="qs-elearning-activity" data-activity-type="standard">
-		<h2>Activity</h2>
+    <!-- This element is an activity... no intro, no final feedback -->
+    <!--this is an activity-->
+    <div class="qs-elearning-activity" data-activity-type="standard">
+        <h2>Activity</h2>
 
-			<!--introduction-->
-			<div class="qs-start-activity">
-				<div class="LOM-editable">
-					<p>Instructions...la note de passage est de 70%</p>
-				</div>
-				<p><input class="qs-start" type="button" value="Débuter l'examen"></p>
-			</div>
-			
-			<!--this is an exercise-->
-			<div class="qs-exercise LOM-holder">
-				
-				
+        <!--introduction-->
+        <div class="qs-start-activity">
+            <div class="qs-subvisit">
+                <p class='qs-not-first-time'>[Looks like it's not your first time, would you like to:]</p>
+                <p><a class="qs-resetretry" href="javascript:;">[Reset and retry the test]</a></p>
+                <p>
+                    <input class="qs-getbacktoit" type="button" value="[Get back to where you were]">
+                </p>
+            </div>
+            <div class="LOM-editable qs-start-intro"> </div>
+            <p>
+                <button class="qs-start">[Start the exam]</button>
+            </p>
+        </div>
 
-
-
-
-
-			</div>
-			<!--end exercise-->
-			<!--conclusion-->
-			<div class="qs-feedback-final">
-				<p><span class="yougot">Vous avez obtenu</span> : <span class="qs-get-current-score">0</span> / <span class="qs-get-max-score">0</span></p>
-				<div class="qs-final-positive-feedback">
-					<div class="LOM-editable">
-						<p>Vous avez réussi l'examen.</p>
-					</div>
-				</div>
-				<div class="qs-final-negative-feedback">
-					<div class="LOM-editable">
-						<p>Vous avez échoués l'examen.</p>
-					</div>
-				</div>
-			</div>
-
-			
-	</div>
-	<!--end activity-->
+        <!-- THIS IS AN EXERCISE -->
+        <div class="qs-exercise LOM-holder"> </div>
+        <!-- END EXERCISE -->
+        <!--NAVGROUP-->
+        <nav class="qs-navgroup">
+            <p>
+                <button class="qs-prevquestion snap-sm ico-QS-left">[Previous]</button>
+                <button class="qs-nextquestion snap-sm ico-QS-right align-right">[Next]</button>
+            </p>
+            <p><span class="qs-finallinkto-unanswered-placeholder">[Please answer the following question(s) before submitting: ]<br>
+                </span></p>
+            <p><span class="qs-final-submit-placeholder"></span></p>
+        </nav>
+        <!--END NAVGROUP-->
+        <!-- FEEDBACK POST ACTIVITY -->
+        <div class="qs-feedback-final">
+            <h3>[Results]</h3>
+            <p><span class="yougot">[You have successfully answered]</span> <span class="qs-get-current-score"></span> / <span class="qs-get-max-score"></span> questions, <span class="scoreof">for a score of</span> <span class="qs-get-score-on100"></span>%.</p>
+            <div class="qs-final-positive-feedback LOM-editable"> [
+                <p>Congratulations! You have successfully completed the exam.</p>
+                <p>This course will remain in your GCcampus account, and you may refer to it at any time.</p>
+                <p>To learn how to print your certificate, follow the instructions provided in&nbsp;<a href="https://learn-apprendre.csps-efpc.gc.ca/application/en/content/how-print-certificate-or-see-your-transcripts" rel="external" target="_blank" title="How to print a certificate or see your Transcripts">GCcampus</a>.</p>
+                <p>If the certificate does not appear, you may need to turn off your browser’s pop up blocker. If you are still experiencing difficulties in printing your certificate, please contact your IT team.</p>
+                ]
+            </div>
+            <div class="qs-final-negative-feedback LOM-editable"> [
+                <p>You have not successfully completed the exam. You must achieve a score of 70% or higher. Please review the course material and try again.</p>
+                ] </div>
+            <div class="qs-restart-section">
+                <p class="qs-restart-msg">[To restart the exam, press the “Restart the exam” button.]</p>
+                <p>
+                    <button class="qs-retry-activity" onclick="javascript:location.reload();">[Restart the exam]</button>
+                </p>
+            </div>
+            <div class="recap">
+                <h3>[Please review your answers to the exam questions.]</h3>
+            </div>
+            <!-- POST RECAP -->
+            <div class="qs-recap-template"> </div>
+            <!-- END POST RECAP -->
+        </div>
+    </div>
+    <!--end activity-->
 
 </section>

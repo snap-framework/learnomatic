@@ -14,7 +14,8 @@ define([
 			//var that=this;
 
 			this.parent = options.parent;
-			this.editor = this.parent.editor;
+
+			this.root = this.parent.root;
 
 			this.name = options.name;
 
@@ -30,7 +31,7 @@ define([
 				-------------------------DOM SETUP
 		---------------------------------------------------------------------------------------------*/
 		generateButtonHtml: function () {
-			var html = "<button class=\"ico-" + this.icon + " snap-xs\" title=\"" + this.labels + "\">" + this.labels + "</button>";
+			var html = "<button class=\"ico-" + this.icon + " snap-md\" title=\"" + this.labels + "\">" + this.labels + "</button>";
 			this.$dashboard.append(html);
 			this.$el = this.$dashboard.children(".ico-" + this.icon).eq(0);
 
@@ -40,14 +41,14 @@ define([
 			return true;
 		},
 		attachHoverState: function () {
-			this.$el.hover(
+			/*this.$el.hover(
 				function () {
 					$(this).removeClass("snap-xs").addClass("snap-sm");
 				},
 				function () {
 					$(this).removeClass("snap-sm").addClass("snap-xs");
 				}
-			);
+			);*/
 		},
 		attachClickEvent: function () {
 			var that = this;
@@ -71,22 +72,41 @@ define([
 		---------------------------------------------------------------------------------------------*/
 		actionDispatcher: function () {
 
-
 			switch (this.name) {
 				case "deletepage":
-					this.editor.deletePage();
+					if (!this.root.locked) {
+						this.root.deletePage();
+					} else {
+						this.root.lockMessage();
+					}
+
 					break;
 				case "savetemplate":
-					this.editor.saveTemplate();
+					this.root.saveTemplate();
+					break;
+				case "searchreplace":
+
+					if (!this.root.notAlone) {
+						this.root.openSearchReplace();
+					} else {
+						this.root.lockMessage("course");
+					}
+
 					break;
 				case "globalview":
-					this.editor.structure.initGlobalView();
+					this.root.structure.initGlobalView();
 					break;
 				case "localview":
-					this.editor.structure.initLocalView();
+					this.root.structure.initLocalView();
 					break;
 				case "layout":
-					this.editor.popLayoutPicker();
+
+					if (!this.root.locked) {
+						this.root.popLayoutPicker();
+					} else {
+						this.root.lockMessage();
+					}
+
 
 					break;
 			}

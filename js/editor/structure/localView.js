@@ -22,7 +22,7 @@ define([
 
 			this.currentParent = this.master;
 
-
+			this.reloadNecessary = false;
 		},
 
 		/*---------------------------------------------------------------------------------------------
@@ -30,8 +30,11 @@ define([
 		---------------------------------------------------------------------------------------------*/
 
 		initView: function () {
-			$(CoreSettings.contentContainer).append("<h1>Structure Editing</h1>");
-			$(CoreSettings.contentContainer).append("<h2><span>" + CoreSettings.courseTitle_en + "</span><span></span><span></span></h2>");
+			$(".backnext").hide();
+			$(".menu.supermenu").hide();
+
+			$(CoreSettings.contentContainer).append("<h1>" + this.labels.structureMode.title + "</h1>");
+			$(CoreSettings.contentContainer).append("<h2><span>" + ((Utils.lang === "en") ? CoreSettings.courseTitle_en : CoreSettings.courseTitle_fr) + "</span><span></span><span></span></h2>");
 			$(CoreSettings.contentContainer).append("<div id=\"folder-view-container\"></div>");
 			$("#folder-view-container").append("<section class=\"LOM-folder-view ui-sortable\" id=\"LOM-structure0\"></section");
 			$("#folder-view-container").append("<section class=\"LOM-folder-view ui-sortable\" id=\"LOM-structure1\"></section");
@@ -82,14 +85,22 @@ define([
 		initButtons: function ($target, level) {
 			var that = this;
 			//----- ADD PAGE/FOLDER
-			$target.append("<button class=\"snap-sm ico-SNAP-page\">Add Page</button>");
+			$target.append("<button class=\"snap-sm ico-SNAP-page\" style=\"margin-top: 25px;\">" + this.labels.structureMode.addPage + "</button>");
 			$target.find(".ico-SNAP-page").click(function () {
-				that.addPageLbx();
+				if (!that.editor.notAlone) {
+					that.addPageLbx();
+				} else {
+					that.editor.lockMessage("course");
+				}
 			});
 			if (level < 2) {
-				$target.append("<button class=\"snap-sm ico-SNAP-folder\">Add Folder</button>");
+				$target.append("<button class=\"snap-sm ico-SNAP-folder\" style=\"margin-top: 25px;\">" + this.labels.structureMode.addFolder + "</button>");
 				$target.find(".ico-SNAP-folder").click(function () {
-					that.addFolderLbx();
+					if (!that.editor.notAlone) {
+						that.addFolderLbx();
+					} else {
+						that.editor.lockMessage("course");
+					}
 				});
 			}
 
@@ -109,10 +120,18 @@ define([
 
 			//EDIT PAGE/FOLDER BUTTON
 			$target.find(".LOM-local-isPage").find(".ico-SNAP-edit").click(function () {
-				that.editLbx("editpage", this);
+				if (!that.editor.notAlone) {
+					that.editLbx("editpage", this);
+				} else {
+					that.editor.lockMessage("course");
+				}
 			});
 			$target.find(".LOM-local-isFolder").find(".ico-SNAP-edit").click(function () {
-				that.editLbx("editfolder", this);
+				if (!that.editor.notAlone) {
+					that.editLbx("editfolder", this);
+				} else {
+					that.editor.lockMessage("course");
+				}
 			});
 			$target.find(".ico-SNAP-edit").hover(
 				function () {
@@ -135,7 +154,14 @@ define([
 				$("#LOM-structure0").find(".ico-SNAP-delete").eq(0).attr("disabled", true);
 			} else {
 				$target.find(".ico-SNAP-delete").click(function () {
-					that.delete(this);
+
+					if (!that.editor.notAlone) {
+						that.delete(this);
+					} else {
+						that.editor.lockMessage("course");
+					}
+
+
 				});
 				$target.find(".ico-SNAP-delete").hover(
 					function () {
@@ -210,9 +236,10 @@ define([
 			return parent;
 		},
 		delete: function (obj) {
+			if ($(obj).parent().parent().attr("data-id") == this.master.currentSub.sPosition || ($(obj).parent().parent().hasClass("LOM-local-isFolder") && this.master.currentSub.sPosition.indexOf($(obj).parent().parent().attr("data-id")) >= 0)) {
+				this.reloadNecessary = true;
+			}
 			this.parent.deleteSub(obj);
-
-
 		},
 		/*---------------------------------------------------------------------------------------------
 				-------------------------LIGHTBOX
@@ -230,12 +257,12 @@ define([
 
 					break;
 				case "editpage":
-					$target.load("../../templates/LOM-Elements/structure_newpage.html", function () {
+					$target.load("../../templates/LOM-Elements/structure_newpage_" + Utils.lang + ".html", function () {
 						that.editPageScreen(params);
 					});
 					break;
 				case "editfolder":
-					$target.load("../../templates/LOM-Elements/structure_newfolder.html", function () {
+					$target.load("../../templates/LOM-Elements/structure_newfolder_" + Utils.lang + ".html", function () {
 						that.editFolderScreen(params);
 					});
 					break;
@@ -248,10 +275,10 @@ define([
 			var that = this;
 			var params = {
 				lbx: {
-					title: "New Page",
+					title: (Utils.lang === "en") ? "New Page" : "Nouvelle page",
 					action: "addpage",
 					targetId: "custom_lbx",
-					saveBtn: "save",
+					saveBtn: (Utils.lang === "en") ? "Save" : "Sauvegarder",
 					obj: that
 				}
 			};
@@ -262,10 +289,10 @@ define([
 			var that = this;
 			var params = {
 				lbx: {
-					title: "New Page",
+					title: (Utils.lang === "en") ? "New Folder" : "Nouveau dossier",
 					action: "addfolder",
 					targetId: "custom_lbx",
-					saveBtn: "save",
+					saveBtn: (Utils.lang === "en") ? "Save" : "Sauvegarder",
 					obj: that
 				}
 			};
@@ -279,7 +306,7 @@ define([
 			var that = this;
 			var params = {
 				lbx: {
-					title: "Edit Structure Element",
+					title: (Utils.lang === "en") ? "Edit Structure Element" : "Édition d'un élément de structure",
 					action: action,
 					targetId: "custom_lbx",
 					saveBtn: "save",
@@ -300,12 +327,12 @@ define([
 
 			if (params.lbx.action === "addpage") {
 				//Load screen New Page
-				$target.load("../../templates/LOM-Elements/structure_newpage.html", function () {
+				$target.load("../../templates/LOM-Elements/structure_newpage_" + Utils.lang + ".html", function () {
 					that.newPageScreen(params);
 				});
 			} else {
 				//Load screen New FOLDER
-				$target.load("../../templates/LOM-Elements/structure_newfolder.html", function () {
+				$target.load("../../templates/LOM-Elements/structure_newfolder_" + Utils.lang + ".html", function () {
 					that.newFolderScreen(params);
 				});
 			}
@@ -314,10 +341,11 @@ define([
 		//------------------NEW XXX SCREEN-----------
 		newPageScreen: function (params) {
 			this.configScreen(params);
+			$("select#location").closest(".row").hide();
 		},
 		newFolderScreen: function (params) {
 			this.configScreen(params);
-
+			$("select#location").closest(".row").hide();
 		},
 		//------------------EDIT XXX SCREEN-----------
 
@@ -325,23 +353,130 @@ define([
 			var sub = params.lbx.sub;
 			var title_en = (Utils.lang === "en") ? sub.title : sub.altTitle;
 			var title_fr = (Utils.lang === "fr") ? sub.title : sub.altTitle;
+			var keywords = sub.$el.attr("data-keywords");
 			this.configScreen(params);
 
+
+			$("#LOM-structure-keywords").val(keywords);
 			$("#title_en").val(title_en);
 			$("#title_fr").val(title_fr);
 
+			var folderList = this.listOfFolders();
+			var selected;
+			var noneSelected = true;
+			for (var i = 0; i < folderList.length; i++) {
+				if (sub.parent && sub.parent.sPosition == folderList[i][1].sPosition) {
+					selected = folderList[i][1].sPosition;
+					noneSelected = false;
+				}
+				else if (noneSelected) {
+					selected = "root";
+				}
+			}
+			for (var j = 0; j < folderList.length; j++) {
+				var isSelected = (selected == folderList[j][1].sPosition) ? "selected" : "";
+				$("select#location").append("<option value=\"" + folderList[j][1].sPosition + "\"" + isSelected + ">" + folderList[j][0] + "</option>");
+			}
+
+			this.changingFolder = false;
+			var that = this;
+			$("select#location").change(function () {
+				if ($(this).val() != selected) {
+					that.changingFolder = $(this).val();
+				}
+				else {
+					that.changingFolder = false;
+				}
+			});
 		},
+
+		listOfFolders: function (isFolder = false) {
+			var list = this.master.subs;
+
+			var returnList = [];
+
+			for (var i = 0; i < list.length; i++) {
+				if (!list[i].isPage && list[i].sPosition.indexOf("m98") < 0) {
+					var desc = list[i].title;
+
+					if (list[i].parent) {
+						desc = list[i].parent.title + " > " + desc;
+
+						if (list[i].parent.parent) {
+							desc = list[i].parent.parent.title + " > " + desc;
+						}
+					}
+					returnList[returnList.length] = [desc, list[i]];
+
+					if (list[i].subs.length != 0 && !isFolder) {
+						var list2 = list[i].subs;
+
+						for (var j = 0; j < list2.length; j++) {
+							if (!list2[j].isPage && list2[j].sPosition.indexOf("m98") < 0) {
+								var desc = list2[j].title;
+
+								if (list2[j].parent) {
+									desc = list2[j].parent.title + " > " + desc;
+
+									if (list2[j].parent.parent) {
+										desc = list2[j].parent.parent.title + " > " + desc;
+									}
+								}
+								returnList[returnList.length] = [desc, list2[j]];
+							}
+						}
+					}
+				}
+			}
+			return returnList;
+		},
+
 		editFolderScreen: function (params) {
 			var sub = params.lbx.sub;
 
 			var title_en = (Utils.lang === "en") ? sub.title : sub.altTitle;
 			var title_fr = (Utils.lang === "fr") ? sub.title : sub.altTitle;
+			var keywords = sub.$el.attr("data-keywords");
 			this.configScreen(params);
 
 			$("#title_en").val(title_en);
 			$("#title_fr").val(title_fr);
+			$("#LOM-structure-keywords").val(keywords);
 
+			var folderList = this.listOfFolders(true);
 
+			for (var i = 0; i < folderList.length; i++) {
+				if (folderList[i][1].sPosition == sub.sPosition) {
+					folderList.splice(i, 1);
+				}
+			}
+
+			var selected;
+			var noneSelected = true;
+			for (var i = 0; i < folderList.length; i++) {
+				if (sub.parent && sub.parent.sPosition == folderList[i][1].sPosition) {
+					selected = folderList[i][1].sPosition;
+					noneSelected = false;
+				}
+				else if (noneSelected) {
+					selected = "root";
+				}
+			}
+			for (var j = 0; j < folderList.length; j++) {
+				var isSelected = (selected == folderList[j][1].sPosition) ? "selected" : "";
+				$("select#location").append("<option value=\"" + folderList[j][1].sPosition + "\"" + isSelected + ">" + folderList[j][0] + "</option>");
+			}
+
+			this.changingFolder = false;
+			var that = this;
+			$("select#location").change(function () {
+				if ($(this).val() != selected) {
+					that.changingFolder = $(this).val();
+				}
+				else {
+					that.changingFolder = false;
+				}
+			});
 		},
 
 
@@ -351,6 +486,22 @@ define([
 			$(".modal-title").text(params.lbx.title);
 			this.multiSave(params);
 			$(".modal-footer").remove();
+
+			var that = this;
+			$("#title_en, #title_fr").on("keypress", function (e) {
+				if (e.which == "13") {
+					that.enterPressed(params);
+				}
+			});
+		},
+
+		enterPressed: function (params) {
+			if ($("#" + params.lbx.targetId).find(".ico-LOM-editpage.LOM-edit-structure").length !== 0) {
+				$("#" + params.lbx.targetId).find(".ico-LOM-editpage.LOM-edit-structure").click();
+			}
+			else if ($("#" + params.lbx.targetId).find(".ico-SNAP-save.LOM-save-structure").length !== 0) {
+				$("#" + params.lbx.targetId).find(".ico-SNAP-save.LOM-save-structure").click();
+			}
 		},
 
 		multiSave: function (params) {
@@ -364,6 +515,8 @@ define([
 			});
 
 
+			/*
+			//this was to prevent the popup drop when sliding over the edge... causes more problems
 			$(".LOM-newpage").mousedown(function () {
 
 				$(".mfp-content").attr("data-temp-stop", true);
@@ -380,6 +533,8 @@ define([
 					}
 				});
 			});
+
+			*/
 
 		},
 
@@ -533,7 +688,6 @@ define([
 
 			sub.move(newPosition);
 			this.generateList(this.currentParent);
-
 		},
 		/*---------------------------------------------------------------------------------------------
 				-------------------------SAVE
@@ -546,12 +700,36 @@ define([
 		saveAndClose: function (params) {
 			this.save(params);
 
-			this.editor.closeLbx();
+			if (this.changingFolder) {
+				var newPosition;
+				if (this.changingFolder == "root") {
+					//MASTER STRUCTURE
+					newPosition = (this.master.subs[this.master.subs.length - 1].sPosition === "m98") ? "m98" : "m" + (this.master.subs.length);
+				} else {
+					//SUB
+					var folders = this.listOfFolders();
+					var sub;
+					for (var i = 0; i < folders.length; i++) {
+						if (folders[i][1].sPosition == this.changingFolder) {
+							sub = folders[i][1];
+						}
+					}
+					newPosition = this.changingFolder + "-" + sub.subs.length;
+				}
+				params.lbx.sub.move(newPosition);
+				this.generateList(this.currentParent);
 
+				if (params.lbx.sub.sPosition == this.master.currentSub.sPosition) {
+					this.reloadNecessary = true;
+				}
+			}
+
+			this.editor.closeLbx();
 		},
 		save: function (params) {
 			var title = (Utils.lang === "en") ? $("#title_en").val() : $("#title_fr").val();
 			var altTitle = (Utils.lang === "en") ? $("#title_fr").val() : $("#title_en").val();
+			var keywords = $("#LOM-structure-keywords").val();
 			var newPosition;
 			var sub;
 			var isPage;
@@ -566,14 +744,28 @@ define([
 					newPosition = this.currentParent.sPosition + "-" + this.currentParent.subs.length;
 				}
 				isPage = (params.lbx.action === "addpage") ? true : false;
-				sub = this.parent.addPage(newPosition, title, altTitle, isPage);
+				sub = this.parent.addPage(newPosition, title, altTitle, isPage, keywords);
 				this.generateList(this.currentParent);
-				$("[data-id='" + sub.sPosition + "']").hide().slideDown("swing", function () {});
+				$("[data-id='" + sub.sPosition + "']").hide().slideDown("swing", function () { });
+
+				/*var currentPageNum;
+				for(var i = 0; i < this.master.flatList.length; i++){
+					if(this.master.flatList[i].sPosition == this.master.currentSub.sPosition){
+						currentPageNum = i + 1;
+					}
+				}
+				$(".backnext").children("span").html(" <span class='pagelbl'>" + labels.vocab.pageLbl + "</span> " + currentPageNum + " " + labels.vocab.pageOf + " " + this.master.flatList.length + " ");*/
+
+				if (params.lbx.action === "addpage") {
+					this.reloadNecessary = true;
+				}
+
 				return sub;
 			} else if (params.lbx.action === "editpage" || params.lbx.action === "editfolder") {
 				sub = params.lbx.sub;
 				sub.title = title;
 				sub.altTitle = altTitle;
+				sub.keywords = keywords;
 				this.generateList(this.currentParent);
 				$(".menu.supermenu>li>ul").html("");
 				this.master.generateSupermenu();

@@ -1,0 +1,155 @@
+@import "./_vars";
+/*-------------------------------------------------------------------------
+//-------------------------------- LOGIN---------------------------
+
+-------------------------------------------------------------------------*/
+#LOM-login-container {
+    // ----------- COMMON 
+    background-color: $login-background;
+    padding: 10px 20px;
+    top: 0px;
+    width: 300px;
+
+    [type="password"], .password {
+        display: none;
+    }
+
+
+        left: 68px;
+        position: absolute;
+        z-index: 2;
+        //overflow: hidden;
+        visibility: hidden;
+
+        clip-path: polygon(-10% 0, 0 0, 0 100%, -10% 100%);
+        -webkit-clip-path: polygon(-10% 0, 0 0, 0 100%, -10% 100%);
+
+        -webkit-transition: all 0.2s ease-out;
+        transition: all 0.2s ease-out;
+
+        &.visible {
+            visibility: visible;
+
+            clip-path: polygon(-10% 0, 100% 0, 100% 100%, -10% 100%);
+            -webkit-clip-path: polygon(-10% 0, 100% 0, 100% 100%, -10% 100%);
+
+            -webkit-transition: all 0.2s ease-in;
+            transition: all 0.2s ease-in;
+        }
+
+        &:before {
+            content: "";
+            position: absolute;
+            width: 23px;
+            height: 45px;
+            left: -23px;
+            top: 0px;
+            background-color: $login-background;
+            z-index: 2;
+            visibility: hidden;
+
+            -webkit-transition: all 0.1s ease-in;
+            transition: all 0.1s ease-in;
+
+            clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+            -webkit-clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+        }
+
+        &.animateBefore {
+            &:before {
+                width: 23px;
+                visibility: visible;
+
+                clip-path: polygon(-10% 0, 100% 0, 100% 100%, -10% 100%);
+                -webkit-clip-path: polygon(-10% 0, 100% 0, 100% 100%, -10% 100%);
+
+                -webkit-transition: all 0.1s ease-out;
+                transition: all 0.1s ease-out;
+            }
+        }
+
+    
+    label {
+        display: block;
+    }
+
+    /*-webkit-box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);
+    -moz-box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);
+    box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);*/
+}
+
+.loggedin{
+    margin-top: 10px;
+    text-align: right;
+}
+
+// logout button
+
+body header #wb-bar .top-menu #wb-lng.visible-md ul.text-right a.LOM-logout {
+    background-color: transparent;
+    background-image: none;
+
+    &:hover,
+    &:focus {
+        text-decoration: underline;
+    }
+}
+
+
+
+
+#LOM-toolbox #LOM-login-box{
+    display: block;
+    background-color: white;
+    clear: both;
+    border: 1px $grey-border solid;
+    overflow: visible;
+    width: 48px;
+    position: relative;
+    
+    button.LOM-login{
+        position: relative;
+		display: block;
+		clear: both;
+		padding-left: 44px;
+		padding-right: 0px;
+		overflow-x: hidden;
+		overflow-y: hidden;
+		white-space: nowrap;
+		width: 40px;
+        border-radius: 0px 8px 8px 0px;
+        border: none;
+        margin-bottom: 0;
+        background-color: white;
+        
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+        
+        &.activated{
+            background-color: $login-background;
+            border-radius: 0px;
+            width: 40px!important;
+            overflow-x: hidden!important;
+            padding-right: 0px!important;
+        }
+		&:hover, &:focus{
+			overflow-x:visible;
+			text-indent: 10px;
+			background-color:white;
+			width:auto;
+			padding-right:5px;
+            background-color: $login-background;
+            outline: none;
+		}
+		
+		&:before{
+			border:none!important;
+			//margin-left:-40px; //removed when moving to SVG
+		}
+    }
+}
+
+html[data-role="user"] #LOM-toolbox #LOM-login-box{
+    background-color: transparent;
+}
+

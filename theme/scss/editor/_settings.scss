@@ -19,3 +19,18 @@ label[for=LOM-showHome]:before{background-position: 5px 4px;}
 label[for=LOM-showHelp]:before{background-position: -102px 4px;}
 label[for=LOM-showExit]:before{background-position: -154px 4px;}
 label[for=LOM-showSitemap]:before{background-position: -200px 4px;}
+
+.LOM-settings-active{
+    .modal-dialog{
+        border-radius: 0px;
+    }
+    button.btn, input[type="submit"].btn, input[type="button"].btn, a.btn{
+        border-radius: 0px;
+        border: none;
+        
+        transition: background-color 0.2s;
+    }
+    label.col-md-5{
+        padding-left: 0;
+    }
+}

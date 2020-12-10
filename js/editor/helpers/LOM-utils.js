@@ -16,7 +16,7 @@ define(['jquery', './../LOM_labels'], function ($, LOMLabels) {
 			return false;
 
 		},
-		generateId: function(prefix){
+		generateId: function (prefix) {
 			var currentId;
 			var flag = false;
 			var i = 0;
@@ -31,7 +31,7 @@ define(['jquery', './../LOM_labels'], function ($, LOMLabels) {
 				i++;
 			}
 			return currentId;
-			
+
 		},
 
 		validateFilename: function (filename) {
@@ -68,6 +68,11 @@ define(['jquery', './../LOM_labels'], function ($, LOMLabels) {
 				}
 			}
 			return true;
+		},
+		whichChild: function (elem) {
+			var i = 0;
+			while ((elem = elem.previousSibling) != null) ++i;
+			return i;
 		}
 	};
 });

@@ -18,20 +18,30 @@ define([
 			this.permissions.subElements.details = true;
 		},
 
-		startSort: function () {
-			this.storeElementsValues();
+		setLabels: function () {
+			switch (this.subtype) {
+				case "tabs":
+					this.typeName = this.labels.type.tabs;
+					break;
+				default:
+					this.typeName = this.labels.type.accordion;
+					break;
+			}
+
+			this.setLabelsDone = true;
+			return false;
 		},
 
-		initDom: function () {
+		initDefaultDomValues: function ($template) {
 			if (this.subtype === "tabs") {
-				this.$el.removeClass("wb-tabs");
+				$template.children(".LOM-element").addClass("wb-tabs");
 			}
+			return $template;
 		},
 
-		customRemoveBeforeSave: function () {
-			if (this.subtype === "tabs") {
-				this.$el.addClass("wb-tabs");
-			}
+		getHolder: function () {
+			this.holderId = this.id;
+			return this.$el;
 		},
 		customAfterLoad: function () {
 

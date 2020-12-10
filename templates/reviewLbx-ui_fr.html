@@ -1,0 +1,51 @@
+<div class="row reviews">
+    <div class="col-md-12 review">
+        <h3>Modèle de révision</h3>
+        <p class="smaller">Par <strong><span class="from">Un Utilisateur</span></strong> le <strong><span class="date">une date</span></strong> à <strong><span class="time">une heure</span></strong></p>
+        <div class="review-content">
+
+        </div>
+        <button class="snap-xs ico-SNAP-delete delete-review" title="Supprimer la révision">Supprimer la révision</button>
+    </div>
+</div>
+<button class="snap-md ico-LOM-plus add-review" title="Ajouter une révision">Ajouter une révision</button>
+
+<style>
+    .smaller {
+        font-size: 0.9em;
+    }
+
+    .reviews {}
+
+    .review,
+    .add-review {
+        position: relative;
+        margin-bottom: 30px;
+        border: 1px solid #ccc;
+    }
+
+    .review-content {
+        background-color: #eee;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+
+    .review-content p:last-child {
+        margin-bottom: 0;
+    }
+
+    button.delete-review {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .add-review input[type="text"] {
+        margin-left: 5px;
+    }
+
+    .add-review label[for="title"] {
+        margin-top: 30px;
+    }
+</style>

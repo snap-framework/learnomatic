@@ -1,0 +1,59 @@
+/* *************************************
+ * CENTRALIZING SOME THINGS
+ * ************************************/
+
+$grey-border:grey;
+$light-grey-border:#e1e1e1;
+
+$pale-grey-background:#fafafa;
+$light-grey-background:#d7d7d7;
+$light-grey-background-hover:#e1e1e1;
+
+$dark-grey:#555;
+
+
+/* *************************************
+ * Utility colors
+ * ************************************/
+$warning-color:orange;
+
+/*$button-LOM-icon-color:blue;
+$button-LOM-icon-color-hover:yellow;
+$btn-bg-color:teal;*/
+/* *************************************
+ * LISTS
+ * ************************************/
+
+$list-border:$light-grey-border;
+$list-background:$pale-grey-background;
+
+
+
+/* *************************************
+ * DASHBOARD
+ * ************************************/
+$dashboard-border-color:$grey-border;
+$dashboard-hover-bg-color:$light-grey-background;
+
+$login-background:$light-grey-background;
+
+/* *************************************
+ * SOCIAL
+ * ************************************/
+$social-header-background:$light-grey-background;
+$social-background:$pale-grey-background;
+$social-border:$light-grey-border;
+
+$online-circle:#3CD517;
+$online-border:green;
+$offline-circle:grey;
+
+$sent-msg-bg:#eeffbb;
+$received-msg-bg:#cceeff;
+
+$msg-user:#337;
+
+$active-chat:$light-grey-background-hover;
+
+$active-review-color:$pale-grey-background;
+$active-review-border:$grey-border;

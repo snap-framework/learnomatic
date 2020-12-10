@@ -2,8 +2,9 @@ define([
 
 	'jquery',
 	'settings-core',
-	'./../pageEdit/elementClass'
-], function ($, CoreSettings, ElementClass) {
+	'./../pageEdit/elementClass',
+	'utils'
+], function ($, CoreSettings, ElementClass, Utils) {
 	'use strict';
 	return ElementClass.extend({
 		initialize: function (options) {
@@ -22,16 +23,27 @@ define([
 
 		},
 
+		setLabels: function () {
+			this.typeName = this.labels.type.video;
+			this.setLabelsDone = true;
+			return false;
+		},
+
+		initDefaultDomValues: function ($template) {
+			$template.find("#inline-captions summary .LOM-editable").html(this.labels.default.transcript)
+
+			return $template;
+		},
+
 
 		customAfterLoad: function () {
 			var that = this;
+			this.player = this.$el.find("video").get(0);
 
-
-			var id = this.id + "-md";
-			this.vid = document.getElementById(id);
 			this.$el.children("figcaption").prepend("<div class='markers LOM-delete-on-save'></div>");
 			if (this.$holder.children(".LOM-element").length > 0) {
-				this.vid.oncanplay = function () {
+				//once the video is ready, it'll set markers
+				this.player.oncanplay = function () {
 					for (var i = 0; i < that.elements.length; i++) {
 						that.elements[i].setMarker();
 					}
@@ -41,23 +53,16 @@ define([
 
 			return false;
 		},
-		customRemoveBeforeSave: function () {
-			this.$el.removeClass("video");
-			this.$el.removeClass("wb-mltmd-inited");
-			this.$el.find(".wb-mm-ctrls").remove();
-			this.$el.find(".wb-mm-cc").remove();
-			var $video = this.$el.find("video");
-			if ($video.parent().hasClass("display")) {
-				$video.unwrap();
-			}
-		},
 
+		initDom: function () {
+			initWbAdd(".wb-mltmd");
+		},
 		/*---------------------------------------------------------------------------------------------
 		-------------------------CONFIGURATION
 		---------------------------------------------------------------------------------------------*/
 
 		changeDefaultLbxSettings: function (params) {
-			params.title = "Video Configuration";
+			params.title = (Utils.lang === "en") ? "Video Configuration" : "Configuration de la vidéo";
 			return params;
 		},
 
@@ -69,14 +74,17 @@ define([
 				"title": ""
 
 			};
+
+			params.selector = "video";
+
 			return params;
 
 		},
 
 		loadConfigCustom: function (params) {
-			$("#" + params.lbx.targetId).append("<section id='LOM-video-files' class='row'><h3 class='col-md-12'>Video File</h3><div class='col-md-6'></div></div>");
+			$("#" + params.lbx.targetId).append("<section id='LOM-video-files' class='row'><div class='col-md-6'><h3>" + ((Utils.lang === "en") ? "Available Video Files" : "Fichiers vidéo disponibles") + "</h3><div class='video-files'></div></div></section>");
 			this.loadVideoList(params);
-			$("#" + params.lbx.targetId).append("<details id='LOM-img-gallery'><summary>Video Poster</summary></details>");
+			$("#" + params.lbx.targetId).append("<section class='row'><div class='col-md-12'><details id='LOM-img-gallery'><summary>" + ((Utils.lang === "en") ? "Video Poster" : "Vignette de la vidéo") + "</summary><div class='tgl-panel' style='padding-top: 25px;'></div></details></div></section>");
 			this.loadImageList(params);
 
 		},
@@ -112,7 +120,7 @@ define([
 		generateVideoList: function (aVideo, params) {
 			var that = this;
 
-			var $btnHolder = $("#LOM-video-files").children("div");
+			var $btnHolder = $("#LOM-video-files").find(".video-files");
 			var btnSelected, fileValue, filePath;
 
 
@@ -123,10 +131,15 @@ define([
 
 			}
 
-			for (var i = 0; i < aVideo.length; i++) {
-				btnSelected = (fileValue === aVideo[i]) ? " btn-selected" : "";
-				$btnHolder.append("<button class='snap-lg ico-LOM-video" + btnSelected + "' value='" + aVideo[i] + "'>" + aVideo[i] + "</button>");
+			if (aVideo.length > 0) {
+				for (var i = 0; i < aVideo.length; i++) {
+					btnSelected = (fileValue === aVideo[i]) ? " btn-selected" : "";
+					$btnHolder.append("<button class='snap-lg ico-LOM-video" + btnSelected + "' value='" + aVideo[i] + "'>" + aVideo[i] + "</button>");
 
+				}
+			}
+			else {
+				$btnHolder.append("<p>" + ((Utils.lang === "en") ? "There are no availables files, please upload files using the option on the right." : "Il n'y a aucun fichier disponible, veuillez téléverser des fihiers en utilisant la fonction à droite.") + "</p>")
 			}
 
 			$btnHolder.children("button").click(function () {
@@ -141,8 +154,13 @@ define([
 		selectVideo: function (filename) {
 			var $buttons = $("#LOM-video-files").find(".ico-LOM-video");
 			var $selected = $("#LOM-video-files").find(".ico-LOM-video[value=\"" + filename + "\"]");
-			this.$el.find("video").children("source").attr("src", "content/medias/videos/" + filename);
 
+			var $bkp = this.getBkp();
+
+			this.$el.find("video").children("source").attr("src", "content/medias/videos/" + filename);
+			$bkp.find("#" + this.id).find("video").children("source").attr("src", "content/medias/videos/" + filename);
+
+			this.saveBkp($bkp);
 
 			$buttons.removeClass("btn-selected");
 			$selected.addClass("btn-selected");
@@ -191,11 +209,12 @@ define([
 
 			return newArray;
 		},
+
 		generateGallery: function (aImages, params) {
 			var that = this;
 			var modulo = (aImages.length % 6 === 0) ? 6 : 4;
 			var lineCounter = 1;
-			var $gallery = $("#LOM-img-gallery");
+			var $gallery = $("#LOM-img-gallery .tgl-panel");
 			var $row;
 			var $img;
 			var bootstrap = (modulo === 6) ? "col-md-2" : "col-md-3";
@@ -256,7 +275,7 @@ define([
 		createUpload: function ($container) {
 			var params = {
 				"id": this.id + "_poster",
-				"title": "Upload Poster",
+				"title": ((Utils.lang === "en") ? "Upload Poster" : "Téléverser une vignette"),
 				$container: $container,
 				"filetype": ['jpg', 'jpeg', 'png', 'gif'],
 				"obj": this,
@@ -272,7 +291,7 @@ define([
 
 			var params = {
 				"id": this.id + "_vid",
-				"title": "Upload Video",
+				"title": (Utils.lang === "en") ? "Upload video" : "Téléverser une vidéo",
 				$container: $container,
 				"filetype": ['mp4', 'mpeg'],
 				"obj": this,
@@ -287,16 +306,18 @@ define([
 		fileUploaded: function (data) {
 			var file = data.location + data.filename;
 			var params = {};
-			params.lbx = this.defaultLbxSettings("Configuration", "config", "Save Configuration");
+			var save = (Utils.lang === "en") ? "Save Configuration" : "Sauvegarder la configuration";
+			params.lbx = this.defaultLbxSettings("Configuration", "config", save);
 			params.config = this.configLbxSettings();
 
 			if (data.extention === "jpg" || data.extention === "jpeg") {
 				$("#uploaded_file").html("<img src=\"" + file + "\" >");
-				$("#LOM-img-gallery").html("<summary>Video Poster</summary>");
+				$("#LOM-img-gallery .tgl-panel").html("");
 				this.loadImageList(params);
 			} else if (data.extention === "mp4" || data.extention === "mpeg") {
 				this.loadVideoList(params);
-				$("#LOM-video-files").children(".col-md-6").html("");
+				$("#LOM-video-files").find(".video-files").html("");
+				$("#LOM-video-files #LOM-video-upload").html("");
 				this.selectVideo(data.filename);
 
 			}
@@ -311,7 +332,7 @@ define([
 		---------------------------------------------------------------------------------------------*/
 		updateTextToTranscript: function (obj) {
 			obj.changeDefaultLbxSettings = function (params) {
-				params.title = "Transcript Configuration";
+				params.title = (Utils.lang === "en") ? "Transcript Configuration" : "Configuration de la transcription"
 				return params;
 			};
 
@@ -362,7 +383,8 @@ define([
 
 				var $cc = $("#LOM-is-CC");
 				var isCC = (this.$el.hasClass("wb-tmtxt")) ? "checked" : "";
-				$cc.append("<label>Is this Close Caption? : <input type=\"checkbox\" id=\"closedcaption\" " + isCC + " name=\"scales\">");
+				var text = (Utils.lang === "en") ? "Is this Close Caption?" : "Utiliser comme sous-titrage&nbsp;?"
+				$cc.append("<label>" + text + " : <input type=\"checkbox\" id=\"closedcaption\" " + isCC + " name=\"scales\">");
 				$cc.children("label").children("#closedcaption").on("change", function () {
 
 					if (this.checked) {
@@ -459,8 +481,8 @@ define([
 					var total = Math.floor((this.begin / this.parent.getDuration()) * 100);
 					this.$marker.css("left", total + "%");
 					this.$marker.click(function () {
-						that.parent.vid.currentTime = that.begin;
-						that.parent.vid.play();
+						that.parent.player.currentTime = that.begin;
+						that.parent.player.play();
 					});
 					this.$marker.hover(
 						function () {

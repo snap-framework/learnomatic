@@ -2,7 +2,7 @@ $element-background:white;
 $element-border :#eee;
 $label-color:#555;
 
-$delete-color:#990000;
+$delete-color:#990000; 
 /*-------------------------------------------------------------------------
 //-------------------------------- Edit bar/view---------------------------
 -------------------------------------------------------------------------*/
@@ -10,7 +10,6 @@ $delete-color:#990000;
     visibility: hidden;
     position: absolute;
 	border-radius: 5px;
-	background-color: #fdfdfd;
 	
     top: 0%;
     right: 0%;
@@ -23,15 +22,14 @@ $delete-color:#990000;
 		visibility: visible;
 	}
 	.LOM-label{
-
 		border-color: transparent;
 		border: 2px solid transparent;
 		padding: 10px;
 		color:$label-color;
-
-
-		
 	}	
+    button:not(:last-of-type){
+        margin-right: 5px;
+    }
 }
 	//-------------- PENDING DELETE
 	html body #dynamic_content .LOM-pending-delete{
@@ -50,18 +48,117 @@ $delete-color:#990000;
 		min-height:45px;
 		background-color:$element-background;
 
-		border-radius: 2px 5px 5px 5px;
+		//border-radius: 2px 5px 5px 5px;
 		border-width:1px;
 		border-color:$element-border;
-		margin-bottom:20px;			
+		margin-bottom:20px;		
+        
+        &[data-lom-element="text"]{
+            margin-top: 35px;//65px;
+			padding: 20px 30px;
+            
+			p:last-child{
+				margin-bottom: 0;
+			}
+            .LOM-edit-view{
+                top: -46px;
+            }
+        }
+        [data-lom-element="details"]{
+            summary{
+                padding-left: 45px;
+                
+                .cke_editable:before{
+                    left: -55px;
+                }
+            }
+        }
+        &[data-lom-element="image"]{
+            padding: 50px 20px 30px 20px;
+            
+            a.LOM-img-lbx, a.LOM-img-lbx img{
+                cursor: default!important;
+            }
+        }
+		&[data-lom-element="custom"]{
+			padding: 20px 30px;
+            
+			p:last-child{
+				margin-bottom: 0;
+			}
+			h2{
+				margin-top: 15px;
+			}
+        }
+        &[data-lom-element="button"]{
+            margin-top: 65px;
+				display:block;
+				padding: 20px 30px;
+			& button:not([onclick]) span.LOM-btn-title:after{
+			  opacity:0.6;
+			  content:' (No Functionality)';
+			}
+			&.snap-sm{
+			  min-width:250px;
+			}
+            .LOM-edit-view{
+                top: -46px;
+            }
+        }
+        &[data-lom-element="btngroup"]{
+            margin-top: 65px;
+            
+            .LOM-edit-view{
+                top: -46px;
+            }
+        }
+        &[data-lom-element="audio"]{
+            margin-top: 65px;
+            padding: 30px 20px;
+            
+            .LOM-edit-view{
+                top: -46px;
+            }
+        }
+        &[data-lom-element="video"]{
+            padding: 30px 20px;
+        }
+		&[data-lom-element="activity"]{
+            padding-top: 20px;
+			padding-bottom: 20px;
+            padding-right: 30px;
+        }
+		&[data-lom-element="faq"]{
+            padding-top: 50px;
+			padding-bottom: 25px;
+            margin-left: 0;
+            margin-right: 0;
+            
+			.favbtntest, p[aria-live]{display:none!important;}
+			.input-group{width:60%;}
+        }
+        &[data-lom-element="lightbox"]{
+            .modal-title{
+                padding-left: 30px;
+                    
+                p:last-child{
+                    margin-bottom: 0;
+                }
+            }
+            .modal-footer, .modal-header button.mfp-close{
+                display: none;
+            }
+            .LOM-holder{
+                padding-left: 40px;
+            }
+        }
 	}
-
 	
 	.LOM-pageEdit-active  .LOM-frame>&{
 		//specifically, elements DIRECTLY on the frame when editmode is active
 		
 		border-style:solid;
-		.LOM-element{
+		.LOM-element:not([data-lom-element="details"]){
 			padding-left:20px;
 			//b-elements border
 			border-style:dotted;
@@ -70,6 +167,27 @@ $delete-color:#990000;
 		
 	}
 }
+
+html.LOM-pageEdit-active[lang="fr"] .LOM-element[data-lom-element="button"] button:not([onclick]) span.LOM-btn-title:after{
+    content:' (Aucune fonctionnalité)';
+}
+
+html:not(.LOM-pageEdit-active) .LOM-element[data-lom-element="button"]:not(:last-of-type) button.LOM-btn{
+    margin-bottom: 10px;
+}
+
+html.LOM-pageEdit-active{
+    .col-md-4, .col-md-3, .col-md-2, .col-md-1{
+        .LOM-element:not([data-lom-element="details"]){
+            margin-top: 65px!important;
+            
+            .LOM-edit-view{
+                top: -46px!important;
+            }
+        }
+    }
+} 
+
 /*-------------------------------------------------------------------------
 //-------------------------------- Handles & SORTABLE---------------------------
 -------------------------------------------------------------------------*/
@@ -81,12 +199,12 @@ $delete-color:#990000;
 	
     margin-left: -35px;
 	margin-top:0px;
-	top:0px;
+	top: -1px;
 	left:0px;
     width: 35px;
     height: 35px;
 	
-	border-radius: 5px 0px 0px 5px;
+	border-radius: 0;
 	border-top-width: 1px;
 	border-left-width: 1px;
 	border-bottom-width: 1px;
@@ -104,10 +222,10 @@ $delete-color:#990000;
 	.LOM-pageEdit-active .qs-answers:hover .LOM-element>&{visibility:visible!important;}
 	.LOM-pageEdit-active .LOM-holder:hover>.LOM-element>&{visibility:visible!important;}
 
-	@include iconpack(move, md, standard);
+	@include iconpack(move, md);
 	
 	&:hover{
-		background-position-y: -35px;
+		@include iconpack(move, md, #606060);
 		cursor: grab;
 	}
 
@@ -170,13 +288,35 @@ html.LOM-hide-add{
 	}
 }
 
+/*----------------- CONTAINER  -----------------------*/
+$element-container-border:#999;
+.LOM-pageEdit-active .LOM-element[data-LOM-element='container']{
+	clear:both;
+	margin-top: 30px;
+	padding: 40px 10px 10px 10px;
+	border-color:$element-container-border;
+	&:before{
+		content: 'CONTAINER';
+		position: absolute;
+		margin-left: -21px;
+		margin-top: -50px;
+		width: auto;
+		padding: 2px 3px 0px 3px;
+		border: 1px solid $element-container-border;
+		border-bottom: transparent;
+		background-color: white;
+		font-size: 12px;
+		font-weight: 600;
+	}
 
+	
+}
 /*----------------- Details -----------------------*/
 .LOM-pageEdit-active .LOM-element[data-LOM-subtype='tabs']>details>summary::-webkit-details-marker{display:none;}
 .LOM-pageEdit-active .LOM-element[data-LOM-element='accordion']{
-	padding-top:40px;
-	padding-left:20px;
-	details.LOM-element[data-LOM-element='details']{
+	padding: 60px 20px;
+	
+    details.LOM-element[data-LOM-element='details']{
 		&[open].LOM-fake-open{
 			div.LOM-holder{display:none;}
 			//div.LOM-ui-handle{display:none;}
@@ -209,9 +349,8 @@ details,
   		filter: alpha(opacity=30);
 	}
 }
-details:hover, .LOM-frame:hover, *:focus{
+details:hover, .LOM-frame:hover, .LOM-holder:hover, *:focus{
 	&>button.ico-LOM-plus.LOM-delete-on-save{
-
 		opacity: 1;
   		filter: alpha(opacity=100);
 	}
@@ -234,23 +373,27 @@ details:hover, .LOM-frame:hover, *:focus{
 
 
 .LOM-pageEdit-active .LOM-element[data-lom-subtype='tabs']{
-	margin-top:45px;
+	margin-top: 70px;
 	//padding-top:10px;
 	&:before{
 		content: 'TABBED INTERFACE';
 		position: absolute;
-		margin-left: -41px;
-		margin-top: -52px;
+		margin-left: -21px;
+		margin-top: -104px;
 		width: auto;
 		padding: 10px;
 		border: 1px solid #ddd;
 		border-bottom: transparent;
-		border-right: transparent;
-		border-top-right-radius: 5px;
+		//border-top-right-radius: 5px;
 		background-color: white;
 
 	}
 }
+
+html.LOM-pageEdit-active[lang="fr"] .LOM-element[data-lom-subtype='tabs']:before{
+	content: 'INTERFACE À ONGLETS';
+}
+
 /*----------------- CAROUSEL -----------------------*/
 .LOM-pageEdit-active .LOM-element[data-lom-element='carousel']{
 	padding-top:45px;
@@ -265,7 +408,7 @@ details:hover, .LOM-frame:hover, *:focus{
 		border: 1px solid #ddd;
 		border-bottom: transparent;
 		border-right: transparent;
-		border-top-right-radius: 5px;
+		//border-top-right-radius: 5px;
 		background-color: white;
 
 	}
@@ -277,6 +420,17 @@ details:hover, .LOM-frame:hover, *:focus{
 	[role="tablist"]{
 		display:none;
 	}
+	
+	
+	.tabpanels>.LOM-element{
+		//WHEN IN EDIT MODE
+		opacity: 1;
+		visibility: visible;
+		position: relative;
+		max-height: inherit;
+
+	}
+
 }
 
 
@@ -316,14 +470,21 @@ details:hover, .LOM-frame:hover, *:focus{
 	&[data-action-type='lightbox'] option:not(.LOM-action-lightbox){display:none;}
 }
 
+.LOM-custom-script:not(.LOM-attr-value){
+	display:none;
+}
+
 
 .LOM-pageEdit-active .LOM-element[data-lom-element='lightbox']{
+	padding-top: 50px;
+	padding-bottom: 20px;
+	
 	.mfp-hide{display:block!important;}
 	.LOM-popup-ID{
 		position: absolute;
 		right: 0px;
-		border: 1px #e1e1e1 solid;
-		border-radius: 5px;
+		border-left: 1px #e1e1e1 solid;
+		//border-radius: 5px;
 		background-color: white;
 		padding: 12px;
 		color:black;
@@ -331,6 +492,10 @@ details:hover, .LOM-frame:hover, *:focus{
 			content:'Lightbox ID: ';
 		}
 	}
+}
+
+html.LOM-pageEdit-active[lang="fr"] .LOM-element[data-lom-element='lightbox'] .LOM-popup-ID:before{
+    content:'ID de la fen. cont. : '; 
 }
 
 /*----------------- VIDEOS -----------------------*/
@@ -355,9 +520,9 @@ details:hover, .LOM-frame:hover, *:focus{
     margin-right: 0px;
 }
 
-#LOM-video-upload h3, #LOM-audio-upload h3{
+/*#LOM-video-upload h3, #LOM-audio-upload h3{
     margin-top: 0px;
-}
+}*/
 
 /*----------------- markers -----------------------*/
 
@@ -401,3 +566,52 @@ figure figcaption .marker-hover{
 	background-color:red;
 	display:block;
 }
+
+
+.LOM-element.LOM-preload{
+	opacity:0.5;
+	&:before{
+		 content: '';
+		 position: absolute;
+		 display: block;
+		 width: 100%;
+		 height: 100%;
+		 margin: auto;
+		z-index:1;
+		background-image:url(../courses/_default/theme/base/loading.gif);
+		background-position:center;
+		background-repeat:no-repeat;
+	}
+}
+
+.LOM-pageEdit-active .LOM-holder.hidden-holder {
+    visibility: hidden;
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+// icon selected
+button.currentIcon, button.currentSize, button.currentLbx, button.currentNav, button.currentOther, button.currentCustom{
+	outline: dashed $label-color 3px!important;
+}
+
+/* *******************************************************
+ * Style Editor
+ * ******************************************************/
+
+
+	 button.LOM-style-active{
+		 outline:#606060 dashed 3px;
+		 background-color: #cccccc!important;
+	 }
+
+	 .row.icon-list button {
+		margin: 1px;
+	}
+	.style-result-box{position:relative;}
+
+	.style-result-box{
+		border:1px solid grey;
+	}

@@ -1,0 +1,86 @@
+<section class="modal-dialog modal-content overlay-def mfp-with-anim mfp-zoom-in">
+    <header class="modal-header">
+        <h2 class="modal-title">Search/Replace in the course</h2>
+        <button title="Close overlay (escape key)" type="button" class="mfp-close overlay-close">×<span class="wb-inv"> Close overlay (escape key)</span></button>
+    </header>
+
+    <div class="modal-body" id="searchreplace">
+        <div class="row">
+            <div class="col-md-12">
+                <p><strong>Note:</strong> This search and replace function affects the <strong>whole</strong> content of the course.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Search</h3>
+                <p>
+                    <label for="search">Search for </label>
+                    <input type="text" name="search" id="search">
+                    <label for="searchin">in </label>
+                    <select id="searchin" name="searchin">
+                        <option selected value="text">text</option>
+                        <option value="code">code</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="case">Case-sensitive </label>
+                    <input type="checkbox" name="case" id="case">
+                </p>
+            </div>
+            <div class="col-md-6">
+                <h3>Replace</h3>
+                <p>
+                    <label for="replace">Replace with </label>
+                    <input type="text" name="replace" id="replace">
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="ico-LOM-search snap-lg startSearchReplace" style="margin-bottom: 30px;" onclick>Start</button>
+            </div>
+        </div>
+        <div class="row display hidden">
+            <div class="col-md-12">
+                <h3>Results</h3>
+            </div>
+            <div class="col-md-4">
+                <h4>Page Location and Title</h4>
+            </div>
+            <div class="col-md-4">
+                <h4>Result</h4>
+            </div>
+            <div class="col-md-4">
+                <h4>Replacement</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 no-results hidden">
+                <h3>No Results</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer"><button type="button" id="ftrClose" class="btn btn-sm btn-primary pull-left popup-modal-dismiss" title="Close Close overlay (escape key)">Close<span class="wb-inv">Close overlay (escape key)</span></button></div>
+
+    <script>
+
+        masterStructure.editor.initSearchReplace($(".modal-dialog"));
+
+    </script>
+
+    <style>
+        .search-highlight {
+            background-color: #FFFF00;
+        }
+
+        h3 {
+            margin-top: 15px;
+        }
+
+        h4 {
+            margin-top: 10px;
+        }
+    </style>
+
+</section>

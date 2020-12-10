@@ -1,0 +1,56 @@
+/* CSS Document */
+
+// ----------------------------- css utilities --------------------------------------------------------
+
+#dynamic_content
+{
+	.paragraph-padding{
+		
+		padding:10px 5px 10px 10px;
+		
+	}
+
+	
+	
+	//changes the style of an object to show it as an accessibility error
+	h1.accessibility_error
+	{
+		&:after
+		{
+			display:inline-block;
+			content:"^^^ Accessibility error! Should not use more than one h1 tag!";
+		}
+		font-size:2em !important;
+		color:red !important;
+		background-color:pink !important;
+		padding:20px !important;
+		border:4px solid red;	
+	}
+	
+	//Manual theme color applicators
+	
+	.primary-color			{ background-color:$primary-color !important; 			color:$primary-color-text!important; }
+	.primary-color-lighter	{ background-color:$primary-color-lighter!important; 	color:$primary-color-lighter-text!important; }
+	.primary-color-darker	{ background-color:$primary-color-darker!important; 	color:$primary-color-darker-text!important; }
+	.secondary-color		{ background-color:$secondary-color!important; 			color:$secondary-color-text!important; }
+	.secondary-color-lighter{ background-color:$secondary-color-lighter!important; 	color:$secondary-color-lighter-text!important; }
+	.secondary-color-darker	{ background-color:$secondary-color-darker!important; 	color:$secondary-color-darker-text!important; }
+	.tertiary-color			{ background-color:$tertiary-color!important; 			color:$tertiary-color-text!important; }
+	.tertiary-color-lighter	{ background-color:$tertiary-color-lighter!important;	color:$tertiary-color-lighter-text!important; }
+	.tertiary-color-darker	{ background-color:$tertiary-color-darker!important; 	color:$tertiary-color-darker-text!important; }
+	
+	.block-background			{ background-color:$block-background !important; }
+	.block-background-alternate	{ background-color:$block-background-alternate !important; }
+	
+	.txt-primary-color			{ color:$primary-color!important; }
+	.txt-primary-color-lighter	{ color:$primary-color-lighter!important; }
+	.txt-primary-color-darker	{ color:$primary-color-darker!important; }
+	.txt-secondary-color		{ color:$secondary-color!important; }
+	.txt-secondary-color-lighter{ color:$secondary-color-lighter!important; }
+	.txt-secondary-color-darker	{ color:$secondary-color-darker!important; }
+	.txt-tertiary-color			{ color:$tertiary-color!important; }
+	.txt-tertiary-color-lighter	{ color:$tertiary-color-lighter!important; }
+	.txt-tertiary-color-darker	{ color:$tertiary-color-darker!important; }
+	
+	
+}

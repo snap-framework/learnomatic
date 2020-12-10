@@ -1,0 +1,25 @@
+<fieldset style="margin-bottom: 15px; border: none;">
+    <legend style="font-size: 16px; margin-bottom: 0;">
+        <p><strong>Rendre l'ordre des choix de réponse aléatoire?</strong></p>
+    </legend>
+    <p>
+        <input type="radio" name="random-answers" id="random-answers-yes" value="true">
+        <label for="random-answers-yes">Oui <span class="tip">(les choix de réponse sont réorganisés à chaque fois que l'activité/examen st commencé(e))</span></label>
+    </p>
+    <p>
+        <input type="radio" name="random-answers" id="random-answers-no" value="false" checked>
+        <label for="random-answers-no">Non <span class="tip">(les choix de réponses apparaîssent dans l'ordre que vous les voyez dans l'éditeur)</span></label>
+    </p>
+</fieldset>
+
+<p>
+    <input type="checkbox" name="second-chance" id="second-chance">
+    <label for="second-chance">Permettre une deuxième chance lors d'une mauvaise réponse?</label>
+</p>
+
+<style>
+    .tip {
+        font-weight: 400;
+        font-size: 13px;
+    }
+</style>

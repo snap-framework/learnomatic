@@ -1,0 +1,820 @@
+
+@import "./../_vars";
+@import "./../../../common/scss/utils/_utils";
+
+@import "./_template/_template";
+@import "./_template/_css_utilities";
+@import "./_template/_objects";
+@import "./_template/_animate";
+
+
+// -----------------------------------------------------------
+// 					Paddings and Margins
+// -----------------------------------------------------------
+
+// --------------- 	Variables 	-------------------------- 
+$testpadding:80px;
+$testpadding2:60px;
+$buttonheight:45px;
+$block-margins:80px;
+$block-padding:30px;
+$top-banner-margins:50px;
+$space-after-paragraphs:20px;
+
+// --------------- 	Classes 	-------------------------- 
+.top-margin {
+    margin-top: $block-padding;
+}
+
+.bottom-margin {
+    margin-top: $block-padding;
+}
+
+// -----------------------------------------------------------
+// 					SNAP! Components
+// -----------------------------------------------------------
+
+// ------ Fixed Static height for top bars ---------------
+$wb-bar-height:64px;
+$wb-sm-height:40px;
+
+// --------------- 	Top nav bar --------------------------
+
+#wb-bar {
+    z-index: 101;
+    height: $wb-bar-height;
+    position: fixed;
+    width: 100%;
+    color: black;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.26);
+    padding-top:calc((#{$wb-bar-height} - 45px)/2);
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        padding: 0px;
+        margin: 0px;
+        font-weight: normal !important;
+    }
+
+    .series-title {
+        vertical-align: middle;
+    }
+
+    .series-title .home {
+        display: inline-block;
+        margin-right: 30px;
+        vertical-align: middle;
+        padding-top: 10px;
+    }
+
+    .top-menu {
+        width: 100%;
+        padding: 0px;
+        padding-left: 25px;
+        padding-right: 40px;
+
+        h2.series-title,
+        h2.series-title a {
+            color: $instructions-text-color !important;
+        }
+    }
+}
+
+.wb-tphp {
+    z-index: 9999;
+    position: relative;
+    padding-top: 50px;
+}
+
+.wb-slc {
+    z-index: 9999;
+    position: absolute;
+}
+
+// --------------- 	Title bar ----------------------------
+//Shows course title and sub title on every page (hidden in this template)
+#wb-sttl {
+    display: none !important;
+}
+
+// ----------- 	Breadcrumbs/Supermenu rows ---------------
+// (hidden in this template)
+#wb-sm {
+    display: none !important;
+    //position:fixed;
+    //top:$wb-bar-height;
+}
+
+// ------- 	Static height of bottom nav bar ---------------
+$navbar-height:85px;
+
+// ----------- 	Bottom Control bar ------------------------
+
+.backnext {
+    text-align: center;
+}
+
+.backnext .back,
+.backnext .next {
+    display: inline;
+    text-decoration: none;
+
+    a {
+        color: $interactive-text-color !important;
+    }
+
+    &:hover {
+        text-decoration: none;
+        background-color: $interactive-hover-color;
+    }
+
+    &.disabled {
+        background-color: $interactive-disabled-color;
+    }
+}
+
+// (hidden in this template)
+// #wb-info {
+//     //display:none !important;
+// }
+
+// -----------------------------------------------------------
+// 					WET Template styles
+// -----------------------------------------------------------
+
+.wb-mm-ctrls {
+    background: $banner-color;
+    color: #fff;
+    display: table;
+    padding-top: 2em;
+    position: relative;
+    width: 100%;
+
+
+}
+
+.wb-mm-ctrls progress {
+    -webkit-appearance: none;
+    background: #fff;
+    border: 7px solid $banner-color;
+    border-radius: 14px;
+    color: #176ca7;
+    display: block;
+    height: 30px;
+    left: 0px;
+    padding: 2px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+
+}
+
+.wb-mm-ctrls {
+    button {
+        background-color: $banner-color !important;
+        padding: 6px 12px;
+        font-size: 16px;
+    }
+}
+
+// -----------------------------------------------------------
+// 					Content styles
+// -----------------------------------------------------------
+
+// ---------------------  Body  --------------------------
+body {
+    font-family: $fontFamily;
+    font-size: 14px;
+    background-color: $body-background-color;
+    line-height: 140%;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+// -------------- Main content box -----------------------
+body main.loaded {
+    background-color: $body-background-color;
+    z-index: 0;
+    padding-top: $wb-bar-height; //calc(#{$wb-bar-height} + #{$wb-sm-height});
+    //margin-bottom:$navbar-height;
+
+    .spinner {
+        background-color: $body-background-color;
+    }
+}
+
+// -----------------------------------------------------------
+// 					Dynamic content
+// -----------------------------------------------------------
+
+html body #dynamic_content {
+
+    // -------------- Header styles  -------------------------
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        padding: 0px;
+        margin: 0px;
+        margin-bottom: 8px;
+
+        font-size: 36px;
+        font-weight: 300;
+
+        color: $header-text-color;
+    }
+
+    .modal-title {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: white;
+
+        }
+    }
+
+    // -------------- Paragraph styles -----------------------
+    p {
+        font-weight: 100;
+        padding: 0px;
+        margin-bottom: 15px;
+
+        &:last-of-type {
+            margin-bottom: 0px;
+        }
+    }
+
+    .instruction {
+        font-weight: 700;
+        color: $instructions-text-color;
+    }
+
+    // -------------- Lists and Defaults -----------------------
+
+    font-weight:400;
+
+    legend {
+        font-size: 14px;
+    }
+
+    label {
+        font-weight: normal;
+    }
+
+    // ----------------- Form elements -------------------------
+
+    button,
+    input[type="radio"] {
+        cursor: pointer;
+    }
+
+    input:checked {
+        color: $interactive-color;
+    }
+
+    .btn.btn-med {
+        font-size: 18px;
+        background-color: $interactive-color;
+        border: none;
+        border-radius: 0px;
+        color: $interactive-text-color;
+        padding: 14px 28px 14px 28px;
+        cursor: pointer;
+        text-align: center;
+
+        &:hover {
+            background-color: $interactive-hover-color;
+        }
+    }
+
+    details {
+        text-decoration: none;
+        border-radius: 0px;
+        border: none;
+
+        &:last-of-type {
+            margin-bottom: 0px;
+        }
+
+        p:nth-child(2),
+        ul:nth-child(2),
+        ol:nth-child(2) {
+            margin-top: 15px;
+        }
+
+        p:last-child,
+        ul:last-child,
+        ol:last-child {
+            margin-bottom: 0px;
+        }
+
+        summary {
+
+            text-decoration: none;
+
+            border-radius: 0px;
+            border: none;
+
+            &:hover,
+            &:active {
+                text-decoration: none;
+            }
+
+            &:before {
+                font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", "monospace";
+                float: left;
+                position: relative;
+                content: "+";
+                font-size: 20px;
+                font-weight: bold;
+                margin-right: 20px;
+            }
+
+        }
+
+        &.open {
+            summary {
+                &:before {
+                    font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", "monospace";
+                    float: left;
+                    position: relative;
+                    content: "-";
+                    font-size: 20px;
+                    font-weight: bold;
+                    margin-right: 20px;
+                }
+
+            }
+        }
+    }
+
+    // --------------------- Top Banner -------------------------
+    .top-banner {
+        background-color: $banner-color;
+
+        h1 {
+            color: $banner-text-color;
+            font-size: 48px;
+        }
+
+        color:$banner-text-color;
+        //background:url("../content/medias/images/bgtest_1.png");
+        background-size:cover;
+        background-position:top;
+        padding-top:$testpadding;
+        padding-bottom:$testpadding;
+
+        .container {
+            padding: 0px;
+            padding-left: $testpadding2;
+            padding-right: $testpadding2;
+        }
+
+        .instruction {
+            color: $banner-text-color;
+        }
+    }
+
+    // --------------------- Articles ---------------------------
+    article {
+        padding-top: $testpadding;
+        padding-bottom: $testpadding;
+        background-color: $main-background-color;
+
+        //first container
+        div.container {
+            background-color: transparent;
+            padding: 0px;
+            padding-left: $testpadding2;
+            padding-right: $testpadding2;
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                font-size: 36px;
+            }
+        }
+
+        // --------------------- Blocks -------------------------
+
+        //block container
+        section.container {
+            background-color: $alternate-background-color;
+            margin-top: 100px;
+            padding: $testpadding2;
+
+            .row {
+                margin-top: 30px;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                font-size: 36px;
+            }
+
+            &.menupage {
+                background-color: transparent;
+                margin-top: -190px;
+            }
+
+            // --------------- Components -----------------------
+
+            .component {
+                background-color: $main-background-color;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.26);
+                padding: 30px;
+                height: 100%;
+
+                h1,
+                h2,
+                h3,
+                h4,
+                h5,
+                h6 {
+                    font-size: 24px;
+                }
+
+                &.nobg //no background - used to alternate components
+
+                    {
+                    background-color: transparent;
+                    box-shadow: none;
+                }
+
+                // ---------- Menu item component ---------------
+                &.menu-item-inner {
+                    background-color: $alternate-background-color;
+                    color: $alternate-text-color;
+                    //box-shadow:none !important;
+                    padding: 30px;
+
+                    button {
+                        margin-top: 30px;
+                    }
+
+                    h1,
+                    h2,
+                    h3,
+                    h4,
+                    h5,
+                    h6 {
+                        color: $header-text-color;
+                    }
+                }
+
+                // ----------  Icon box component ---------------				
+                &.icon-box {
+                    $icon-box-padding: 15px;
+                    padding: 0px;
+                    background-color: $callout-color;
+
+                    h1,
+                    h2,
+                    h3,
+                    h4,
+                    h5,
+                    h6 {
+                        svg {
+                            margin-right: $icon-box-padding;
+                        }
+
+                        vertical-align: middle;
+                        color:$callout-text-color;
+                        margin:0px;
+                        padding:$icon-box-padding
+                    }
+
+                    div {
+                        border: 3px solid $callout-color;
+                        background-color: $main-background-color;
+                        color: $main-text-color;
+                        padding: $icon-box-padding;
+                    }
+                }
+
+                // ------------ Callout component ---------------
+                &.callout {
+                    background-color: $callout-color;
+                    color: $callout-text-color;
+
+                    h1,
+                    h2,
+                    h3,
+                    h4,
+                    h5,
+                    h6 {
+                        color: $callout-text-color;
+                    }
+
+                    p:last-of-type {
+                        margin-bottom: 0px;
+                    }
+                }
+
+                // ---------- Accordion component ---------------
+                &.accordion {
+                    $accordion-padding: 20px;
+
+                    details summary {
+                        font-size: 24px;
+                        font-weight: 300;
+                        background-color: $interactive-color;
+                        color: $interactive-text-color;
+                        text-decoration: none;
+                        border-radius: 0px;
+                        border: none;
+                        padding-top: $accordion-padding;
+                        padding-bottom: $accordion-padding;
+                        border: 1px solid $interactive-color;
+                        outline: 3px solid $interactive-color;
+                        margin-left: -15.4px;
+                        margin-right: -15.4px;
+
+                        &:hover {
+                            background-color: $interactive-hover-color;
+                            border: 1px solid $interactive-hover-color;
+                            outline: 3px solid $interactive-hover-color;
+                        }
+                    }
+
+                    details summary:marker {
+                        display: none;
+                        content: "+";
+                    }
+
+                    details[open] summary:marker {
+                        display: none;
+                        content: "-";
+                    }
+
+
+                    details {
+                        background-color: $main-background-color;
+                        color: $main-text-color;
+                        text-decoration: none;
+                        border-radius: 0px;
+                        border: 3px solid $interactive-color;
+
+                        p:first-of-type {
+                            margin-top: 15px;
+                        }
+                    }
+                }
+
+                // ---------------- carousel component -------------------
+                &.carousel-s2 {
+                    figcaption {
+                        background-color: white;
+                        color: #000;
+                    }
+
+                    ul {
+                        margin-top: 30px;
+                    }
+
+                    li.prv,
+                    li.nxt,
+                    li.plypause {
+                        color: white;
+                        background-color: $interactive-color;
+                        border: none;
+                        box-shadow: none;
+                        border-radius: 0px;
+                        height: 62.93px;
+
+                        a,
+                        span {
+                            background-color: transparent;
+                            border: none;
+                            box-shadow: none;
+                            color: white;
+                        }
+
+                        &:hover {
+                            background-color: $interactive-hover-color;
+                            border: none;
+                            box-shadow: none;
+                            border-radius: 0px;
+                        }
+                    }
+
+
+                    li.plypause {
+                        padding-left: 20px;
+                        float: right;
+                    }
+                }
+
+                .wb-tabs.carousel-s2 [role="tablist"] {
+                    bottom: 4em !important;
+                    width: 93.5% !important;
+                    z-index: 2 !important;
+                    background-color: $interactive-color;
+                }
+
+                // ----------- MeD Questionnaire Form -----------
+                $questionnaire-feed-text-border:rgba(255, 255, 255, 0.3);
+                $questionnaire-feed-text-border-size:rgba(255, 255, 255, 0.3);
+
+                &.med-questionnaire {
+                    fieldset {
+                        padding: 0px;
+                    }
+
+                    legend {
+                        font-size: 16px;
+                    }
+
+                    select {
+                        display: block;
+                        width: 100%;
+                        padding: 20px;
+                        margin-bottom: 20px;
+                        background-color: $interactive-color;
+                        color: $interactive-text-color;
+                        border: none;
+
+                        &:after {
+                            display: none;
+                        }
+
+                        &:last-of-type {
+                            margin-bottom: 0px;
+                        }
+
+                        &:hover {
+                            background-color: $interactive-hover-color;
+                        }
+
+                    }
+
+                    .question-buttons {
+                        margin-top: 20px;
+
+                        a {
+                            width: 49%;
+                            text-decoration: none;
+
+                            &:last-of-type {
+                                float: right;
+                            }
+
+                            &:first-of-type {
+                                float: left;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    // -----------------------------------------------------------
+    // 					Alternate article colors
+    // -----------------------------------------------------------
+
+    // ---------------- For 3 colors -------------------------
+    article:nth-of-type(1),
+    article:nth-of-type(4),
+    article:nth-of-type(7) {
+        div.container {
+            &:before {
+                @extend .img-article-icon;
+            }
+        }
+    }
+
+    article:nth-of-type(2),
+    article:nth-of-type(5),
+    article:nth-of-type(8) {
+        div.container {
+            &:before {
+                @extend .img-article-icon2;
+            }
+        }
+    }
+
+    article:nth-of-type(3),
+    article:nth-of-type(6),
+    article:nth-of-type(9) {
+        div.container {
+            &:before {
+                @extend .img-article-icon3;
+            }
+        }
+    }
+
+
+}
+
+// end of dynamic content styles
+
+
+// -----------------------------------------------------------
+// 					Image Styles
+// -----------------------------------------------------------
+
+.img-article-icon {
+    height: 29px;
+    width: 29px;
+
+    margin-top: 6px;
+    margin-left: -1 * $testpadding2;
+    float: left;
+    background: -ms-linear-gradient(-45deg, $article-color-1 0%, $article-color-1 49%, transparent 49%, transparent 51%, lighten($article-color-1, 20%) 51%, lighten($article-color-1, 20%) 100%);
+    background: linear-gradient(135deg, $article-color-1 0%, $article-color-1 49%, transparent 49%, transparent 51%, lighten($article-color-1, 20%) 51%, lighten($article-color-1, 20%) 100%);
+
+}
+
+.img-article-icon2 {
+    height: 29px;
+    width: 29px;
+
+    margin-top: 6px;
+    margin-left: -1 * $testpadding2;
+    float: left;
+    background: -ms-linear-gradient(-45deg, $article-color-2 0%, $article-color-2 49%, transparent 49%, transparent 51%, lighten($article-color-2, 20%) 51%, lighten($article-color-2, 20%) 100%);
+    background: linear-gradient(135deg, $article-color-2 0%, $article-color-2 49%, transparent 49%, transparent 51%, lighten($article-color-2, 20%) 51%, lighten($article-color-2, 20%) 100%);
+
+}
+
+.img-article-icon3 {
+    height: 29px;
+    width: 29px;
+
+    margin-top: 6px;
+    margin-left: -1 * $testpadding2;
+    float: left;
+    background: -ms-linear-gradient(-45deg, $article-color-3 0%, $article-color-3 49%, transparent 49%, transparent 51%, lighten($article-color-3, 20%) 51%, lighten($article-color-3, 20%) 100%);
+    background: linear-gradient(135deg, $article-color-3 0%, $article-color-3 49%, transparent 49%, transparent 51%, lighten($article-color-3, 20%) 51%, lighten($article-color-3, 20%) 100%);
+
+}
+
+.img-article-icon4 {
+    height: 29px;
+    width: 29px;
+
+    margin-top: 6px;
+    margin-left: -1 * $testpadding2;
+    float: left;
+    background: -ms-linear-gradient(-45deg, $article-color-4 0%, $article-color-4 49%, transparent 49%, transparent 51%, lighten($article-color-4, 20%) 51%, lighten($article-color-4, 20%) 100%);
+    background: linear-gradient(135deg, $article-color-4 0%, $article-color-4 49%, transparent 49%, transparent 51%, lighten($article-color-4, 20%) 51%, lighten($article-color-4, 20%) 100%);
+
+}
+
+// -----------------------------------------------------------
+// 					Accessibility classes
+// -----------------------------------------------------------
+
+// From W3C http://www.w3.org/WAI/tutorials/forms/labels/#note-on-hiding-elements
+// Used to hide elements visually but keep them available for screen readers.
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+// -----------------------------------------------------------
+// 					Responsiveness options
+// -----------------------------------------------------------
+
+@media only screen and (min-width : $course-default-width) {
+
+    .container {
+        width: $course-default-width;
+    }
+}
+
+
+// -----------------------------------------------------------
+// 							Resets
+// -----------------------------------------------------------
+html {
+    margin: 0;
+    padding: 0;
+    -webkit-text-size-adjust: 100%;
+}
+

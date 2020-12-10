@@ -5,23 +5,23 @@ define([
 	'settings-core',
 	'utils',
 	'modules/BaseModule',
-	'./../../plugins/ckeditor/ckeditor'
-], function ($, labels, CoreSettings, Utils, BaseModule, CKEDITOR) {
+	'./../../plugins/ckeditor/ckeditor',
+	'./../LOM_labels',
+], function ($, labels, CoreSettings, Utils, BaseModule, CKEDITOR, LOMLabels) {
 	'use strict';
 
 	return BaseModule.extend({
 		initialize: function (options) {
-
 			this.parent = options.parent;
 			this.editor = this.parent;
 			this.parentElement = (typeof options.parentElement === "undefined") ? null : options.parentElement;
 
 			this.$el = options.$el;
-			if(typeof options.id === "undefined"){
-				this.id=this.editor.generateId("LOM-edit-");
+			if (typeof options.id === "undefined") {
+				this.id = this.editor.generateId("LOM-edit-");
 				this.$el.attr("id", this.id);
-			}else{
-				this.id=options.id;
+			} else {
+				this.id = options.id;
 			}
 			//this.id = (typeof options.id === "undefined") ? this.editor.generateId("LOM-edit-") : options.id;
 			this.ckeInstance = null;
@@ -44,7 +44,7 @@ define([
 			//this.nesting();
 			this.config = this.configCke();
 			if (!this.isRogue) {
-				this.parentElement.storeValue();
+				//this.parentElement.storeValue();
 			}
 		},
 
@@ -53,13 +53,12 @@ define([
 				-------------------------get value
 		---------------------------------------------------------------------------------------------*/
 		getValue: function () {
-
 			return CKEDITOR.instances[this.id].getData();
 		},
 
 		saveUpdate: function () {
 			var value = this.getValue();
-			var $editBoxContent = this.$el.next();
+			var $editBoxContent = this.editBox;
 			//are there any calls to lightboxes here?
 			if ($editBoxContent.find("a[href*=_lbx]").length > 0) {
 
@@ -68,16 +67,22 @@ define([
 
 			}
 
+			var $old = $("<div>");
+			$old.append(this.editor.originalHtml);
+			var oldValue = $old.find("#" + this.id).html();
 
-			var oldHtml = this.editor.originalHtml;
-			$(CoreSettings.contentContainer).after("<div id='LOM-temp'></div>");
-			$("#LOM-temp").hide().append(oldHtml);
-			var $edit = $("#LOM-temp").find("#" + this.id);
-			$edit.html(value);
 
-			this.editor.originalHtml = $("#LOM-temp").html();
-			$("#LOM-temp").remove();
-			this.editor.updateHtml();
+
+			if (oldValue !== value) {
+				$old.find("#" + this.id).html(value);
+				this.editor.originalHtml = $old.html();
+				this.editor.refreshHtml();
+			}
+
+
+
+
+
 			return false;
 		},
 		/*---------------------------------------------------------------------------------------------
@@ -86,42 +91,65 @@ define([
 
 		activate: function () {
 			var that = this;
-			if (!this.isActivated) {
-				this.refreshInfo();
-				this.makeEditable();
-				this.initCKE();
-				this.isActivated = true;
-				this.refreshInfo(); //why twice??
-				this.$el.next().change(function (e) {
-					that.keyPress(e);
 
-				});
-
-				this.$el.next().on('keyup change paste keypress', function (e) {
-
-					if (that.isRestricted) {
-						//prevent space from messing up the details
-						if (e.type === "keyup" && e.keyCode === 32) {
-							e.preventDefault();
-						}
-						//prevent chariot return
-						if (e.type === "keypress" && e.keyCode === 13) {
-							e.preventDefault();
-							//save on enter key if it'S a single-line
-							that.parentElement.autoEdit();
-						}
-					} else {
-						that.keyPress(e);
-					}
-
-
-				});
-				this.checkOverflow();
-
+			if (!this.editor.CKELoaded) {
+				setTimeout(function () {
+					that.activate();
+				}, 50);
 			}
-			this.$el.next().focusout(function (e) {
-				that.focusOut(e);
-			});
+			else {
+				if (!that.isActivated) {
+					this.refreshInfo();
+
+					this.$el.find("span.qs-get-current-question").html("{" + LOMLabels.element.editview.QS.nbQuestion + "}");
+					this.$el.find("span.qs-get-nb-questions").html("{" + LOMLabels.element.editview.QS.nbTotal + "}");
+
+					this.makeEditable();
+					this.initCKE();
+					this.isActivated = true;
+					this.refreshInfo(); //why twice??
+
+					this.instance.on("instanceReady", function () {
+						if (that.parentElement.subtype && that.parentElement.subtype == "html") {
+							that.editBox = $("#" + that.ckeId).find("textarea.cke_source");
+						}
+						else {
+							that.editBox = that.$el.next();
+						}
+
+
+						that.editBox.change(function (e) {
+							that.keyPress(e);
+						});
+
+						that.editBox.on('keyup change paste keypress', function (e) {
+
+							if (that.isRestricted) {
+								//prevent space from messing up the details
+								if (e.type === "keyup" && e.keyCode === 32) {
+									e.preventDefault();
+								}
+								//prevent chariot return
+								if (e.type === "keypress" && e.keyCode === 13) {
+									e.preventDefault();
+									//save on enter key if it'S a single-line
+
+								}
+							} else {
+								that.keyPress(e);
+							}
+						});
+						if (!that.editor.locked) {
+							that.checkOverflow();
+						}
+					});
+				}
+				this.instance.on("instanceReady", function () {
+					that.editBox.focusout(function (e) {
+						that.focusOut(e);
+					});
+				});
+			}
 		},
 		deactivate: function () {
 			if (this.isActivated) {
@@ -129,7 +157,7 @@ define([
 				this.isActivated = false;
 				this.refreshInfo();
 				this.storeValue();
-				this.parentElement.storeValue();
+				//this.parentElement.storeValue();
 				if (!this.isRogue) {
 					this.parentElement.$el.removeClass("LOM-editing");
 				}
@@ -138,7 +166,12 @@ define([
 
 
 		initCKE: function () {
-			CKEDITOR.inline(this.id, this.config);
+			if (this.parentElement.subtype == "html") {
+				CKEDITOR.replace(this.id, this.config);
+			}
+			else {
+				CKEDITOR.inline(this.id, this.config);
+			}
 		},
 
 		// configuration for CKE
@@ -150,6 +183,7 @@ define([
 			}
 		},
 		focusOut: function () {
+
 			//var currentValue
 			this.saveUpdate();
 
@@ -179,11 +213,19 @@ define([
 
 		// make the html uneditable, back to how it was.
 		makeUneditable: function () {
-			$("#" + this.ckeId).remove();
 			//define what will soon be deleted
 			var $textarea = $("#" + this.id);
+
 			//save whats now in the ID is the textarea
-			this.newHtml = $textarea.next().html();
+			if (this.parentElement.subtype == "html") {
+				this.newHtml = $("#" + this.ckeId).find("textarea.cke_source").val();
+			}
+			else {
+				this.newHtml = $textarea.next().html();
+			}
+
+			$("#" + this.ckeId).remove();
+
 			//create the new object
 			$textarea.parent().before("<" + this.boxType + " class='" + this.class + "' id='" + this.id + "'>" + this.newHtml + "</" + this.boxType + ">");
 
@@ -231,12 +273,13 @@ define([
 		updateLightbox: function ($content) {
 			var $lbxList = $content.find("a[href*='_lbx']");
 			var $lbx;
+
 			for (var i = 0; i < $lbxList.length; i++) {
 				$lbx = $lbxList.eq(i);
 				if ($($lbx.attr("href")).length > 0) {
 					$lbx.addClass("wb-lbx").removeClass("wb-lbx-inited");
-					//console.log(this.$el);
-					//this.$el.next().find("a[href*='_lbx']").addClass("wb-lbx-inited")
+
+					//this.editBox.find("a[href*='_lbx']").addClass("wb-lbx-inited")
 				}
 			}
 
@@ -247,67 +290,144 @@ define([
 				-------------------------CONFIGURATION FOR CKE
 		---------------------------------------------------------------------------------------------*/
 		configCke: function () {
+
 			var editorConfig = {
 				toolbar: []
 				/*,
 								language: lang*/
 
 			};
-			if (!this.isRogue) {
-				if (this.parentElement.type === "custom") {
+			if (this.parentElement && this.parentElement.subtype == "html") {
+				/*editorConfig.toolbar.push({
+					name: 'HTML',
+					items: ['Source']
+				});*/
+				editorConfig.startupMode = 'source';
+				//editorConfig.tabSpaces = 4;
 
-					//if the user is in export mode
-					editorConfig.toolbar.push({
-						name: 'Expert',
-						items: ['Sourcedialog']
-					});
-					//return editorConfig;
-				}
-			}
-			if (this.$el.parent().is("h2, h3, h4, summary, label")) {
-				this.isRestricted = true;
-				//RESTRICTED
-				editorConfig.enterMode = CKEDITOR.ENTER_BR;
-				editorConfig.allowedContent = true;
-				editorConfig.keystrokes = [
-					[13 /* Enter */ , 'john'],
-					[CKEDITOR.SHIFT + 13 /* Shift + Enter */ , 'blur']
-				];
-			} else {
-				//FULL TEXT
-				editorConfig.toolbar.push({
+				/*editorConfig.toolbar.push({
 					name: 'cutpaste',
-					items: ['Copy', 'Cut', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
+					groups: ['selection'],
+					items: ['Copy', 'Cut', 'Paste', 'SelectAll', '-', 'Undo', 'Redo'],
 				});
 				editorConfig.toolbar.push({
-					name: 'basicstyles',
-					items: ['Bold', 'Italic', 'Subscript', 'Superscript', '-', 'Language', 'SpecialChar']
-				});
+					name: 'searchreplace',
+					groups: ['find'],
+					items: [ 'Find', 'Replace']
+				});*/
+
 				editorConfig.toolbar.push({
-					name: 'paragraph',
-					items: ['NumberedList', 'BulletedList' /*, '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' */ ]
-				});
-				editorConfig.toolbar.push({
-					name: 'links',
-					items: ['Link', 'Unlink', 'Anchor']
-				});
-				editorConfig.toolbar.push("/");
-				editorConfig.toolbar.push({
-					name: 'document',
-					items: ['Format']
-				});
-				editorConfig.toolbar.push({
-					name: 'resources',
-					items: ['Abbr', 'Glossary']
+					name: 'SelectAll',
+					groups: ['selection'],
+					items: ['SelectAll'],
 				});
 			}
-			//if detected a form
-			/*
-			if(this.$el.closest("form").length>0){
-				editorConfig.toolbar.push({ name: 'forms', items: [ 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button' ] });
+			else {
+				if (!this.isRogue) {
+					if (this.parentElement && this.parentElement.type === "custom") {
+
+						//if the user is in export mode
+						editorConfig.toolbar.push({
+							name: 'Expert',
+							items: ['Sourcedialog']
+						});
+						//return editorConfig;
+					}
+				}
+				if (this.$el.parent().is("h2, h3, h4, summary, label")) {
+					this.isRestricted = true;
+					//RESTRICTED
+					editorConfig.enterMode = CKEDITOR.ENTER_BR;
+					editorConfig.allowedContent = true;
+					editorConfig.keystrokes = [
+						[13 /* Enter */, 'john'],
+						[CKEDITOR.SHIFT + 13 /* Shift + Enter */, 'blur']
+					];
+				} else {
+					//FULL TEXT
+					editorConfig.toolbar.push({
+						name: 'cutpaste',
+						groups: ['selection'],
+						items: ['Copy', 'Cut', 'Paste', 'PasteText', 'PasteFromWord', 'SelectAll', '-', 'Undo', 'Redo']
+					});
+					editorConfig.toolbar.push({
+						name: 'basicstyles',
+						items: ['Bold', 'Italic', 'Underline', 'Subscript', 'Superscript', 'CopyFormatting']
+					});
+					editorConfig.toolbar.push({
+						name: 'paragraph',
+						items: ['NumberedList', 'BulletedList' /*, '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' */]
+					});
+					editorConfig.toolbar.push({
+						name: 'table',
+						groups: ['table', 'tablerow', 'tablecolumn', 'tablecellmergesplit'],
+						items: ['Table', 'tablerowinsertbefore', 'tablerowinsertafter', 'tablerowdelete', 'tablecolumninsertbefore', 'tablecolumninsertafter', 'tablecolumndelete', 'tablecellsmerge', 'tableproperties']
+					});
+					editorConfig.toolbar.push({
+						name: 'SpecialChar',
+						items: ['SpecialChar']
+					});
+					editorConfig.toolbar.push({
+						name: 'searchreplace',
+						groups: ['find'],
+						items: ['Find', 'Replace']
+					});
+					editorConfig.toolbar.push({
+						name: 'spellcheck',
+						groups: ['spellchecker'],
+						items: ['Language', 'Scayt']
+					});
+					/*editorConfig.toolbar.push({
+						name: 'links',
+						items: ['Link', 'Unlink', 'Anchor']
+					});*/
+					editorConfig.toolbar.push("/");
+					editorConfig.toolbar.push({
+						name: 'document',
+						items: ['Format']
+					});
+
+					var items;
+					if (Object.keys(this.editor.master.resourcesManager.exts).length > 0) {
+						items = ['ext-links', 'linktopage']
+					}
+					else {
+						items = ['Link', 'linktopage']
+					}
+					if (Object.keys(this.editor.master.resourcesManager.abbrs).length > 0) {
+						items.push('Abbr');
+					}
+					if (this.editor.master.resourcesManager.getGlossaryArray().length > 0) {
+						items.push('Glossary');
+					}
+					editorConfig.toolbar.push({
+						name: 'resources',
+						items: items,
+					});
+
+					if (this.parentElement.type === "multiplechoice" && this.$el.parent().hasClass("qs-text")) {
+						editorConfig.toolbar.push({
+							name: 'QS',
+							items: ['nb-question-button', 'nb-total-button']
+						});
+					}
+				}
+
+				//if detected a form
+				/*
+				if(this.$el.closest("form").length>0){
+					editorConfig.toolbar.push({ name: 'forms', items: [ 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button' ] });
+				}
+				*/
+				editorConfig.extraPlugins = "abbr, glossary, ext-links, table, tableresize, tableselection, tabletools, colordialog, pastefromexcel, tabletoolstoolbar, linktopage, QS";
+				if (Object.keys(this.editor.master.resourcesManager.exts).length > 0) {
+					editorConfig.removePlugins = "link, uploadfile";
+				}
+				else {
+					editorConfig.removePlugins = "uploadfile";
+				}
+				editorConfig.extraAllowedContent = "a(*); span(*)";
 			}
-			*/
-			editorConfig.extraPlugins = "abbr, glossary";
 
 			return editorConfig;
 
@@ -319,10 +439,10 @@ define([
 			this.checkOverflow();
 		},
 		checkOverflow: function () {
-			var $edit = this.$el.next();
 			var maxchar = 3000;
 			var maxParagraphs = 7;
-			var totalText = $edit.html().length;
+
+			var totalText = this.editBox.html().length;
 			var warningFlag = false;
 
 
@@ -330,7 +450,7 @@ define([
 				warningFlag = true;
 				//alert("Wo! That's enough text now, champ!\n\n(review msg)");
 			}
-			if ($edit.children("p").length > maxParagraphs) {
+			if (this.editBox.children("p").length > maxParagraphs) {
 
 				warningFlag = true;
 				//alert("Slow down on those paragraphs, cowboy!\n\n(review msg)");

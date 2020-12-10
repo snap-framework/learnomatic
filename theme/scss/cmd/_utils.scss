@@ -1,0 +1,69 @@
+
+/* ******************************************
+ * DATA-LOM-SHOW
+ * *****************************************/
+button.view-more{
+	background-color:transparent;
+}
+@for $i from 1 through 50 {
+	div.overview-type:not(.LOM-overview-users){
+    ul[data-lom-show='#{$i}']>li:nth-child(-n+#{$i}) {
+    }
+    ul[data-lom-show='#{$i}']>li:nth-child(#{$i}) {
+		opacity:0.6;
+		 &:after{
+			content: '';
+			 display: block;
+			 position: absolute;
+			 width: 101%;
+			 height: 101%;
+			 background-image: linear-gradient(transparent, white);
+			 top: 0px;
+			 margin-left: -1px;
+		 }
+    }	
+    ul[data-lom-show='#{$i}']>li:not(:nth-child(-n+#{$i})) {
+		display:none;
+        
+    }
+	}
+	
+
+.LOM-overview-users{
+	ul[data-lom-show='#{$i}']{
+		max-height: $i*50px;
+		overflow: hidden;	
+		 /*&:after{
+			content: '';
+			 display: block;
+			 position: absolute;
+			 width: 101%;
+			 height: 101%;
+			 background-image: linear-gradient(transparent, white);
+			 top: 0px;
+			 margin-left: -1px;
+		 }*/
+	}
+
+}	
+
+}
+.LOM-overview-users{
+	li:not([data-online-status]){
+		display:none;
+		
+	}
+	li[data-online-status=false]{
+		display:none;
+	}
+}
+
+
+
+/* ******************************************
+ * ESTHÉTIQUE
+ * *****************************************/
+.LOM-course-name::first-letter {
+
+	text-transform: uppercase;
+}

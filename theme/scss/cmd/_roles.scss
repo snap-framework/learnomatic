@@ -1,0 +1,46 @@
+
+
+
+
+$roles: admin,manager,designer,editor,reviewer,user;
+
+@each $role in $roles {
+
+    [data-username][data-role=#{$role}]:not([data-role-override=true]) .role-#{$role}{
+        //outline:1px solid #bbb;
+        background-color: lightgray;
+        
+        &:hover, &:focus{
+            background-color: darken(lightgray, 7%);
+        }
+    }
+    [data-username][data-role=#{$role}] .role-#{$role}{
+        //outline:1px solid #bbb;
+        background-color: lightgreen;
+        
+        &:hover, &:focus{
+            background-color: darken(lightgreen, 7%);
+        }
+    }
+	.LOM-course-access[data-access=#{$role}]{
+		 position: absolute;
+		 display: inline-block!important;
+		 overflow: hidden;
+		 /* display: inline-block; */
+		 height: 35px;
+		 width: 35px;
+		 left: -40px;
+		 /* top: 0px; */
+		 color: transparent;
+		@include iconpack($role, md, #606060);
+		margni:8px;
+		&:before{
+			content:'';
+
+		}
+	}	
+
+}
+
+
+.LOM-overview-courses .LOM-course-access[data-access]{visibility:hidden;}

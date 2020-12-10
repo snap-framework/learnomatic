@@ -33,23 +33,47 @@ function dispatcher($json){
     	case "delete":
 			deletePage($received);
 			break;
+        case "getUsers":
+			//return list of users
+			getListUsers();
+			break;
 		case "login":
 			
 			//return role
 			getRole($received);
 			break;
-		case "usersession":
+		case "checksession":
 			
 			//return role
-			checkSessions($received);
+			checkSession($received);
+			
+			
+			
+			break;
+		case "createsession":
+			
+			//return role
+			createsession($received);
+			
+			
+			
+			break;
+		case "othersessions":
+			
+			//return role
+			othersessions($received);
 			break;
 		case "closessions":
 			
 			//return role
 			closeSession($received);
 			break;
-		case "getcourses":
-			courseList($received);
+
+		case "getCourseList":
+			getCourseList($received);
+			break;
+		case "updateCourse":
+			updateCourse($received);
 			break;
 		case "addcourses":
 			copyCourse($received);
@@ -59,7 +83,6 @@ function dispatcher($json){
 			delete_directory($received->content);
 			echo "true";
 			break;
-			
 			
 			
 		case "zipfolder":
@@ -74,6 +97,22 @@ function dispatcher($json){
 			
 		case "upload_image":
 			uploadImage($received);
+			break;
+			
+		case "getCommsList":
+			getCommsList($received);
+			break;
+		case "updateComm":
+			updateComm($received);
+			break;
+		case "createComm":
+			createComm($received);
+			break;
+		case "deleteComm":
+			deleteComm($received);
+			break;
+		case "removeWarning":
+			removeWarning($received);
 			break;
 	}
 }
@@ -152,22 +191,7 @@ function checkFolder($path, $folder){
 }
 
 
-function courseList($received){
 
-	$dir = scandir('courses/');
-	$sub_dirs = array();
-	foreach ($dir as $key=>$course) {
-		if ($key>1){
-
-			//echo $course."</div>";
-			//$sub_dirs
-			array_push($sub_dirs, $course);
-
-		}
-	}	
-	echo json_encode($sub_dirs);
-	
-}
 
 
 
@@ -311,17 +335,6 @@ function moveFile2($oldfile, $newFile, $from, $to){
 
 
 
-
-
-
-
-
-
-function copyCourse($received){
-	echo "test";
-	recurse_copy("courses/_default", "courses/".$received->content);
-	
-}
 function delete_directory($dirname) {
          if (is_dir($dirname))
            $dir_handle = opendir($dirname);
@@ -339,21 +352,7 @@ function delete_directory($dirname) {
      rmdir($dirname);
      return true;
 }
-function recurse_copy($src,$dst) { 
-    $dir = opendir($src); 
-    @mkdir($dst); 
-    while(false !== ( $file = readdir($dir)) ) { 
-        if (( $file != '.' ) && ( $file != '..' )) { 
-            if ( is_dir($src . '/' . $file) ) { 
-                recurse_copy($src . '/' . $file,$dst . '/' . $file); 
-            } 
-            else { 
-                copy($src . '/' . $file,$dst . '/' . $file); 
-            } 
-        } 
-    } 
-    closedir($dir); 
-} 
+
 
 
 
@@ -365,6 +364,7 @@ function getRole($received){
 
 		if($key === $received->content){
 			if($value->password === $received->pw){
+				createsession($received->content);
 				echo json_encode($value);
 				return false;
 			}else{
@@ -379,22 +379,7 @@ function getRole($received){
 
 }
 
-function updateSessions($json){
-	$br="<br>";
-	$now=time();
-	$timeout=20*60;//20 minutes x 60 secondes
-	foreach ($json->users as $key => $value) {
-		$secondsago=$now-$value->timestamp;
-		if ($secondsago<$timeout){
-			
-		}else{
-			//echo $br."unset ".$key." ";
-			unset($json->users->$key);
-		}
-		
-	}
-	return $json;
-}
+
 
 
 	function zipFolder($received){
@@ -498,15 +483,7 @@ function downloadZip($received){
   $filename = "courses/_download/".$received->content;
 
   if (file_exists($filename)) {
-     /*header('Content-Type: application/zip');
-     header('Content-Disposition: attachment; filename="'.basename($filename).'"');
-     header('Content-Length: ' . filesize($filename));
 
-     flush();
-     readfile($filename);
-     // delete file
-     unlink($filename);
- 	echo $filename;*/
 	  
 
 header('Content-Type: application/octet-stream');
@@ -518,75 +495,22 @@ readfile($filename); // do the double-download-dance (dirty but worky)
   }
 }
 
-function checkSessions($received){
-	$br="<br>";
-	$lockflag=false;
-	$user=$received->username;
-	$page=$received->filename;
-	$watchers=[];
 
-	//-----get the sessions
-	$json=getSessions();
-	
-	$json=updateSessions($json);
-	foreach ($json->users as $key => $value) {
 
-		
-		if($value->page===$page && $key!== $user){
-			$watchers[ sizeof($watchers)]=$key;
-			$lockflag=true;
-		}
-
-	}
-
-	//SEND TO BROWSER
-	echo implode(",", $watchers);
-	
-	//----- RECREATE JSON
-	$json->users->$user=json_decode('{"page":"'.$page.'","timestamp":"'.time().'"}');
-		
-	//echo json_encode($json);
-	$received->filename="courses/_system/sessions.js";
-	$received->content=json_encode($json);
-	$newFile=fopen("courses/_system/sessions.js", "w") or die("Unable to open file ");
-	fwrite($newFile, json_encode($json));
-	fclose($newFile);
-	
-	//$json->users
-	
-	
-	//echo $br."poke php";
-	
-	
-
-	
-	
-}
-function closeSession($received){
-	$delete=$received->username;
-		$json=getSessions();
-	$json=updateSessions($json);
-	unset($json->users->$delete);
-	$newFile=fopen("courses/_system/sessions.js", "w") or die("Unable to open file ");
-	fwrite($newFile, json_encode($json));
-	fclose($newFile);
-}
 
 function getUsers(){
-	$json = file_get_contents('users.js');
+	$json = file_get_contents('users.json');
 	
 	$obj = json_decode($json);
 	return $obj->users;
 	
 	
 }
-function getSessions(){
-	$json = file_get_contents('courses/_system/sessions.js');
-	
-	$obj = json_decode($json);
-	return $obj;
-	
-	
+
+function getListUsers(){
+	$users = getUsers();
+	echo json_encode($users);
 }
+
 
 ?>

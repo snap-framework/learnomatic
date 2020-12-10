@@ -1,44 +1,79 @@
-﻿<!doctype html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
-	<meta charset="utf-8">
-	<title>Learn-O-Matic Command Center V0.01</title>
-	<link rel="stylesheet" type="text/css" href="courses/_default/WET/css/theme.css">
-	<link rel="stylesheet" type="text/css" href="theme/editor.css">
-	<link rel="stylesheet" type="text/css" href="theme/LOM.css">
-	<script src="js/plugins/jquery.js"></script>
-	<script src="js/main.js"></script>
-	<link href="theme/images/favicon.ico" rel="icon" type="image/x-icon" class="wb-init">
+    <meta charset="utf-8">
+    <title>LOM Command Center</title>
+    <link rel="stylesheet" type="text/css" href="courses/_default/WET/css/theme.css">
+    <!--link rel="stylesheet" type="text/css" href="theme/editor.css"-->
+    <link rel="stylesheet" type="text/css" href="theme/LOM_CMD.css">
+    <script data-main="js/main" src="courses/_default/core/js/lib/require.js"></script>
+    <link href="theme/images/favicon.ico" rel="icon" type="image/x-icon" class="wb-init">
 </head>
 
 <body>
+    <header class="container">
+        <section class="col-md-8">
+            <div class="title"> <img src="theme/images/LOM-logo.png" width="85" alt="">
+                <h1>Learn-O-Matic Command Center V1.0.6</h1>
+            </div>
+        </section>
+        <section class="col-md-4">
+            <div class="loggedin hidden">
 
-	<header class="container">
-		<nav></nav>
-		<h1>Learn-O-Matic Command Center</h1>
-	
-	</header>
-	<main class="container">
-		
-		<section class="col-md-8">
-			<h2>Courses</h2>
-			<ul class="courselist">
+            </div>
+        </section>
+    </header>
+    <main class="container">
+        <div class="content hidden" style="padding-bottom: 25px;">
+            <div class="row">
+                <section class="col-md-8">
+                    <h2>Courses</h2>
+                    <div class="LOM-course-manager"></div>
+                    <!--ul class="courselist"></ul-->
+                    <button class="add-course ico-LOM-plus snap-md">Add Course</button>
+                </section>
+                <section class="col-md-4">
+                    <h2>Upload Course</h2>
+                    <form enctype="multipart/form-data" id="upload">
+                        <input type="hidden" id="folder" name="folder" placeholder="Folder Name">
+                        <input type="file" name="userfile" id="userfile" class="ico-LOM-newpage snap-md" accept=".zip">
+                        <button class="btn-submit ico-LOM-upload snap-md" style="margin-top: 10px;">Upload Course</button>
+                    </form>
+                </section>
+            </div>
+            <div class="row">
+                <section class="col-md-12">
+                    <h2>Progress</h2>
+                    <div id="idle" class="progress-msg">
+                        <p>No operation in progress</p>
+                    </div>
+                    <div id="in-progress" class="hidden progress-msg">
+                        <p><strong>In progress: </strong><span class="operation"></span>
+                            <progress value="0" max="100"></progress>
+                            <span id="progress">0%</span></p>
+                    </div>
+                    <div id="status" class="hidden progress-msg">
+                        <p><strong>In progress: </strong><span class="operation"></span></p>
+                    </div>
+                    <div id="error" class="hidden progress-msg" style="color: #ff0000;"></div>
+                </section>
+            </div>
+            <div class="row">
+                <section class="col-md-8">
+                    <h2>Users</h2>
+                    <ul class="userlist">
+                    </ul>
+                    <button class="add-user ico-LOM-plus snap-md">Add User</button>
+                </section>
+            </div>
+        </div>
+        <div class="login">
+            <h2>Please log in</h2>
+            <div id="LOM-login-container" style="display: block;">
+            </div>
+        </div>
+    </main>
+</body>
 
-			</ul>
-			<button class="add-course ico-LOM-plus snap-md">Add Course</button>
-
-		</section>
-		<section class="col-md-4">
-			<h2>Upload Course</h2>
-			<!--input name="ufile" type="file" id="ufile" size="50" />
-			
-			<button class="upload-course">Upload Course</button-->
-			<form action="upload.php" method="post" enctype="multipart/form-data" id="upload">
-				<input type="hidden" id="folder" name="folder" placeholder="Folder Name">
-				<input type="file" name="userfile" id="userfile" class="ico-LOM-newpage snap-md"  accept=".zip">
-				<button class="btn-submit  ico-LOM-upload snap-md">Upload Course</button>
-			</form>			
-		</section>
-	</main>
-	</body>
 </html>

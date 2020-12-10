@@ -1,0 +1,66 @@
+<section class="modal-dialog modal-content overlay-def mfp-with-anim mfp-zoom-in">
+	<header class="modal-header">
+		<h2 class="modal-title">Add an element</h2>
+		<button title="Close overlay (escape key)" type="button" class="mfp-close overlay-close">×<span class="wb-inv"> Close overlay (escape key)</span></button>
+	</header>
+	<div class="modal-body" id="elementpicker">
+
+		<!--section data-element-type="default">
+		<h3>Default element</h3>
+		<p>This will load an element Picker </p>
+	</section-->
+
+
+		<div class="row LOM-element-picker-sorted">
+
+			<section class="col-md-3">
+				<h3>Text</h3>
+				<button class="snap-lg ico-LOM-texttool" data-element-type="text">Text</button>
+				<button class="snap-md ico-LOM-custom" data-element-type="custom">Ask a developer</button>
+				<button class="snap-md ico-LOM-buildYourOwn" data-element-type="html">Build your own element</button>
+				<button class="snap-md ico-LOM-faq" data-element-type="faq">Frequently Asked Questions</button>
+				<button class="snap-md ico-LOM-container" data-element-type="container">Container</button>
+			</section>
+			<section class="col-md-3">
+				<h3>Media</h3>
+				<button class="snap-lg ico-LOM-image" data-element-type="image">Image</button>
+				<button class="snap-md ico-LOM-video" data-element-type="video">Video</button>
+				<button class="snap-md ico-LOM-audio" data-element-type="audio">Audio</button>
+			</section>
+			<section class="col-md-3">
+				<h3>Interactions</h3>
+				<button class="snap-lg ico-LOM-details" data-element-type="accordion">Accordion</button>
+				<button class="snap-md ico-LOM-tabs" data-element-type="accordion" data-params='{"subtype":"tabs"}'>Tabbed Interface</button>
+				<button class="snap-md ico-LOM-carousel" data-element-type="carousel">Carousel</button>
+				<button class="snap-md ico-LOM-lightbox" data-element-type="lightbox">Lightbox</button>
+				<button class="snap-md ico-LOM-btngroup" data-element-type="btngroup">Button Group</button>
+			</section>
+			<section class="col-md-3">
+				<h3>Knowledge Checks</h3>
+				<button class="snap-lg ico-QS-activity" data-element-type="activity">Activity</button>
+				<button class="snap-md ico-QS-exam" data-element-type="activity" data-params='{"subtype":"exam"}'>Exam</button>
+
+			</section>
+
+
+		</div>
+
+		<div class="row LOM-element-picker-sorted">
+			<button class="snap-lg ico-QS-radio" data-element-type="multiplechoice">Multiple Choice</button>
+			<button class="snap-lg ico-QS-checkbox" data-element-type="multiplechoice" data-params='{"subtype":"multipleanswers"}'>Multiple Answers</button>
+			<button class="snap-lg ico-QS-check" data-element-type="button">Button</button>
+
+		</div>
+
+
+
+
+
+
+
+
+
+	</div>
+	<div class="modal-footer"><button type="button" id="ftrClose" class="btn btn-sm btn-primary pull-left popup-modal-dismiss" title="Close Close overlay (escape key)">Close<span class="wb-inv">Close overlay (escape key)</span></button></div>
+	<script> //masterStructure.editor.loadElementList();</script>
+</section>

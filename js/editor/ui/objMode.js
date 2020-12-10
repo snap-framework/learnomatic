@@ -16,7 +16,8 @@ define([
 			var name = options.name;
 			this.parent = options.parent;
 			this.master = this.parent.master;
-			this.editor = this.parent.editor;
+			this.root = this.parent.root;
+			this.root = options.root;
 
 			this.$el = null;
 			this.$modes = this.parent.$modes;
@@ -27,11 +28,12 @@ define([
 			this.btnClass = "LOM-mode-" + name;
 			this.activeClass = "LOM-" + name + "-active";
 
-			this.permissions = options.permissions;
+			this.interface = options.interface;
+
+			//this.permissions = options.permissions;
 
 			//----tools
 			this.tools = this.initTools(options.tools);
-
 		},
 		/*---------------------------------------------------------------------------------------------
 				-------------------------DOM SETUP
@@ -57,16 +59,48 @@ define([
 		attachClickEvent: function () {
 			var that = this;
 			this.$el.click(function () {
-				//prevent double-clicking;
-				if (that.parent.currentMode !== that) {
-					that.select();
-					if (that.parent.currentMode !== null) {
-						that.parent.currentMode.deactivate();
+
+				//that.modeClicked();
+				if (that.name === "structure") {
+					if (that.root.notAlone) {
+						that.root.lockMessage("course");
+
 					}
-					that.activate();
+					//REMOVE!!!!
+					that.modeClicked();
+				} else {
+					//prevent double-clicking;
+					if (that.parent.currentMode !== that) {
+						that.modeClicked();
+
+					}
 				}
 
+
 			});
+		},
+		modeClicked: function () {
+
+
+			//Make sure there are no activities/exams with no questions before going into preview mode (causes issues with QS)
+			var emptyActivities = false;
+			$(".qs-exercise").each(function () {
+				if ($(this).find(".LOM-element[data-lom-element=\"multiplechoice\"]").length == 0) {
+					emptyActivities = true;
+				}
+			})
+
+			if (this.name == "preview" && emptyActivities) {
+				alert(this.root.labels.element.editview.QS.emptyActivity);
+			} else {
+				if (this.interface !== "social") {
+					this.select();
+					if (this.parent.currentMode !== null) {
+						this.parent.currentMode.deactivate();
+					}
+				}
+				this.activate();
+			}
 		},
 
 		getIcon: function () {
@@ -77,6 +111,18 @@ define([
 					break;
 				case "settings":
 					icon = "gear";
+					break;
+				case "overview":
+					icon = "home";
+					break;
+				case "courses":
+					icon = "course";
+					break;
+				case "boards":
+					icon = "board";
+					break;
+				case "announcements":
+					icon = "announcement";
 					break;
 				default:
 					icon = this.name;
@@ -94,7 +140,8 @@ define([
 					parent: this,
 					name: tools[i].name,
 					labels: tools[i].labels,
-					icon: tools[i].icon
+					icon: tools[i].icon,
+					root: this.root
 				});
 				aTools[i].generateButtonHtml();
 			}
@@ -106,11 +153,11 @@ define([
 				-------------------------
 		---------------------------------------------------------------------------------------------*/
 		select: function () {
-			var aModes = this.parent.modes;
+			var aModes = this.parent.modeList;
 			var aClasses = [];
 			var name = "";
 			for (var i = 0; i < aModes.length; i++) {
-				name = this.parent.modes[i].name;
+				name = this.parent.modeList[i].name;
 				aClasses[aClasses.length] = "LOM-" + name + "-active";
 			}
 
@@ -125,7 +172,7 @@ define([
 			switch (this.name) {
 				case "structure":
 					//this.master.currentSub=this.master.flatList[0];
-					this.editor.structure.exitStructureEditor();
+					this.root.structure.exitStructureEditor();
 					break;
 
 
@@ -133,27 +180,52 @@ define([
 		},
 
 		activate: function () {
-			var that = this;
-			this.parent.currentMode = this;
+			if (this.interface !== "social") {
+				this.parent.currentMode = this;
+			}
+
 			switch (this.name) {
 				case "structure":
 					$('#dynamic_content').html('');
-					that.editor.structure.initLocalView();
+					this.root.structure.initLocalView();
 					break;
 				case "pageEdit":
 				case "preview":
 					//(re)Load current page
 
 					this.master.currentSub.loadPage();
-					this.master.targetNav = masterStructure.currentSub.aPosition;
+					this.master.targetNav = this.master.currentSub.aPosition;
 					this.master.resetNav();
 					break;
 				case "settings":
-					this.editor.settings.setDom();
+					this.root.settings.setDom();
 					break;
 				case "theme":
-					this.editor.themes.setDom();
+					this.root.themes.setDom();
 					break;
+				case "resources":
+					this.root.resourcesEdit.setDom();
+					break;
+				case "users":
+					this.root.userManager.initDom(this.labels);
+					break;
+				case "courses":
+					this.root.courseManager.setDom(this.labels);
+					break;
+				case "overview":
+					this.root.setOverview(this.labels);
+					break;
+				case "chat":
+					this.root.social.chatManager.startChatMode();
+					break;
+				case "notifications":
+					//console.log("check notifications")
+					break;
+
+				case "review":
+					this.root.social.reviewManager.popReviews();
+					break;
+
 
 
 			}
@@ -161,12 +233,22 @@ define([
 
 		},
 
+		enable: function () {
+			//this.$el.css("background-color", "inherit");
+			this.$el.show();
+
+		},
+		disable: function () {
+			//this.$el.css("background-color", "red");
+			this.$el.hide();
+		},
+
 		setPermissions: function () {
 			//console.log(this);
 		},
 		showButtons: function () {
-			for (var i = 0; i < this.parent.modes.length; i++) {
-				this.parent.modes[i].hideButtons();
+			for (var i = 0; i < this.parent.modeList.length; i++) {
+				this.parent.modeList[i].hideButtons();
 			}
 
 			for (i = 0; i < this.tools.length; i++) {

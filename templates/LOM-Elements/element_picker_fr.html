@@ -1,0 +1,66 @@
+<section class="modal-dialog modal-content overlay-def mfp-with-anim mfp-zoom-in">
+	<header class="modal-header">
+		<h2 class="modal-title">Ajouter un élément</h2>
+		<button title="Fermer&nbsp;: Portable (touche d'échappement)" class="mfp-close overlay-close">×<span class="wb-inv"> Fermer&nbsp;: Portable (touche d'échappement)</span></button>
+	</header>
+	<div class="modal-body" id="elementpicker">
+
+		<!--section data-element-type="default">
+		<h3>Default element</h3>
+		<p>This will load an element Picker </p>
+	</section-->
+
+
+		<div class="row LOM-element-picker-sorted">
+
+			<section class="col-md-3">
+				<h3>Texte</h3>
+				<button class="snap-lg ico-LOM-texttool" data-element-type="text">Texte</button>
+				<button class="snap-md ico-LOM-custom" data-element-type="custom">Demander à un développeur</button>
+				<button class="snap-md ico-LOM-buildYourOwn" data-element-type="html">Construisez votre élément</button>
+				<button class="snap-md ico-LOM-faq" data-element-type="faq">Questions fréquentes</button>
+				<button class="snap-md ico-LOM-container" data-element-type="container">Contenant</button>
+			</section>
+			<section class="col-md-3">
+				<h3>Médias</h3>
+				<button class="snap-lg ico-LOM-image" data-element-type="image">Image</button>
+				<button class="snap-md ico-LOM-video" data-element-type="video">Vidéo</button>
+				<button class="snap-md ico-LOM-audio" data-element-type="audio">Audio</button>
+			</section>
+			<section class="col-md-3">
+				<h3>Interactions</h3>
+				<button class="snap-lg ico-LOM-details" data-element-type="accordion">Accordéon</button>
+				<button class="snap-md ico-LOM-tabs" data-element-type="accordion" data-params='{"subtype":"tabs"}'>Interface à onglets</button>
+				<!--button class="snap-md ico-LOM-carousel" data-element-type="carousel">Carousel</button-->
+				<button class="snap-md ico-LOM-lightbox" data-element-type="lightbox">Fenêtre contextuelle (lightbox)</button>
+				<button class="snap-md ico-LOM-btngroup" data-element-type="btngroup">Groupe de boutons</button>
+			</section>
+			<section class="col-md-3">
+				<h3>Vérifications des connaissances</h3>
+				<button class="snap-lg ico-QS-activity" data-element-type="activity">Activité</button>
+				<button class="snap-md ico-QS-exam" data-element-type="activity" data-params='{"subtype":"exam"}'>Examen</button>
+
+			</section>
+
+
+		</div>
+
+		<div class="row LOM-element-picker-sorted">
+			<button class="snap-lg ico-QS-radio" data-element-type="multiplechoice">Choix multiples (une seule réponse)</button>
+			<button class="snap-lg ico-QS-checkbox" data-element-type="multiplechoice" data-params='{"subtype":"multipleanswers"}'>Choix multiples (plusieurs réponses)</button>
+			<button class="snap-lg ico-QS-check" data-element-type="button">Bouton</button>
+
+		</div>
+
+
+
+
+
+
+
+
+
+	</div>
+	<div class="modal-footer"><button type="button" id="ftrClose" class="btn btn-sm btn-primary pull-left popup-modal-dismiss" title="Fermer&nbsp;: Portable (touche d'échappement)">Fermer<span class="wb-inv"> Fermer&nbsp;: Portable (touche d'échappement)</span></button></div>
+	<script> //masterStructure.editor.loadElementList();</script>
+</section>

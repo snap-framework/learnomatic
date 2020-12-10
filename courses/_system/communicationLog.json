@@ -1,0 +1,151 @@
+{
+    "name": "Social Controller",
+    "comms": [
+        {
+            "id": "1598576469",
+            "type": "message",
+            "sender": "sjomphe",
+            "receiver": {
+                "user": [
+                    "admin_sjomphe"
+                ]
+            },
+            "content": "HEYYYyyyy, give me MORE POWER"
+        },
+        {
+            "id": "1598576470",
+            "type": "message",
+            "sender": "admin_sjomphe",
+            "receiver": {
+                "user": [
+                    "sjomphe"
+                ]
+            },
+            "content": "testing anotthe message"
+        },
+        {
+            "id": "1598576471",
+            "type": "announcement",
+            "sender": "sjomphe",
+            "receiver": {
+                "user": [
+                    "all"
+                ]
+            },
+            "content": "if you've created an announcement, you can edit it, and yes I know I'll get rid of the prompt as soon as we figure out the interface"
+        },
+        {
+            "id": "1598576472",
+            "type": "post",
+            "sender": "sjomphe",
+            "receiver": {
+                "team": [
+                    "ux"
+                ]
+            },
+            "content": "I LOVE THIS TEAM"
+        },
+        {
+            "id": "1598576473",
+            "type": "post",
+            "sender": "sjomphe",
+            "receiver": {
+                "course": [
+                    "test_zone"
+                ]
+            },
+            "content": "Amazing course"
+        },
+        {
+            "id": "1598576474",
+            "type": "announcement",
+            "sender": "tdumas",
+            "receiver": {
+                "user": [
+                    "all"
+                ]
+            },
+            "content": "Server Shutdown Imminent"
+        },
+        {
+            "id": "1598576475",
+            "type": "notification",
+            "sender": "system",
+            "receiver": {
+                "course": [
+                    "test_zone"
+                ]
+            },
+            "content": "A LOT of changes were made to Test Zone!"
+        },
+        {
+            "id": "1598576476",
+            "type": "notification",
+            "sender": "system",
+            "receiver": {
+                "team": [
+                    "ux"
+                ]
+            },
+            "content": "Something Very Important About the team!"
+        },
+        {
+            "id": "1598576477",
+            "type": "review",
+            "sender": "tdumas",
+            "receiver": {
+                "course": [
+                    "test_zone"
+                ],
+                "location": "m0#LOM_el_1"
+            },
+            "content": "<h3>Hilariosa</h3><p>LOL NOOB</p>"
+        },
+        {
+            "id": "1598576478",
+            "type": "review",
+            "sender": "sjomphe",
+            "receiver": {
+                "user": "tdumas",
+                "course": [
+                    "test_zone"
+                ],
+                "location": "m0#LOM_el_1"
+            },
+            "content": "<h3>Review</h3><p>reviews are serious business</p>"
+        },
+        {
+            "id": "1598642479",
+            "type": "announcement",
+            "sender": "sjomphe",
+            "receiver": {
+                "user": [
+                    "all"
+                ]
+            },
+            "content": "stef can now create new announcements"
+        },
+        {
+            "id": "1598642872",
+            "type": "announcement",
+            "sender": "sjomphe",
+            "receiver": {
+                "user": [
+                    "all"
+                ]
+            },
+            "content": "WOoooowww"
+        },
+        {
+            "id": "1598643056",
+            "type": "announcement",
+            "sender": "sjomphe",
+            "receiver": {
+                "user": [
+                    "all"
+                ]
+            },
+            "content": "THIS WORKS"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "LOM",
+  "version": "1.0.6",
+  "description": "Learn-O-Matic",
+  "main": "main.js",
+  "scripts": {
+    "build-css": "sass --update --source-map theme/scss/editor:theme",
+    "watch-css": "sass --watch --source-map theme/scss/editor:theme"
+  },
+  "author": "CSPS",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.26.10"
+  }
+}

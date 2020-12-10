@@ -1,0 +1,16 @@
+.progress-manager{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 25px 50px;
+    background-color: #ddd; 
+    
+    p:last-child{
+        margin: 0;
+    }
+}
+#in-progress progress, .in-progress progress{
+    height: 20px;
+    border-radius: 0;
+    vertical-align: middle;
+}

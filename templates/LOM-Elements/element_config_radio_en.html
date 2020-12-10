@@ -1,0 +1,25 @@
+<fieldset style="margin-bottom: 15px; border: none;">
+    <legend style="font-size: 16px; margin-bottom: 0;">
+        <p><strong>Randomize answer choices?</strong></p>
+    </legend>
+    <p>
+        <input type="radio" name="random-answers" id="random-answers-yes" value="true">
+        <label for="random-answers-yes">Yes <span class="tip">(answer choices for the question are randomize each time the activity/exam is started)</span></label>
+    </p>
+    <p>
+        <input type="radio" name="random-answers" id="random-answers-no" value="false" checked>
+        <label for="random-answers-no">No <span class="tip">(answer choices are shown in the order you see them in the editor)</span></label>
+    </p>
+</fieldset>
+
+<p>
+    <input type="checkbox" name="second-chance" id="second-chance">
+    <label for="second-chance">Allow a second chance on wrong answers?</label>
+</p>
+
+<style>
+    .tip {
+        font-weight: 400;
+        font-size: 13px;
+    }
+</style>

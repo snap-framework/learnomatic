@@ -19,14 +19,20 @@ define([
 			this.permissions.editButtons.add = false;
 			this.permissions.editButtons.config = (this.parent.type === "video") ? true : false;
 			this.permissions.editButtons.classPicker = true;
-			this.permissions.editButtons.ribbonPicker = true;
+			this.permissions.editButtons.style = true;
 			this.permissions.subElements = {
 				text: false,
 				image: false,
 				custom: false,
 				details: false
 			};
-
+			if (this.subtype === "html") {
+				this.permissions.editButtons.add = false;
+				this.permissions.editButtons.config = false;
+				this.permissions.editButtons.classPicker = false;
+			}
+			if (this.parent.subtype === "graphDesc") {
+			}
 		},
 
 		initDom: function () {
@@ -42,25 +48,32 @@ define([
 				case "title":
 					this.typeName = this.labels.type.title;
 					break;
+				case "html":
+					this.typeName = this.labels.type.html;
+					break;
 				default:
-
 					this.typeName = this.labels.type.text;
+					break;
 			}
+
+			this.setLabelsDone = true;
 			return false;
 		},
-		autoEdit: function () {
-			var $editView = this.$el.children(".LOM-edit-view");
-			if ($editView.children("button.ico-SNAP-edit").length > 0) {
-				//activate this edit
-				this.edits[0].activate();
-				this.$el.addClass("LOM-editing");
-				$editView.children("button.ico-SNAP-edit").addClass("ico-SNAP-save").removeClass("ico-SNAP-edit");
-				this.autoFocus();
-			} else {
-				$editView.children("button.ico-SNAP-save").addClass("ico-SNAP-edit").removeClass("ico-SNAP-save");
-				this.edits[0].deactivate();
-				this.editor.savePage();
-			}
+
+		initDefaultDomValues: function ($template) {
+			$template.find(".LOM-default-text").html(this.labels.default.text)
+
+			return $template;
+		},
+		/*---------------------------------------------------------------------------------------------
+		-------------------------CONTENT UPDATING
+		---------------------------------------------------------------------------------------------*/
+		changeContent: function (newContent) {
+			var edit = this.edits[0];
+			var $edit = edit.$el;
+			$edit.html(newContent);
+			$edit.next().html(newContent);
+			edit.saveUpdate();
 		},
 
 		/*---------------------------------------------------------------------------------------------

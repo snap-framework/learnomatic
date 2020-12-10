@@ -59,12 +59,20 @@ define([
 				cache: false,
 				timeout: 30000,
 				error: function () {
-
 					return true;
 				},
 				success: function (tpl) {
-
 					that.$template = $(tpl);
+
+					//Translating the interface
+					that.$template.find("h1").html(that.labels.settingsTitle)
+					that.$template.find("h2#main").html(that.labels.mainSettingsTitle)
+					that.$template.find("h2#toolbar").html(that.labels.toolbarTitle)
+					that.$template.find("h3#lang").html(that.labels.langTitle)
+					that.$template.find("h3#mainBtns").html(that.labels.mainBtnsTitle)
+					that.$template.find("h3#toolbox").html(that.labels.toolboxTitle)
+					that.$template.find(".LOM-save-settings").html(that.labels.save)
+
 					that.initSettings();
 				}
 			});
