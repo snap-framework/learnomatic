@@ -1,114 +1,231 @@
 /*----------------- QS -----------------------*/
 //----- opnly in editor
 .LOM-pageEdit-active {
+    // little error messages
+    .qs-right, .qs-wrong, .qs-second-chance, .qs-generic,
+    .LOM-element[data-lom-element="radiobtn"][data-ra='ra'],
+    .LOM-element[data-lom-element="radiobtn"]:not([data-ra='ra']) {
+        &:after {
+            font-size: 0.7em;
+            opacity: 0.7;
+        }
+    }
 
-	// little error messages
-	.qs-right, .qs-wrong, .qs-generic, 
-	.LOM-element[data-lom-element="radiobtn"][data-ra='ra'],
-	.LOM-element[data-lom-element="radiobtn"]:not([data-ra='ra']){
-		&:after{
-				font-size:0.7em;
-				opacity:0.7;
-			
-		}
-		
-	}	
-	.qs-start-activity,
-	.qs-elearning-activity,
-	.qs-exercise,
-	.qs-question,
-	.qs-feedback,
-	.qs-feedback-final,
-	.qs-right,
-	.qs-wrong,
-	.qs-generic{
-		display:block!important;
-	}	
-	.qs-submit,.qs-continue,.qs-start{
-		display:none;
-	}
-	.ra{
-		&:before{
-			content:'';
-			margin-top: -10px;
-    		margin-left: -30px;
-			@include iconpack(check, md, hover);
-		}
-	}
-	.qs-answers{
-		clear:both;
-		padding-left:30px;
-	
-		.LOM-element{
-		clear:both;
-		width:100%;
-		padding-top:7px;
-		margin-bottom:0px;
-	}
-		
-}
+    .qs-start-activity,
+    .qs-elearning-activity,
+    .qs-exercise,
+    .qs-question,
+    .qs-feedback,
+    .qs-feedback-final,
+    .qs-right,
+    .qs-wrong,
+    .qs-second-chance,
+    .qs-generic {
+        display: block !important;
+    }
 
+    .qs-submit,
+    .qs-continue,
+    .qs-start,
+    .qs-subvisit,
+    .qs-navgroup,
+    .recap,
+    .qs-restart-section {
+        display: none;
+    }
 
-	.LOM-element[data-lom-element="radiobtn"]{
-		cursor:pointer;
-		margin-bottom:3px;
-		&[data-ra='ra']{
-			//background-color:#eee; 
-			-webkit-box-shadow: 0px 0px 3px 1px rgba(0,119,0,1);
-			-moz-box-shadow: 0px 0px 3px 1px rgba(0,119,0,1);
-			box-shadow: 0px 0px 3px 1px rgba(0,119,0,1);
-			&:after{
-				content:'[Correct]';
-			}
-			input{
-				
-			}
-		}
-		&:not([data-ra='ra']){
-			&:after{
-				content:'[Incorrect] Click to set as Correct';
-				
-			}
-		}
-		&:hover{
-			background-color:#f9f9f9;
-			
-		}
-	}
+    .ra {
+        &:before {
+            content: '';
+            margin-top: -10px;
+            margin-left: -30px;
+            @include iconpack(check, md, hover);
+        }
+    }
 
-	.qs-right, .qs-wrong, .qs-generic{
-		form,&:after{
-		display:inline-block;
-		}}
-	.qs-right:after{content:'[This will appear on a correct answer]';}
-	.qs-wrong:after{content:'[This will appear on a wrong answer]';}
-	.qs-generic:after{content:'[This will appear on any answer]';}
+    .qs-answers {
+        clear: both;
+        padding-left: 30px;
 
-	//will return once the final feedback is fixed
-	[data-lom-subtype="exam"]{
-		.qs-feedback{
-			display:none!important;
-		}
-	}
+        .LOM-element {
+            clear: both;
+            width: 100%;
+            padding-top: 7px;
+            margin-bottom: 0px;
+        }
+    }
+
+    .qs-exercise {
+        margin-bottom: 100px;
+    }
+
+    .LOM-element[data-lom-element="radiobtn"] {
+        cursor: pointer;
+        margin-bottom: 3px;
+
+        &[data-ra='ra'] {
+            //background-color:#eee;
+            -webkit-box-shadow: 0px 0px 3px 1px rgba(0,119,0,1);
+            -moz-box-shadow: 0px 0px 3px 1px rgba(0,119,0,1);
+            box-shadow: 0px 0px 3px 1px rgba(0,119,0,1);
+
+            &:after {
+                content: '[Correct]';
+            }
+
+        }
+
+        &:not([data-ra='ra']) {
+            &:after {
+                content: '[Incorrect] Click to set as Correct';
+            }
+        }
+
+        &:hover {
+            background-color: #f9f9f9;
+        }
+    }
+
+    .qs-right, .qs-wrong, .qs-second-chance, .qs-generic {
+        form, &:after {
+            display: inline-block;
+        }
+    }
+
+    .qs-right:after {
+        content: '[This will appear on a correct answer]';
+    }
+
+    .qs-wrong:after {
+        content: '[This will appear on a wrong answer]';
+    }
+    
+    .qs-second-chance:after {
+        content: '[This will appear on the first wrong answer]';
+    }
+
+    .qs-generic:after {
+        content: '[This will appear on any answer]';
+    }
+
+    counter-reset: section;
+    /* ***************************
+	 * POOLS/ EXERCISES
+	 * **************************/
+    [data-lom-subtype="exam"] .qs-exercise {
+        outline: grey dotted 1px;
+
+        &:before {
+            counter-increment: section;
+            content: 'Question Pool ' counter(section) ' ';
+            outline: grey dotted 1px;
+        }
+    }
+
+    .qs-feedback-final {
+        & > form {
+			  margin-top:30px;
+            &:before {
+				 content: 'Feedback';
+				 outline: dotted 1px grey;
+				 display: inline;
+				 position: absolute;
+				 height: 25px;
+				 width: auto;
+				 font-weight: 600;
+				 margin-top: -26px;
+            }
+			  outline:dotted 1px grey;
+			  &:nth-of-type(1):before{
+				  color:#003300;
+			  }
+			  &:nth-of-type(2):before{
+				  color:#330000;
+			  }
+        }
+    }
+    //hide pool commands when disabled
+    .ico-LOM-trash, .ico-QS-right, .ico-QS-left{
+        &[disabled]{
+            display:none;
+        } 
+    }
+
+    &[lang=fr] .qs-feedback-final > form:nth-of-type(1):before {
+		 content: 'Retroaction positive';
+    }
+
+    &[lang=en] .qs-feedback-final > form:nth-of-type(1):before {
+        content: 'Positive Feedback';
+    }
+
+    &[lang=fr] .qs-feedback-final > form:nth-of-type(2):before {
+        content: 'Retroaction negative';
+    }
+
+    &[lang=en] .qs-feedback-final > form:nth-of-type(2):before {
+        content: 'Negative Feedback';
+    }
+    
+    
+    &[lang="fr"] [data-lom-subtype="exam"] .qs-exercise:before{
+        content: 'Banque de questions ' counter(section) ' ';
+    }
+    &[lang="fr"] .qs-right:after{
+        content: '[Apparaît pour les bonnes réponses]';
+    }
+    &[lang="fr"] .qs-wrong:after{
+        content: '[Apparaît pour les mauvaises réponses]';
+    }
+    &[lang="fr"] .qs-second-chance:after {
+        content: '[Apparaît pour la première mauvaise réponse]';
+    }
+    &[lang="fr"] .qs-generic:after{
+        content: '[Apparaît pour toutes les réponses]';
+    }
+    &[lang="fr"] .LOM-element[data-lom-element="radiobtn"]:not([data-ra='ra']):after{
+        content: '[Incorrecte] Cliquez pour marquer comme correcte';
+    }
+    &[lang="fr"] .LOM-element[data-lom-element="radiobtn"][data-ra='ra']:after{
+        content: '[Correcte]';
+    }
 }
 
 .qs-elearning-activity{
 	
-	display:block!important;
+	//display:block!important;
 	h2{
 		margin-top: 10px;
 		margin-left: 30px;
 		margin-bottom: 20px;
 	}
+    
+    legend.qs-text{
+        float: none;
+        margin-bottom: 0px;
+    }
+    
+    .qs-answers{
+        margin-bottom: 15px;
+        
+        .qs-answer-container{
+            margin-bottom: 15px;
 
-	.qs-exercise{
-		margin-bottom:100px;
-	}
-	.qs-answer{
-		display:block;
-		.LOM-editable, form{display:inline-block;}
-	}
+            .qs-answer{
+                display:flex;
+                margin-bottom: 10px;
 
+                .LOM-editable, form{
+                    display:inline-block;
+                }
+            }
+        }
+    }
+    .qs-feedback{
+        .qs-right, .qs-wrong, .qs-second-chance, .qs-generic{
+            margin-bottom: 10px;
+        }
+    }
 }
 
 .qs-answer{

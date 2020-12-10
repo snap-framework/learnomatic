@@ -3,8 +3,9 @@ define([
 	'jquery',
 	'labels',
 	'settings-core',
-	'modules/BaseModule'
-], function ($, labels, CoreSettings, BaseModule) {
+	'modules/BaseModule',
+	'utils'
+], function ($, labels, CoreSettings, BaseModule, Utils) {
 	'use strict';
 
 	return BaseModule.extend({
@@ -25,10 +26,15 @@ define([
 			this.elements = [];
 			this.labels = options.labels;
 
+			this.frameNumber = 0;
+			this.holderId = this.id;
 
 			this.originalHtml = this.$el.html();
 			this.newHtml = this.originalHtml;
 			this.detectElements();
+			//drag and drop
+			this.initSortable();
+
 			this.verifyInit();
 
 		},
@@ -59,43 +65,23 @@ define([
 		connectDom: function () {
 			this.$el = $("#" + this.id);
 		},
-		refreshInfo: function () {
-			this.originalHtml = this.newHtml;
-			this.newHtml = this.$el.html();
-			for (var i = 0; i < this.elements.length; i++) {
-				this.elements[i].refreshInfo();
-			}
-			//this.detectEditBoxes();
-		},
 
-		resetAll: function () {
-			this.refreshInfo();
-			for (var i = 0; i < this.elements.length; i++) {
-				this.elements[i].isModified = false;
-				this.elements[i].resetAll();
-			}
-			this.addOnLoad();
-		},
+
 		addOnLoad: function () {
 			//console.log("add buttons for "+this.id);
 
 			this.autoAddBtn();
-			this.addSortable();
 		},
 
-		removeBeforeSave: function () {
-			this.$el.find(".LOM-delete-on-save").remove();
-			for (var i = 0; i < this.elements.length; i++) {
-				this.elements[i].removeBeforeSave();
-			}
-		},
 
 		autoAddBtn: function () {
 			var that = this;
 			var iconSize = "";
+			var text = this.addElementBtnTxt()
+
 			if (this.$el.find(".LOM-blankpage-layout").length === 0) {
-				iconSize = (this.elements.length === 0) ? "lg" : "md";
-				this.$el.append("<button class=\"snap-" + iconSize + " align-left ico-LOM-plus LOM-delete-on-save\" title=\"Add An Element\">Add An Element</button>");
+				iconSize = (this.$el.children(".LOM-element:not([data-lom-subtype=\"title\"])").length === 0) ? "lg" : "md";
+				this.$el.append("<button class=\"snap-" + iconSize + " align-left ico-LOM-plus LOM-delete-on-save\" title=\"" + text + "\">" + text + "</button>");
 				this.$el.children(".ico-LOM-plus").click(function () {
 					that.editor.popElementPicker(this);
 					return false;
@@ -103,12 +89,14 @@ define([
 
 
 			}
-
-
 		},
-		addSortable: function () {
-			var that = this;
 
+		addElementBtnTxt: function () {
+			return (Utils.lang === "en") ? "Add Element" : "Ajouter un élément";
+		},
+
+		initSortable: function () {
+			var that = this;
 
 			this.$el.sortable({
 				//axis: "y",
@@ -132,43 +120,44 @@ define([
 				},
 
 				start: function () {
-					/*
-					var startFrame=that;
-					event=event;
-					var item=ui.item;
-					that.isModified=true;
-				  */
-
+					$(".LOM-frame > .ico-LOM-plus").hide()
+					$(".LOM-frame").css({ minHeight: "100px" });
 				},
 				stop: function (event, ui) {
-
 					var item = ui.item;
-					var newFrame = that.parent.findFrame($(item).parent().attr("id"));
+					var itemId = $(item).attr("id");
+					var targetFrame = that.parent.findFrame($(item).parent().attr("id"));
 
-					//save
-					newFrame.detectElements();
-					that.detectElements();
-					that.refreshInfo();
-					that.editor.savePage();
+					//make a copy of the page to work.
+					var $new = $("<div>");
+					$new.html(that.editor.originalHtml);
+
+					//save the object
+					var newHtml = targetFrame.reorderSubElements($new);
+					if (targetFrame !== that) {
+						//this is a move to another frame
+						// remove the excess? to avoid duplicate
+						$new.find("#" + that.id).find("#" + itemId).remove();
+
+					}
+					$new.find("#" + targetFrame.id).html(newHtml);
+
+
+					//assign the html to the editor and refresh / save to html
+					that.editor.originalHtml = $new.html()
+					that.editor.refreshHtml();
+
+					$(".LOM-frame > .ico-LOM-plus").show()
+					$(".LOM-frame").css({ minHeight: "unset" });
+				},
+				update: function (event, ui) {
+					that.$el.children(".ico-LOM-plus").remove();
+					that.autoAddBtn();
 				}
-
 			});
-
-			this.addHandle();
-
 		},
 
-		addHandle: function () {
-			var title = this.labels.element.editview.move;
-			//var $element=this.$el.find(".LOM-element");
-			var $element = this.$el.children(".LOM-element");
-			for (var i = 0; i < $element.length; i++) {
-				if ($element.eq(i).find("h1").length <= 0) {
-					$element.eq(i).append("<div class='LOM-ui-handle LOM-delete-on-save'  title='" + title + "'></div>");
-				}
-			}
-			return false;
-		},
+
 		/*---------------------------------------------------------------------------------------------
 				-------------------------ELEMENTS
 		---------------------------------------------------------------------------------------------*/
@@ -216,44 +205,46 @@ define([
 			this.originalHtml = null;
 			this.newHtml = null;
 		},
-		/*---------------------------------------------------------------------------------------------
-				-------------------------Manage Elements
-		---------------------------------------------------------------------------------------------*/
 
-		cleanElements: function () {
-			for (var i = 0; i < this.elements.length; i++) {
-				this.elements[i].cleanElements();
+		reorderSubElements: function ($originalHtml) {
+			var $return = $("<div>");
+			//just go grab the order
+			var $children = $("#" + this.id).children(".LOM-element");
+			var refID;
+			//THE NEW WORLDFRAME ORDER
+			for (var i = 0; i < $children.length; i++) {
+				refID = $children.eq(i).attr("id");
+				$return.append($originalHtml.find("#" + refID).outerHTML());
 
 			}
+			//this should return HTML
+			return $return.html();
 		},
+
 		/*---------------------------------------------------------------------------------------------
 				-------------------------CHANGING FRAME
 		---------------------------------------------------------------------------------------------*/
-		/*
-		 * record what's currently in the frame.
-		 */
-		storeValue: function () {
-			//lets take care of edits first
-			this.editor.deactivateEditors();
-			//lets take a look at whats in the page
-			this.newHtml = this.$el.html();
-			//is there a change?
-			if (this.newHtml !== this.originalHtml) {
-				this.isModified = true;
-			}
-
-		},
-
-		loadClean: function () {
-			this.connectDom();
-			this.$el.html(this.newHtml);
-
-		},
 
 
 		/*
 		 * 
 		 */
+
+		addFrameNumber: function () {
+			this.$el.removeAttr("data-frame-number");
+			this.$el.find(".LOM-frame-number").remove();
+
+			this.$el.attr("data-frame-number", this.frameNumber);
+			this.$el.prepend("<div class=\"LOM-frame-number LOM-delete-on-save\">" + this.frameNumber + "</div>");
+		},
+
+		removeFrameNumber: function () {
+			this.$el.removeAttr("data-frame-number");
+			this.$el.find(".LOM-frame-number").remove();
+			this.frameNumber = 0;
+		},
+
+
 		doSomethingElse: function () {
 
 		}

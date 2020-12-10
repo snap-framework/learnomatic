@@ -1,0 +1,86 @@
+@import "./_vars";
+/*-------------------------------------------------------------------------
+//-------------------------------- ICON---------------------------
+
+-------------------------------------------------------------------------*/
+/*
+body header #wb-bar .top-menu #wb-lng.visible-md ul.text-right #LOM-user a.login{
+	background-position: -445px 4px;
+}
+*/
+/*
+html[data-role="user"]{
+    #LOM-toolbox #LOM-login-box{
+        border: none;
+        
+        .LOM-login{
+            background-color: #d7d7d7;
+        }
+    }
+}
+
+*/
+
+/*-------------------------------------------------------------------------
+//-------------------------------- WATCHER---------------------------
+-------------------------------------------------------------------------*/
+#LOM-watcher{
+    position: absolute;
+    border: $light-grey-border solid 1px;
+    width: 35px;
+    height: 35px;
+    padding-right: 35px;
+	padding-top:8px;
+    overflow: hidden;
+	left:-36px;
+    top: -1px;
+	display:inline-block;
+    text-align: right;
+
+	&:before{
+		content:'';
+		position:absolute;
+		right:0px;
+		top:0px;
+        background-color: white;
+		
+		@include iconpack(unlock, md);
+		html.LOM-not-alone &{@include iconpack(users, md);}
+		html.LOM-editing-locked &{@include iconpack(lock, md);}		
+		
+	}
+
+    &.not-empty:hover{
+        overflow:visible;
+        width:200px;
+        height:auto;
+        background-color:white;
+        z-index:2;
+        padding-right:45px;
+        padding-left: 10px;
+        opacity: 0.8;
+        left: -199px;
+    }
+}
+
+/*-------------------------------------------------------------------------
+//-------------------------------- reviewer---------------------------
+-------------------------------------------------------------------------*/
+
+html[data-role=reviewer]{
+	.LOM-mode-structure,.LOM-mode-settings,.LOM-ui-handle,.ico-LOM-plus:not(.add-review),.LOM-dashboard{
+		display:none!important;
+	}
+    .LOM-edit-view{
+        button:not(.ico-LOM-review){
+            display: none!important;
+        }
+    }
+}
+
+html[data-role=designer]{
+	
+	.LOM-mode-structure,.LOM-mode-settings{
+		display:none!important;
+	}
+}

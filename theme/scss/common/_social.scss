@@ -1,0 +1,455 @@
+@import "./_vars";
+@use "./_buttons";
+/*-------------------------------------------------------------------------
+//-------------------------------- SOCIAL---------------------------
+-------------------------------------------------------------------------*/
+
+.LOM-message,
+.LOM-announcement {
+	h4 {
+		font-size: 0.9em;
+		.LOM-comm-from-date,
+		.LOM-comm-from-word {
+			font-size: 0.7em;
+		}
+	}
+}
+
+.LOM-comm-btn-holder {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+/*-------------------------------------------------------------------------
+//-------------------------------- REVIEWS---------------------------
+-------------------------------------------------------------------------*/
+
+
+
+
+//- ------------ TITLE
+.LOM-review-popup {
+	h2.modal-title {
+		padding-left: 40px;
+		&:before {
+			@include iconpack(review, md, #606060);
+			content: "";
+			position: absolute;
+			margin-left: -40px;
+			margin-top: -5px;
+		}
+	}
+}
+.reviews {
+	padding-left: 0px;
+	list-style: none;
+	.LOM-review,.LOM-empty-review {
+		padding-left: 10px;
+	}
+	.smaller {
+		font-size: 0.9em;
+	}
+	.LOM-review,
+	.LOM-new-review,
+	.LOM-empty-review{
+		position: relative;
+		margin-bottom: 30px;
+		border: 1px solid #ccc;
+	}
+
+	.LOM-review-content {
+		background-color: #eee;
+		border: 1px solid #ddd;
+		padding: 15px;
+		margin-bottom: 30px;
+	}
+
+	.review-content p:last-child {
+		margin-bottom: 0;
+	}
+
+	.add-review input[type="text"] {
+		margin-left: 5px;
+	}
+
+	.add-review label[for="title"] {
+		margin-top: 30px;
+	}
+	.is-applied {
+		& > .LOM-review-content {
+			opacity: 0.5;
+		}
+		& .LOM-review-content:before {
+			content: "Already Applied";
+			display: block;
+			position: absolute;
+			width: calc(100% - 24px);
+			height: auto;
+			background-color: inherit;
+			text-align: center;
+		}
+	}
+}
+
+
+#LOM-review-box{
+
+	.courselist>li:not(.LOM-review-course){
+		display:none;
+	}
+	.courselist>li{
+		border-width:2px;
+		border-style:solid;
+		border-color:transparent;
+	}
+	.courselist>li.LOM-course-active{
+		border-color:grey;
+		&:before{
+			 content: '';
+			 display: block;
+			 position: absolute;
+			 width: 5px;
+			 height: 100%;
+			 /* border-radius: 5px; */
+			 border-bottom-left-radius: 5px;
+			 border-top-left-radius: 5px;
+			 background-color: grey;
+			 /* top: calc(50% - 5px); */
+			 margin-left: -5px;
+			
+		}
+		
+	}
+	.reviews{
+		min-height:150px;
+		
+	}
+
+	&:not(.LOM-review-element) {
+		nav {
+			border-width: 0px;
+			padding-right: 0;
+		.review-pages{
+			padding-right:0px;
+		}
+		}
+		main {
+			border-width: 1px 1px 1px 1px;
+		}
+		nav,
+		main {
+			.LOM-page-active{
+				a {
+					background-color: white;
+				}
+				&:after {
+					content: "";
+					 background-color: white;
+					 height: 100%;
+					 position: absolute;
+					 display: block;
+					 width: 2px;
+					 right: -2px;
+					 z-index: 1;
+					 top: 0px;
+				}
+			}
+			border-color: $grey-border;
+			border-style: solid;
+			.LOM-review {
+				border: none;
+			}
+			h4 {
+				margin: 0;
+			}
+			h3 {
+				line-height: 2em;
+				margin: 0px 0px 20px 0px;
+				border-bottom: 1px solid $light-grey-border;
+
+			}
+		}
+	}
+	&.LOM-review-element{
+		nav,h3{display:none;}
+		main{
+			width:100%!important;
+			
+		}
+		.LOM-goto{display:none;}
+	}
+	.LOM-goto-container{
+		position:absolute;
+		top:0px;
+		right:0px;
+	}
+	.LOM-goto {
+		display: block;
+
+		padding-left: 50px;
+		color: $dark-grey;
+		text-decoration: none;
+		display: block;
+		background-color:$light-grey-background-hover;
+		//border:$grey-border;
+		border-radius:5px;    
+		padding: 2px 10px;
+		margin: 5px;
+		&:after {
+			//@include iconpack(review, md, #606060);
+			 content: "\21E8";
+			 position: relative;
+			 margin-left: 5px;
+		}
+		&:hover {
+			text-decoration: underline;
+		}
+	}	
+}
+
+$outline-width: 2px;
+
+.LOM-has-review:not(:hover) {
+	html.LOM-pageEdit-active[data-role="reviewer"] &,
+	html.LOM-pageEdit-active[data-role="designer"] & {
+		&:before {
+			@include iconpack(review, md, #606060);
+			content: "";
+
+			position: absolute;
+			//margin-left:-50px;
+			background-color: $active-review-color;
+			border-radius: 25px;
+			right: -15px;
+			top: -15px;
+
+			border-color: $active-review-border;
+			border-width: $outline-width $outline-width 0px 0px;
+			border-style: solid;
+		}
+		outline: $active-review-border solid $outline-width;
+		background-color: $active-review-color;
+	}
+}
+
+.LOM-has-review .ico-LOM-review {
+	outline: solid $outline-width $active-review-border;
+}
+
+.pagelist [data-page-uid].LOM-page-active a {
+
+	background-color: $active-chat;
+	border-width: 2px 0px 2px 2px;
+    border-color: $grey-border;	
+}
+/*-------------------------------------------------------------------------
+//-------------------------------- announcements---------------------------
+-------------------------------------------------------------------------*/
+$social-header: #e1e1e1;
+.LOM-overview-announcements {
+	.LOM-overview-announcement-container {
+		padding-left: 0px;
+		.LOM-announcement {
+			position: relative;
+			border: 1px $social-header solid;
+			background-color: $social-background;
+			list-style: none;
+			h4 {
+				display: block;
+				width: 100%;
+				padding: 5px 10px;
+				margin: 0;
+				background-color: $social-header-background;
+			}
+			.LOM-announcement-content {
+				padding: 10px;
+			}
+			button.LOM-announcement-edit {
+				position: absolute;
+				top: 0px;
+				right: -46px;
+				margin-top: 22px;
+			}
+		}
+	}
+}
+
+html .LOM-msg-user {
+	color: $msg-user;
+}
+
+/*-------------------------------------------------------------------------
+//-------------------------------- chat box---------------------------
+-------------------------------------------------------------------------*/
+$bubble-spacing: 2%;
+$bubble-width: 100%-$bubble-spacing;
+
+#LOM-chatbox {
+	height: 90vh;
+	overflow: hidden;
+	h3 {
+		margin: 0px;
+	}
+	& > .row {
+		height: 100%;
+	}
+
+	// -------------------------- USER COLLUMNS
+	.LOM-user-column {
+		padding-right: 0px;
+		overflow-y: scroll;
+		height: 90vh;
+		overflow-x: hidden;
+	}
+	.LOM-chat-userlist [data-username].LOM-chat-active a {
+		border-right: 0px;
+		background-color: $active-chat;
+	}
+	// ------------------------- CONTENT COLUMN
+	.LOM-content-column {
+		height: 100%;
+		h3 {
+			visibility: hidden;
+		}
+	}
+	// contains all the chats
+	.LOM-chat-container {
+		padding: 10px;
+		border: 1px $social-border solid;
+		margin-bottom: 68px;
+		overflow-y: scroll;
+		bottom: 0px;
+		top: 0px;
+		position: absolute;
+		right: 0px;
+		left: 0px;
+		// ------- the chats (conversation between 2 ppl)
+
+		.LOM-chat-content {
+			&:empty {
+				background-color: $social-background;
+				height: 100%;
+				&:before {
+					content: "Type your text below";
+					width: 100%;
+					display: block;
+					text-align: center;
+					padding: 15%;
+				}
+			}
+		}
+	}
+	.LOM-message {
+		list-style: none;
+		h4 {
+			margin: 0;
+		}
+		position: relative;
+		padding: 5px 10px;
+		border-radius: 10px;
+		margin-top: 10px;
+		&.LOM-comm-From {
+			//right:0px;
+			right: 0%;
+			width: $bubble-width;
+			left: $bubble-spacing;
+			background-color: $sent-msg-bg;
+		}
+		&:not(.LOM-comm-From) {
+			right: $bubble-spacing;
+			width: $bubble-width;
+			left: 0%;
+			background-color: $received-msg-bg;
+		}
+		.LOM-message-content {
+			padding-left: 10px;
+		}
+	}
+	// ------ THE TEXT FIELD
+	.LOM-chat-textbox {
+		position: absolute;
+		bottom: 0px;
+		width: 100%;
+		padding-right: 31px;
+		div {
+			display: inline-block;
+			width: 100%;
+			padding-right: 45px;
+			height: 45px;
+		}
+		input {
+			height: 100%;
+			width: 100%;
+			border-color: $social-border;
+			border-radius: 5px;
+		}
+		button {
+			position: absolute;
+			right: 31px;
+		}
+	}
+}
+
+[data-online-status] {
+	a {
+		padding-left: 20px;
+	}
+	&:before {
+		content: "";
+		display: block;
+		position: absolute;
+		width: 10px;
+		height: 10px;
+		top: calc(50% - 5px);
+		border-radius: 5px;
+		margin-left: 8px;
+	}
+	&[data-online-status="true"]:before {
+		background-color: $online-circle;
+		border: $online-border solid 1px;
+	}
+	&[data-online-status="false"]:before {
+		background-color: $offline-circle;
+	}
+}
+
+.LOM-socialboard {
+	button {
+		&.LOM-social-notification {
+			&:after {
+				content: "!";
+				display: block;
+				position: absolute;
+				width: 1em;
+				height: 1em;
+				background-color: $warning-color;
+				color: white;
+				bottom: 5px;
+				right: 25px;
+				border-radius: 0.5em;
+				padding: 0px 0.3em;
+				line-height: normal;
+				font-weight: 600;
+			}
+		}
+	}
+}
+
+.LOM-chat-notification {
+	&:after {
+		content: "!";
+		display: block;
+		position: absolute;
+		width: 1em;
+		height: 1em;
+		background-color: $warning-color;
+		color: white;
+		bottom: calc(50% - 0.5em);
+		right: 5px;
+		border-radius: 0.5em;
+		padding: 0px 0.3em;
+		line-height: normal;
+		font-weight: 600;
+	}
+}

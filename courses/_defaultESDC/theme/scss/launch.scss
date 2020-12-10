@@ -1,0 +1,105 @@
+@import "./_vars";
+
+html{
+	margin:0px;
+	padding:0px;
+}
+
+body {
+	font-family: $fontFamily;	
+	background-image: url("../content/medias/images/section0_bg.png");
+	background-size: cover;
+	background-attachment:fixed;
+	background-color:$body-background-color;
+	background-repeat:no-repeat;
+}
+
+.container.loaded .spinner{background-color:red; left:-90000px;} 
+
+@media only screen and (min-width : 1000px) {
+
+    .container { width: 1000px; } 
+
+}
+main{
+	position: relative;
+}
+.splash-content-1
+{
+	margin-top:auto;
+	margin-bottom:auto;
+	padding-top: 50px;
+	padding-bottom: 70px;
+	background-color:$banner-color;
+
+	h1{
+		font-size:2.5em;
+		color:$banner-text-color;
+		line-height: 1em;
+		
+	}
+	
+	.alignCenter
+	{
+		text-align:center;
+	}
+}
+.splash-content-2
+{
+	h2{
+		margin-top:25px;
+		color:$banner-color;
+		font-size: 1.7em;
+	}
+	
+	#launch-btn{
+		margin-top:20px;
+		position:relative;
+		display:inline-block;
+		margin-left:auto;
+		margin-right:auto;
+		width:160px;
+		height:50px;
+		border-radius:50px;
+		background-color:$interactive-color;
+		
+		&:link, &:hover, &:active, &:visited
+		{
+			color:$interactive-text-color;
+			font-size:2em;
+			line-height: 1.8em;
+			font-weight: bold;
+			text-decoration:none;
+			text-align: center;
+			vertical-align: middle;
+		}
+		&:hover{
+			background-color: $interactive-hover-color;
+		}
+	}
+	
+	.alignCenter
+	{
+		text-align:center;
+	}
+}
+footer {
+	clear:both;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 98%;
+}
+
+#esdc{
+	width: 30%;
+	margin: 0;
+	float: left;
+}
+ 
+#canada{
+	width: 10%;
+	margin-bottom: 15px;
+	float: right;
+	
+}

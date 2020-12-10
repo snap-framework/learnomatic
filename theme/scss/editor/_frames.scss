@@ -4,13 +4,11 @@
 
 //------------------add button
 .LOM-frame>button.ico-LOM-plus.LOM-delete-on-save{
-		opacity: 0.3;
-  		filter: alpha(opacity=30);
-	
+    opacity: 0.3;
+    filter: alpha(opacity=30);
 }
 .LOM-frame:hover, *:focus{
 	&>button.ico-LOM-plus.LOM-delete-on-save{
-
 		opacity: 1;
   		filter: alpha(opacity=100);
 	}

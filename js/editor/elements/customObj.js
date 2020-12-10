@@ -23,20 +23,20 @@ define([
 				details: false
 			};
 		},
-		autoEdit: function () {
-			var $editView = this.$el.children(".LOM-edit-view");
-			if ($editView.children("button.ico-SNAP-edit").length > 0) {
-				//activate this edit
-				this.edits[0].activate();
-				this.$el.addClass("LOM-editing");
-				$editView.children("button.ico-SNAP-edit").addClass("ico-SNAP-save").removeClass("ico-SNAP-edit");
-			} else {
-				$editView.children("button.ico-SNAP-save").addClass("ico-SNAP-edit").removeClass("ico-SNAP-save");
-				this.edits[0].deactivate();
-				this.$el.removeClass("LOM-editing");
 
-			}
+		setLabels: function () {
+			this.typeName = this.labels.type.custom;
+			this.setLabelsDone = true;
+			return false;
 		},
+
+		initDefaultDomValues: function ($template) {
+			$template.find("h2").html(this.labels.default.customTitle)
+			$template.find(".LOM-editable").html(this.labels.default.customContent)
+
+			return $template;
+		},
+
 
 		//-------------------------
 		doSomething: function () {

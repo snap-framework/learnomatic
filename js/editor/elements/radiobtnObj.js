@@ -9,49 +9,50 @@ define([
 		initialize: function (options) {
 
 			this.options = options;
-
-
 		},
-
 
 		changePermissions: function () {
 			this.permissions.subElements = {};
-            this.permissions.editButtons.classPicker = false;
+			this.permissions.editButtons.classPicker = false;
 		},
 
-		initDom: function () {
-			switch (this.subtype) {
-				case "checkbox":
-					this.domCheckbox();
-					break;
-				default:
-					this.domRadio();
-			}
-
+		setLabels: function () {
+			this.typeName = this.labels.type.answer;
+			this.setLabelsDone = true;
 			return false;
 		},
 
-		postCleanup: function () {
-
-			var $radio = this.$el.children("input");
-			$radio.removeAttr("disabled");
-
+		initDefaultDomValues: function ($template) {
+			//set ID
+			$template.find("input").attr("id", "answer_" + this.id);
+			//set NAME
+			$template.find("input").attr("name", "q-" + this.parent.id);
+			//change TYYPE
+			if (this.subtype === "checkbox") {
+				$template.find("input").attr("type", "checkbox");
+			}
+			return $template;
 
 		},
+
+
 		setRadioClick: function () {
 			var that = this;
 			var $radio = this.$el.children("input");
 			$radio.click(function () {
-				if ($(".sortable-placeholder").length === 0) {
-					//$(this).attr("checked", false);
-					//$(this).prop("checked", false);
-					that.parent.submitCorrectAnswer(that.id);
+				if (!that.editor.locked) {
+					if ($(".sortable-placeholder").length === 0) {
+						that.parent.submitCorrectAnswer(that.id);
+					}
+				} else {
+					this.editor.lockMessage();
 				}
 			});
 
 
 		},
 		setCorrect: function (isCorrect) {
+			var $bkp = this.getBkp();
 
 			switch (this.subtype) {
 				case "checkbox":
@@ -61,9 +62,13 @@ define([
 						if (!$check.hasClass("ra")) {
 							$check.removeClass("wa").addClass("ra");
 							this.$el.attr("data-ra", "ra");
+							$bkp.find("#" + this.id).attr("data-ra", "ra");
+							$bkp.find("#" + this.id).children("input").removeClass("wa").addClass("ra");
 						} else {
 							$check.removeClass("ra").addClass("wa");
 							this.$el.attr("data-ra", "wa");
+							$bkp.find("#" + this.id).attr("data-ra", "wa");
+							$bkp.find("#" + this.id).children("input").removeClass("ra").addClass("wa");
 
 						}
 					} else {
@@ -71,6 +76,8 @@ define([
 						if (!$check.hasClass("wa") && !$check.hasClass("ra")) {
 							$check.addClass("wa");
 							this.$el.attr("data-ra", "wa");
+							$bkp.find("#" + this.id).children("input").addClass("wa");
+							$bkp.find("#" + this.id).attr("data-ra", "wa");
 						}
 					}
 
@@ -79,36 +86,22 @@ define([
 					var correctClass = (isCorrect) ? "ra" : "wa";
 					this.$el.children("input").removeClass("ra").removeClass("wa").addClass(correctClass);
 					this.$el.attr("data-ra", correctClass);
+					$bkp.find("#" + this.id).attr("data-ra", correctClass);
+					$bkp.find("#" + this.id).children("input").removeClass("ra").removeClass("wa").addClass(correctClass);
 
 			}
 
 
 			//this.$el.prop("checked", false);
-
-			this.storeValue();
+			this.updateBkp($bkp);
 		},
+
+		//deprecated
 		customAfterLoad: function () {
 			this.setRadioClick();
 		},
 
-		/* ***********************************
-		 * DOM
-		 * ***********************************/
-		domRadio: function () {
-			var $radio;
-			$radio = this.$el.children("input");
-			$radio.attr("id", "answer_" + this.id);
-			$radio.attr("name", "q-" + this.parent.id);
 
-		},
-		domCheckbox: function () {
-			var $checkbox;
-			$checkbox = this.$el.children("input");
-			$checkbox.attr("id", "answer_" + this.id);
-			$checkbox.attr("name", "q-" + this.parent.id);
-			$checkbox.attr("type", "checkbox");
-
-		},
 
 		//-------------------------
 		doSomething: function () {

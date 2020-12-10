@@ -157,6 +157,16 @@
 	main{
 		height:98vh;
 	}
+    
+    .modal-dialog{
+        border-radius: 0px;
+    }
+    button.btn, input[type="submit"].btn, input[type="button"].btn, a.btn{
+        border-radius: 0px;
+        border: none;
+        
+        transition: background-color 0.2s;
+    }
 }
 
 
@@ -173,7 +183,7 @@
 .LOM-local-isFolder, .LOM-local-isPage{
 	position:relative;
 	display:block;
-	height:50px;
+	height:45px;
 	width:100%;
 	border:none;
 	border-radius:5px;
@@ -203,7 +213,7 @@
 .LOM-local-isFolder{
 	&>button{
 		/*background-color:#f5f5e1;*/
-		background-color:#f1f1f1;
+		background-color:#eeeeee;
 	}
 	&:before{
 		//background-image: url(base/isSub.png);

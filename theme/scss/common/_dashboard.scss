@@ -1,0 +1,202 @@
+ @import "./_vars";
+/*-------------------------------------------------------------------------
+//-------------------------------- DASHBOARD---------------------------
+-------------------------------------------------------------------------*/ 
+
+//---------- TOOLBOX------
+#LOM-toolbox{
+    position: fixed;
+    top: 120px;
+	padding-left:20px;
+	left:-20px;	
+	z-index:1;
+	
+    /*-webkit-box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);
+    -moz-box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);
+    box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);*/
+}
+
+//---------- TOOLBOX------
+#LOM-social{
+    position: fixed;
+    top: 120px;
+	padding-left:20px;
+	right:20px;	
+	z-index:1;
+	
+    /*-webkit-box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);
+    -moz-box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);
+    box-shadow: 10px 10px 12px -7px rgba(0,0,0,0.87);*/
+}
+
+//---------- DASHBOARD------
+.LOM-dashboard, .LOM-modetoggle, .LOM-socialboard{
+	display: block;
+    background-color: white;
+    clear:both;
+	border: 1px $dashboard-border-color solid;
+    overflow: visible;
+	width:48px;
+	overflow:visible;
+
+	button{
+		position: relative;
+		display: block;
+		clear: both;
+		padding-left: 42px;
+		padding-right: 0px;
+        overflow-x: hidden;
+        overflow-y:hidden;
+		white-space: nowrap;
+		width: 40px;
+		border-color:transparent!important;
+        border-radius: 0px 8px 8px 0px;
+        margin-bottom: 0!important;
+        background-color: white;
+        
+        transition: background-color 0.3s;
+        -webkit-transition: background-color 0.3s;
+        -moz-transition: background-color 0.3s;
+        -o-transition: background-color 0.3s;
+        -ms-transition: background-color 0.3s;
+		
+		&:hover, &:focus{
+			overflow-x:visible;
+			text-indent: 10px;
+			background-color:white;
+			width:auto;
+			padding-right:5px;
+            background-color: $dashboard-hover-bg-color;
+		}
+		
+
+	}
+
+	.LOM-modes-title{
+		font-family: unset;
+		text-transform: uppercase;
+		font-size: 0.7em;
+		width: 100%;
+		text-align: center;
+		font-weight: 600;
+		color: #555;
+		height: 20px;
+		padding: 3px 0px;
+	}
+}
+
+.LOM-dashboard{
+	//margin-top:5px;
+    
+	.page404.LOM-pageEdit-active &{
+		display:none;
+	}
+	.LOM-preview-active &{
+		display:none;
+	}
+	
+	visibility:hidden;
+	
+	html.LOM-structure-active &,
+	html.LOM-pageEdit-active &,
+	html.LOM-theme-active &,
+	html.LOM-settings-active &,
+    html.LOM-resources-active &
+	{visibility:visible;}
+}
+
+#LOM-social{
+	right: 0px;
+	
+    .LOM-socialboard:after{
+        content: "";
+        display: table;
+        clear: both;
+    }
+	button{
+		border-radius: 8px 0px 0px 8px;
+		padding-left: 0px;
+        padding-right: 42px;
+        text-align: right;
+        text-indent: -1000px;
+        right: 0;
+        float: right;
+        
+        &:hover, &:focus{
+            right: 0px!important;
+            padding-left: 5px;
+            text-indent: 0px;
+            padding-right: 52px;
+            
+            &:before{
+                text-indent: -42px;
+                right: 2px;
+            }
+        }
+        &:before{
+            right: 2px;
+            margin: 0px;
+        }
+	}
+}
+ 
+/*-------------------------------------------------------------------------
+//-------------------------------- MODES---------------------------
+-------------------------------------------------------------------------*/ 
+$modes: preview, pageEdit, structure, theme, settings, resources, overview, courses, users;
+
+@each $type in $modes {
+
+    html.LOM-#{$type}-active button.LOM-mode-#{$type}{
+    
+        width:52px;
+        border-width: 2px;
+        border-color: $dashboard-border-color $dashboard-border-color $dashboard-border-color transparent!important;
+        border-style: solid;
+        border-radius:0px 10px 10px 0px;
+        border-style:solid;
+        background-color:#eee;
+        text-indent:10px;
+        
+        &:hover, &:focus{
+            overflow-x:visible;
+            text-indent: 10px;
+            background-color: $dashboard-hover-bg-color;
+            width:auto;
+            padding-right:5px;
+
+        }
+    }
+}
+ 
+/*-------------------------------------------------------------------------
+//-------------------------------- SOCIAL MODES---------------------------
+-------------------------------------------------------------------------*/ 
+$socialmodes: notifications, chat, review, boards, announcements;
+
+@each $type in $socialmodes {
+
+    html.LOM-#{$type}-active button.LOM-mode-#{$type}{
+    
+        $selected-border:grey;
+        
+        width: 52px;
+        padding-right: 48px!important;
+        border-width: 2px;
+        border-color: $selected-border transparent $selected-border $selected-border!important;
+        border-style: solid;
+        border-radius: 0px 10px 10px 0px;
+        border-style: solid;
+        background-color :#eee;
+        text-indent: 10px;
+        
+        &:hover, &:focus{
+            overflow-x: visible;
+            text-indent: 10px;
+            background-color: $dashboard-hover-bg-color;
+            width: auto;
+            padding-left: 5px;
+            padding-right: 52px!important;
+        }
+    }
+}

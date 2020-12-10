@@ -1,8 +1,8 @@
 <section>
 	<h1>Settings</h1>
-	<hr />	
+	<hr />
 	<section>
-		<h2>Main Settings</h2>
+		<h2 id="main">Main Settings</h2>
 		<div class="row">
 			<div class="col-md-6">
 				<label class="col-md-5">Course Code</label><input class="col-md-7" type="text" name="LOM-courseLegacyCode">
@@ -10,76 +10,89 @@
 			<div class="col-md-6">
 				<div class="col-md-12 LOM-desc"></div> <!-- ←This is currently ignored (settingObj.js) -->
 			</div>
-		</div>	
-		
-		
-		
+		</div>
+
+
+
 		<div class="row">
 			<div class="col-md-6">
-				<label class="col-md-5">Course TITLE (EN)</label><input class="col-md-7" type="text" name="LOM-courseTitle_en"><div class="col-md-6 LOM-desc"></div>
+				<label class="col-md-5">Course TITLE (EN)</label><input class="col-md-7" type="text" name="LOM-courseTitle_en">
+				<div class="col-md-6 LOM-desc"></div>
 			</div>
 			<div class="col-md-6">
-				<label class="col-md-5">Course TITLE (FR)</label><input class="col-md-7" type="text" name="LOM-courseTitle_fr"><div class="col-md-6 LOM-desc"></div>
+				<label class="col-md-5">Course TITLE (FR)</label><input class="col-md-7" type="text" name="LOM-courseTitle_fr">
+				<div class="col-md-6 LOM-desc"></div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				<label class="col-md-5">Course SUBTITLE (EN)</label><input class="col-md-7" type="text" name="LOM-courseSubtitle_en"><div class="col-md-6 LOM-desc"></div>
+				<label class="col-md-5">Course SUBTITLE (EN)</label><input class="col-md-7" type="text" name="LOM-courseSubtitle_en">
+				<div class="col-md-6 LOM-desc"></div>
 			</div>
 			<div class="col-md-6">
-				<label class="col-md-5">Course SUBTITLE (FR)</label><input class="col-md-7" type="text" name="LOM-courseSubtitle_fr"><div class="col-md-6 LOM-desc"></div>
+				<label class="col-md-5">Course SUBTITLE (FR)</label><input class="col-md-7" type="text" name="LOM-courseSubtitle_fr">
+				<div class="col-md-6 LOM-desc"></div>
 			</div>
-		</div>	
+		</div>
 		<div class="row">
 			<div class="col-md-6">
-				<label class="col-md-5">Course SERIES TITLE (EN)</label><input class="col-md-7" type="text" name="LOM-seriesTitle_en"><div class="col-md-6 LOM-desc"></div>
+				<label class="col-md-5">Course SERIES TITLE (EN)</label><input class="col-md-7" type="text" name="LOM-seriesTitle_en">
+				<div class="col-md-6 LOM-desc"></div>
 			</div>
 			<div class="col-md-6">
-				<label class="col-md-5">Course SERIES TITLE (FR)</label><input class="col-md-7" type="text" name="LOM-seriesTitle_fr"><div class="col-md-6 LOM-desc"></div>
+				<label class="col-md-5">Course SERIES TITLE (FR)</label><input class="col-md-7" type="text" name="LOM-seriesTitle_fr">
+				<div class="col-md-6 LOM-desc"></div>
 			</div>
-		</div>		
-		
+		</div>
+
 	</section>
 	<hr />
 	<section>
-		<h2>Toolbar Options</h2>
-		<h3>Language</h3>
+		<h2 id="toolbar">Toolbar Options</h2>
+		<h3 id="lang">Language</h3>
 		<div class="row">
 			<div class="col-md-3">
-				<input class="col-md-2" type="checkbox" id="LOM-showLangSwitch" name="LOM-showLangSwitch"><label class="col-md-10" for="LOM-showLangSwitch">Show Language Toggle</label><div class="col-md-0 LOM-desc"></div>
+				<input class="col-md-2" type="checkbox" id="LOM-showLangSwitch" name="LOM-showLangSwitch"><label class="col-md-10" for="LOM-showLangSwitch">Show Language Toggle</label>
+				<div class="col-md-0 LOM-desc"></div>
 			</div>
 
 		</div>
-		<h3>Main Buttons</h3>
+		<h3 id="mainBtns">Main Buttons</h3>
 		<div class="row">
 
 			<div class="col-md-3">
-				<input class="col-md-2" type="checkbox" id="LOM-showHome" name="LOM-showHome"><label class="col-md-10" for="LOM-showHome">Show Language Toggle</label><div class="col-md-0 LOM-desc"></div>
+				<input class="col-md-2" type="checkbox" id="LOM-showHome" name="LOM-showHome"><label class="col-md-10" for="LOM-showHome">Show Language Toggle</label>
+				<div class="col-md-0 LOM-desc"></div>
 			</div>
 			<div class="col-md-3">
-				<input class="col-md-2" type="checkbox" id="LOM-showHelp" name="LOM-showHelp"><label class="col-md-10" for="LOM-showHelp">Show Language Toggle</label><div class="col-md-0 LOM-desc"></div>
+				<input class="col-md-2" type="checkbox" id="LOM-showHelp" name="LOM-showHelp"><label class="col-md-10" for="LOM-showHelp">Show Language Toggle</label>
+				<div class="col-md-0 LOM-desc"></div>
 			</div>
 			<div class="col-md-3">
-				<input class="col-md-2" type="checkbox" id="LOM-showSitemap" name="LOM-showSitemap"><label class="col-md-10" for="LOM-showSitemap">Show Language Toggle</label><div class="col-md-0 LOM-desc"></div>
+				<input class="col-md-2" type="checkbox" id="LOM-showSitemap" name="LOM-showSitemap"><label class="col-md-10" for="LOM-showSitemap">Show Language Toggle</label>
+				<div class="col-md-0 LOM-desc"></div>
 			</div>
 			<div class="col-md-3">
-				<input class="col-md-2" type="checkbox" id="LOM-showExit" name="LOM-showExit"><label class="col-md-10" for="LOM-showExit">Show Language Toggle</label><div class="col-md-0 LOM-desc"></div>
+				<input class="col-md-2" type="checkbox" id="LOM-showExit" name="LOM-showExit"><label class="col-md-10" for="LOM-showExit">Show Language Toggle</label>
+				<div class="col-md-0 LOM-desc"></div>
 			</div>
 		</div>
-		<h3>Toolbox</h3>
+		<h3 id="toolbox">Toolbox</h3>
 		<div class="row">
-			
+
 			<div class="col-md-3">
-				<input class="col-md-2" type="checkbox" id="LOM-showGlossary" name="LOM-showGlossary"><label class="col-md-10" for="LOM-showGlossary">Show Glossary</label><div class="col-md-0 LOM-desc"></div>
+				<input class="col-md-2" type="checkbox" id="LOM-showGlossary" name="LOM-showGlossary"><label class="col-md-10" for="LOM-showGlossary">Show Glossary</label>
+				<div class="col-md-0 LOM-desc"></div>
 			</div>
 			<div class="col-md-3">
-				<input class="col-md-2" type="checkbox" id="LOM-showResources" name="LOM-showResources"><label class="col-md-10" for="LOM-showResources">Show Resources</label><div class="col-md-0 LOM-desc"></div>
+				<input class="col-md-2" type="checkbox" id="LOM-showResources" name="LOM-showResources"><label class="col-md-10" for="LOM-showResources">Show Resources</label>
+				<div class="col-md-0 LOM-desc"></div>
 			</div>
 		</div>
-		
+
 	</section>
 
-	
-	
-	<button class="ico-SNAP-save snap-lg LOM-save-settings">Save Settings</button>
+
+
+	<button class="ico-SNAP-save snap-lg LOM-save-settings" style="margin-top: 30px; margin-bottom: 30px;">Save Settings</button>
 </section>

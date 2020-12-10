@@ -8,7 +8,7 @@ define([
 	return ElementClass.extend({
 		initialize: function (options) {
 			this.options = options;
-			this.autoLoaded = ["text"];
+			this.autoLoaded = ["image"];
 		},
 
 		changePermissions: function () {
@@ -17,19 +17,17 @@ define([
 			this.permissions.subElements.text = true;
 			this.permissions.subElements.image = true;
 			this.permissions.subElements.custom = true;
+			this.permissions.editButtons.review = false;
 
 
 		},
 		initDom: function () {
-			this.$el.removeClass("fade");
+			//this.$el.removeClass("fade");
+			this.parent.addControls();
 		},
-		customAfterLoad: function () {
-			this.$el.removeClass("fade");
-		},
-		customRemoveBeforeSave: function () {
-			this.$el.removeClass("in");
-			this.$el.addClass("out");
-			this.$el.addClass("fade");
+		getCustomHolderSelector: function () {
+			return "figure.LOM-holder";
 		}
+
 	});
 });

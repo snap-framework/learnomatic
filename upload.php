@@ -37,8 +37,7 @@ $zip = new ZipArchive;  $res = $zip->open($newfile);
 			fclose($page);
 		}
 
-	  
-	  
+	  header('Location: index.html');
 	  
 	  
   } else {

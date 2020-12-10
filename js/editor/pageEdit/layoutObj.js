@@ -13,13 +13,10 @@ define([
 		initialize: function (options) {
 			this.isModified = null;
 			this.parent = options.parent;
-
+			this.editor = this.parent;
 			this.labels = options.labels;
 			this.frames = [];
 			this.initFrames(options.frames);
-			this.layoutName = null;
-			this.currentLayout = null;
-
 		},
 
 		/*
@@ -39,126 +36,71 @@ define([
 
 		},
 
-		/*---------------------------------------------------------------------------------------------
-				-------------------------HOUSEKEEPING
-		---------------------------------------------------------------------------------------------*/
-		refreshInfo: function () {
-			for (var i = 0; i < this.frames.length; i++) {
-				this.frames[i].refreshInfo();
-			}
-		},
-		resetAll: function () {
-			this.$el = $("#" + this.id);
-			for (var i = 0; i < this.frames.length; i++) {
-				this.frames[i].isModified = false;
-				this.frames[i].resetAll();
-			}
-			this.addOnLoad();
 
-		},
-		addOnLoad: function () {
-
-		},
-
-		removeBeforeSave: function () {
-			for (var i = 0; i < this.frames.length; i++) {
-				this.frames[i].removeBeforeSave();
-			}
-		},
 		/*---------------------------------------------------------------------------------------------
 				-------------------------CHANGING LAYOUT
 		---------------------------------------------------------------------------------------------*/
 		change: function (filename) {
 
-			var i;
 			var that = this;
-			var newValue;
-			var confirmDelete;
-			var newID;
 			$.get(filename, function (data) {
-				//save the new layout
-				that.newHtml = data;
-				//evaluate
-				var $newFrames = $(that.newHtml).find(".LOM-frame");
-				var newLength = $newFrames.length;
-				var oldLength = that.frames.length;
-
-
-				//if we need to create new frames
-				if (oldLength < newLength) {
-					//IF there is currently NO layout/frames
-					if (oldLength === 0) {
-						//
-						oldLength = (that.wrapLayout()) ? 1 : 0;
-
-					}
-					var nbNewFrames = newLength - oldLength;
-					for (i = 0; i < nbNewFrames; i++) {
-						if (that.createFrame()) {
-							oldLength++;
-						}
-					}
-
-				}
-				//if we need to delete frames
-				if (newLength < oldLength) {
-					var nbDelete = oldLength - newLength;
-					confirmDelete = confirm("Are you Certain?\nThis will delete " + nbDelete + " frames, otherwise, the content will be added at the bottom.");
-					for (i = 0; i < nbDelete; i++) {
-						if (confirmDelete) {
-							if (that.destroyLastFrame()) {
-								oldLength--;
-							}
-						} else {
-							newValue = newLength + 1 + i;
-							newID = "LOMfr_" + newValue;
-							that.newHtml += "\n<section class='row'><section class=\"col-md-12 LOM-frame\" id=\"" + newID + "\"></section></section>";
-						}
-					}
-
-				}
-				//IF everything is fine
-				that.swap(filename, that.html);
-				//SWAP
-
+				that.loadLayout(data);
 			});
-
-
-		},
-		/*
-		 * @exchange equal-value layouts
-		 */
-		swap: function (filename) {
-			if (this.currentLAyout !== filename) {
-				this.currentLAyout = filename;
-				this.isModified = true;
-			}
-			//shut down the shop!
-			this.parent.deactivateEditors();
-			//load the new layout
-			this.storeFrameValue();
-			// data contains your html
-			this.parent.savePage();
+			//this.parent.addFrameNumbers();
 		},
 
+		loadLayout: function (html) {
 
-		/* so now we have new frames coming.
-		 * go through current frames 
-		 * and save their content to their originalHtml
-		 */
-		storeFrameValue: function () {
+			//make a backup of the current content
+			var $old = $("<div>");
+			$old.append(this.editor.originalHtml);
+			$old.find(".ico-LOM-layout").remove();
 
-			for (var i = 0; i < this.frames.length; i++) {
-				this.frames[i].storeValue();
+			//save the new layout
+			var $new = $("<div>");
+			$new.append(html)
+
+			$new.find(".LOM-frame").html("");
+
+			//loop through new frames
+			for (var i = 0; i < $new.find(".LOM-frame").length; i++) {
+
+				//do frames match?
+				if ($old.find(".LOM-frame").eq(i).length !== 0) {
+
+					//just transfer onto the equivalent frame
+					$new.find(".LOM-frame").eq(i).html($old.find(".LOM-frame").eq(i).html());
+				}
 			}
 
+			if ($new.find(".LOM-frame").length < $old.find(".LOM-frame").length) {
+
+				//loop through exceeding frames
+				for (var j = $new.find(".LOM-frame").length; j < $old.find(".LOM-frame").length; j++) {
+
+					//transfer the content of the exceeding frame in the last frame of the new layout
+					$new.find(".LOM-frame").eq($new.find(".LOM-frame").length - 1).append($old.find(".LOM-frame").eq(j).html());
+				}
+			}
+
+			//save the page
+			this.editor.originalHtml = $new.html();
+			this.editor.refreshHtml();
+
+			//inject html to DOM
+			$(CoreSettings.contentContainer).html($new.html());
+			this.editor.pageLoaded();
+
+
+			/*
+			//reset things
+			this.frames = [];
+			this.editor.elements = [];
+			*/
+			//this.initFrames($(CoreSettings.contentContainer).find(".LOM-frame"));
 		},
-		/* refresh the $(CoreSettings.contentContainer
-		 * with the new value and 
-		 */
-		loadClean: function () {
-			$(CoreSettings.contentContainer).html(this.newHtml);
-		},
+
+
 		/*---------------------------------------------------------------------------------------------
 				-------------------------Creating/deleting new frames/elements and wrapping
 		---------------------------------------------------------------------------------------------*/

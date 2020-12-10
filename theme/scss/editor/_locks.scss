@@ -1,0 +1,73 @@
+
+
+/*-------------------------------------------------------------------------
+//-------------------------------- locks---------------------------
+-------------------------------------------------------------------------*/
+
+html.LOM-editing-locked:not(.LOM-preview-active) {
+	
+	button.LOM-delete-on-save,
+	.LOM-ui-handle{
+		display:none;
+	}
+	
+	
+	
+	.LOM-editable{
+		&:before{
+			content:'';
+			position:absolute;
+			background-color:white;
+			margin-left:-35px;
+			border:solid #f1f1f1 1px;
+			@include iconpack(lock, md, disabled);
+		}
+	}
+	
+	
+	
+	.LOM-edit-view button,
+	.LOM-dashboard>button.ico-LOM-trash,
+	.LOM-dashboard>button.ico-LOM-layout{
+		&:before{
+			@include iconpack(lock, md, disabled);
+		}
+	}
+	
+	
+	#LOM-watcher{
+        &:before{
+            
+        }
+		
+	}
+}
+
+
+
+html.LOM-not-alone{
+	.LOM-mode-structure,
+	.LOM-folder-view>button,
+	&.LOM-structure-active .LOM-edit-view>button,
+	.LOM-dashboard>button.ico-LOM-search{
+		&:before{
+			@include iconpack(lock, md, disabled);
+		}
+		&:after{
+			content:' (locked)';
+		}
+		
+	}
+}
+
+html.LOM-not-alone[lang="fr"]{
+    .LOM-mode-structure,
+	.LOM-folder-view>button,
+	&.LOM-structure-active .LOM-edit-view>button,
+	.LOM-dashboard>button.ico-LOM-search{
+        &:after{
+			content:' (verrouillé)';
+		}
+    }
+}
+

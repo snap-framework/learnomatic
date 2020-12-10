@@ -117,7 +117,10 @@ define([
 			return this.$el.prop("checked");
 		},
 		getValueToolbox: function () {
-			var value = ($("#LOM-showGlossary").is(":checked") || $("#LOM-showResources").is(":checked")) ? true : false;
+			//BLord 2020-08-13: Changed this as the toolbox needs to be always present because the favourites are always on
+			//var value = ($("#LOM-showGlossary").is(":checked") || $("#LOM-showResources").is(":checked")) ? true : false;
+			var value = true
+
 			this.value = value;
 			return value;
 		},
@@ -181,8 +184,8 @@ define([
 				case "showLangSwitch":
 					this.toggleButton("lang");
 					break;
-					//case "showGlossary":
-					//case "showResources":
+				//case "showGlossary":
+				//case "showResources":
 				case "showToolbox":
 					this.toggleButton("toolbox");
 					break;

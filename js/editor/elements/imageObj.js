@@ -2,63 +2,62 @@ define([
 
 	'jquery',
 	'settings-core',
-	'./../pageEdit/elementClass'
-], function ($, CoreSettings, ElementClass) {
+	'./../pageEdit/elementClass',
+	'utils'
+], function ($, CoreSettings, ElementClass, Utils) {
 	'use strict';
 	return ElementClass.extend({
 		initialize: function (options) {
 			this.options = options;
 			this.courseFolder = "courses/" + this.editor.courseFolder;
 			this.folder = "content/medias/images/";
-
 		},
 		changePermissions: function () {
 			this.permissions.editButtons.add = false;
-			//this.permissions.editButtons.config=true;
 			this.permissions.editButtons.classPicker = true;
-            
+			this.permissions.editButtons.config = true;
 
-		},
-
-		connectDom: function () {
-			var that = this;
-			this.$el = $("#" + this.id);
-			this.$holder = this.getHolder();
-			this.$el.find("img").click(function () {
-				that.configClicked();
-			});
-		},
-		customRemoveBeforeSave: function () {
-			if (this.$el.children().is("a")) {
-				var $link = this.$el.children("a[data-lom-lbx");
-				$link.removeClass("wb-lbx-inited");
-				$link.addClass("wb-lbx");
-
+			if ($("#" + this.id).find(".LOM-element[data-lom-element=\"details\"][data-lom-subtype=\"graphDesc\"]").length) {
+				this.permissions.subElements.details = true;
+				this.hasGraphDesc = true;
 			}
 		},
-		customAfterLoad: function () {
-			if (this.$el.children().is("a")) {
-				var $link = this.$el.children("a[data-lom-lbx]");
-				$link.removeClass("wb-lbx");
 
-			}
+		setLabels: function () {
+			this.typeName = this.labels.type.image;
+			this.setLabelsDone = true;
 			return false;
 		},
+
+		initDom: function () {
+			var that = this;
+
+			this.$el.find("img").click(function () {
+				that.configClicked();
+
+				return false;
+			});
+		},
+
+		customAfterLoad: function () {
+			if (this.hasGraphDesc) {
+				this.$el.find(".LOM-holder .LOM-add-element").hide();
+			}
+		},
+
 		/*---------------------------------------------------------------------------------------------
 		-------------------------CONFIGURATION
 		---------------------------------------------------------------------------------------------*/
 		changeDefaultLbxSettings: function (params) {
-			params.title = "Image Configuration";
+			params.title = (Utils.lang === "en") ? "Image Configuration" : "Configuration de l'image";
 			return params;
 		},
 		changeDefaultConfigSettings: function (params) {
 
 			params.$paramTarget = this.$el.find("img");
 
-			params.attributes = {
-				"alt": ""
-
-			};
+			params.selector = "img";
+			params.attributes = { "alt": "" };
 			return params;
 
 		},
@@ -73,8 +72,8 @@ define([
 			}, function (data) {
 				//parse the jSON
 				//console.log(data);
+				that.loadGraphicDesc(params)
 				that.loadGallery(data, params);
-
 				that.configClickable();
 
 
@@ -84,7 +83,7 @@ define([
 		},
 
 		/*---------------------------------------------------------------------------------------------
-		-------------------------IMAGE  GALLRY
+		-------------------------IMAGE  GALLERY
 		---------------------------------------------------------------------------------------------*/
 		loadGallery: function (images, params) {
 			var aImages = images.split(",");
@@ -124,7 +123,7 @@ define([
 
 			for (var i = 0; i < aImages.length; i++) {
 				if (lineCounter === 1) {
-					$gallery.append("<div class='row'></div>");
+					$gallery.append("<div class='row' style='margin-left: -15px; margin-right: -15px;'></div>");
 					$row = $gallery.children(".row").last();
 				}
 
@@ -149,7 +148,7 @@ define([
 
 
 			}
-			$gallery.append("<div class='row'><div class='col-md-3' id='LOM-img-upload'></div></div>");
+			$gallery.append("<div class='row' style='margin-left: -15px; margin-right: -15px;'><div class='col-md-3' id='LOM-img-upload'></div></div>");
 
 			var $upload = $("#LOM-img-upload");
 			this.createUpload($upload);
@@ -165,7 +164,8 @@ define([
 			$(".LOM-img-btn").dblclick(function () {
 				var popParams = {};
 				//send title and action
-				popParams.lbx = that.defaultLbxSettings("Configuration", "config", "Save Configuration");
+				var save = (Utils.lang === "en") ? "Save Configuration" : "Sauvegarder la configuration"
+				popParams.lbx = that.defaultLbxSettings("Configuration", "config", save);
 				popParams.config = that.configLbxSettings();
 				that.submitConfig(popParams);
 
@@ -174,18 +174,21 @@ define([
 		},
 
 		changeImage: function (filename) {
+			var $bkp = this.getBkp();
+
+			$bkp.find("#" + this.id).find("img").attr("src", filename);
 			this.$el.find("img").attr("src", filename);
-			this.storeValue();
-			this.editor.savePage();
+
+			this.saveBkp($bkp);
 			this.closeLbx();
 
 		},
 
 		createUpload: function ($container) {
 			var that = this;
-			$container.append("<h3>Upload Image</h3>");
-			$container.append("<label>Select image(max 500kb file size) <input type='file' name='file' id='file' /></label><span id='uploaded_image'></span>");
-			$container.append("<button class='snap-sm ico-LOM-upload'>Upload</button");
+			$container.append("<h3>" + ((Utils.lang === "en") ? "Upload Image" : "Téléverser une image") + "</h3>");
+			$container.append("<label>" + ((Utils.lang === "en") ? "Select image (max 500kb file size)" : "Sélectionner une image (taille maximale&nbsp;: 500Ko)") + " <input type='file' name='file' id='file' /></label><span id='uploaded_image'></span>");
+			$container.append("<button class='snap-sm ico-LOM-upload'>" + ((Utils.lang === "en") ? "Upload" : "Téléverser") + "</button");
 			//$container.append(" <input type='hidden' id='info' name='info' value='upload_image'>");
 			$container.children("button").hide();
 
@@ -227,8 +230,6 @@ define([
 
 								that.changeImage(newSrc);
 
-								//that.$el.children("img").attr("src", newSrc);
-								//$.magnificPopup.close();
 							}
 
 
@@ -238,8 +239,70 @@ define([
 
 				}
 			});
-
 		},
+
+		/*---------------------------------------------------------------------------------------------
+		-------------------------GRAPHIC DESCRIPTION
+		---------------------------------------------------------------------------------------------*/
+
+		loadGraphicDesc: function (params) {
+			var obj = params.lbx.obj;
+			var $img = params.config.$paramTarget;
+			var $lbx = $("#" + params.lbx.targetId);
+			var $altInput = $lbx.find("input[name=\"alt\"]");
+
+			$lbx.prepend("<div class=\"row\" style=\"margin-left: -15px; margin-right: -15px;\"></div>");
+			var $row = $lbx.find(".row").first();
+
+			$row.append("<div class=\"col-md-12\"></div>");
+			var $col = $row.find(".col-md-12").first();
+
+			$col.append("<label>" + ((Utils.lang === "en") ? "Add a long description box?" : "Ajouter une boîte de description longue?") + " <input type=\"checkbox\" id=\"graph-desc\" name=\"graph-desc\"></label>");
+
+			if (this.hasGraphDesc) {
+				$col.find("#graph-desc").prop("checked", true);
+				$altInput.attr("disabled", true);
+			}
+
+			var that = this;
+			$col.find("#graph-desc").change(function () {
+				if ($(this).is(":checked")) {
+					that.addGraphDesc(obj, $img, $lbx, $altInput, $row, $col);
+				}
+				else {
+					that.removeGraphDesc(obj, $img, $lbx, $altInput, $row, $col);
+				}
+			});
+		},
+
+		addGraphDesc: function (obj, $img, $lbx, $altInput, $row, $col) {
+			//Disable alt field and add value
+			$altInput.attr("disabled", true);
+			$altInput.val(((Utils.lang === "en") ? "Long description follows" : "La description longue suit"));
+
+			//Add the accordion element
+			this.permissions.subElements.details = true;
+			this.hasGraphDesc = true;
+
+			this.editor.targetParent = obj;
+			this.editor.$target = $img.closest(".LOM-element").children(".LOM-holder");
+			this.editor.createElement("details", $.parseJSON('{"subtype": "graphDesc"}'), false);
+		},
+
+		removeGraphDesc: function (obj, $img, $lbx, $altInput, $row, $col) {
+			//Enable alt field and remove value
+			$altInput.attr("disabled", false);
+			$altInput.val("");
+
+			//Remove the accordion element
+			for (var i = 0; i < obj.elements.length; i++) {
+				if (obj.elements[i].type == "details" && obj.elements[i].subtype == "graphDesc") {
+					obj.elements[i].autoDelete();
+				}
+			}
+			this.hasGraphDesc = false;
+		},
+
 		/*---------------------------------------------------------------------------------------------
 		-------------------------CLICKABLE
 		---------------------------------------------------------------------------------------------*/
@@ -249,37 +312,27 @@ define([
 			var $body = $("#custom_lbx");
 			$body.append("<div id='LOM-clickable-action-container'></div>");
 			var $action = $("#LOM-clickable-action-container");
-			$action.append("<h3>Clickable Actions</h3>");
-			$action.append("<label>Action type: <select id='LOM-clickable-action-type' class='LOM-action-type'></select></label>");
+			$action.append("<h3>" + ((Utils.lang === "en") ? "Clickable Actions" : "Actions au clic") + "</h3>");
+			$action.append("<label>" + ((Utils.lang === "en") ? "Action Type" : "Type d'action") + ": <select id='LOM-clickable-action-type' class='LOM-action-type'></select></label>");
 			$action.append("&nbsp;<label>Action: <select id='LOM-clickable-action' class='LOM-action'></select></label>");
 
 			var $actionType = $("#LOM-clickable-action-type");
 			var $actionSelect = $("#LOM-clickable-action");
 			$actionSelect.hide();
-			$actionType.append("<option value='null'>No action</option>");
+			$actionType.append("<option value='null'>" + ((Utils.lang === "en") ? "No action" : "Aucune action") + "</option>");
 			$actionSelect.append("<option value='null' class='LOM-action-null'>n/a</option>");
 			var i = 0;
 
 			//LIGHTBOXES
 			var listLightbox = this.editor.getElementsByType("lightbox");
 			if (listLightbox.length > 0) {
-				$actionType.append("<option value='lightbox'>Lightbox to open :</option>");
+				$actionType.append("<option value='lightbox'>" + ((Utils.lang === "en") ? "Open a lightbox" : "Ouvrir une fenêtre contextuelle") + "</option>");
 
 				for (i = 0; i < listLightbox.length; i++) {
 					var lbxId = listLightbox[i].id + "_lbx";
 					$actionSelect.append("<option class='LOM-action-lightbox' value='" + lbxId + "'>Lightbox ID " + lbxId + "</option>");
 				}
 			}
-
-			/*
-			//NAVIGATE
-			$actionType.append("<option value='navigate'>Navigate to:</option>");
-			for (i=0;i<this.editor.master.flatList.length;i++){
-				var navId=this.editor.master.flatList[i].sPosition;
-				var navTitle=this.editor.master.flatList[i].title;
-				$actionSelect.append("<option class='LOM-action-navigate' value=\""+navId+"\">Navigate to "+navTitle+"</option>");				
-			}
-			*/
 
 			$actionType.change(function () {
 				$actionSelect.attr("data-action-type", this.value);
@@ -291,21 +344,25 @@ define([
 					$actionSelect.show();
 				}
 				that.adjustAction($actionSelect);
-
-
 			});
+
 			$actionSelect.change(function () {
 				that.adjustAction($(this));
 			});
-			this.actionPreset($actionType, $actionSelect);
 
+			this.actionPreset($actionType, $actionSelect);
 		},
 		adjustAction: function ($action) {
-			this.connectDom();
+			var $bkp = this.getBkp();
+			//this.connectDom();
+
 			var $img = this.$el.find("img").eq(0);
+			var $bkpImg = $bkp.find("#" + this.id).find("img").eq(0);
+
 			var type = $action.attr("data-action-type");
 			if ($img.parent().is("a")) {
 				$img.unwrap();
+				$bkpImg.unwrap();
 			}
 			switch (type) {
 				case "null":
@@ -315,23 +372,25 @@ define([
 				case "lightbox":
 					//wrap
 					if (!$img.parent().is("a")) {
-						$img.wrap("<a href='#" + $action.val() + "' data-lom-lbx='wb-lbx' onclick='return false;'></a>");
-
+						$img.wrap("<a href='#" + $action.val() + "' class='LOM-img-lbx' onclick='$.magnificPopup.open({ items: { src: \"#" + $action.val() + "\" }, type: \"inline\", removalDelay: 500, callbacks: { beforeOpen: function() { this.st.mainClass = \"mfp-zoom-in\"; } }, midClick: true }, 0);'></a>")
+						$bkpImg.wrap("<a href='#" + $action.val() + "' class='LOM-img-lbx' onclick='$.magnificPopup.open({ items: { src: \"#" + $action.val() + "\" }, type: \"inline\", removalDelay: 500, callbacks: { beforeOpen: function() { this.st.mainClass = \"mfp-zoom-in\"; } }, midClick: true }, 0);'></a>")
 					} else {
-						$img.parent("a").attr("data-lom-lbx", "wb-lbx");
+						$img.parent("a").addClass("LOM-img-lbx").attr("href", "#" + $action.val()).attr("onclick", "$.magnificPopup.open({ items: { src: '#" + $action.val() + "' }, type: 'inline', removalDelay: 500, callbacks: { beforeOpen: function() { this.st.mainClass = 'mfp-zoom-in'; } }, midClick: true }, 0);");
+						$bkpImg.parent("a").addClass("LOM-img-lbx").attr("href", "#" + $action.val()).attr("onclick", "$.magnificPopup.open({ items: { src: '#" + $action.val() + "' }, type: 'inline', removalDelay: 500, callbacks: { beforeOpen: function() { this.st.mainClass = 'mfp-zoom-in'; } }, midClick: true }, 0);");
 					}
 					break;
 				case "navigate":
 					//wrap
 					if (!$img.parent().is("a")) {
 						$img.wrap("<a href='#' onclick=\"fNav('" + $action.val() + "');return false;\"></a>");
+						$bkpImg.wrap("<a href='#' onclick=\"fNav('" + $action.val() + "');return false;\"></a>");
 					} else {
 						//$img.addClass("wb-lbx");
 					}
 					break;
 			}
 
-			this.storeValue();
+			this.saveBkp($bkp);
 
 		},
 		actionPreset: function ($type, $action) {
@@ -341,7 +400,7 @@ define([
 				$action.val("null");
 				return false;
 			} else {
-				if ($img.parent().attr("data-lom-lbx") === "wb-lbx") {
+				if ($img.parent().hasClass("LOM-img-lbx")) {
 					$type.val("lightbox");
 					$action.attr("data-action-type", "lightbox");
 					$action.show();

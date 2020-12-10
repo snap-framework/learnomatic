@@ -1,0 +1,41 @@
+<fieldset style="margin-bottom: 15px; border: none; padding-top: 0;" class="exam-only">
+    <legend style="font-size: 16px; margin-bottom: 0;">
+        <p><strong>Type de rétroaction</strong></p>
+    </legend>
+    <p>
+        <input type="radio" name="feedback-type" id="feedback-type-instant" value="instant">
+        <label for="feedback-type-instant">Afficher la rétroaction après chaque question et une récapitulation à la fin de l'examen</label>
+    </p>
+    <p>
+        <input type="radio" name="feedback-type" id="feedback-type-deferred" value="deferred">
+        <label for="feedback-type-deferred">Afficher seulement une récapitulation à la fin de l'examen</label>
+    </p>
+</fieldset>
+<p class="exam-only">
+    <label for="score">Score minimum requis pour réussir </label>
+    <input type="number" min="0" max="100" name="score" id="score">
+</p>
+<p class="exam-only" style="margin-bottom: 25px;">
+    <input type="checkbox" name="trigger-completion" id="trigger-completion">
+    <label for="trigger-completion">Déclencher la complétion du cours lorsque l'examen est réussi?</label>
+</p>
+<fieldset style="border: none; padding-top: 0;">
+    <legend style="font-size: 16px; margin-bottom: 0;">
+        <p><strong>Questions aléatoires</strong></p>
+    </legend>
+    <p>
+        <input type="radio" name="random-questions" id="random-questions-yes" value="true">
+        <label for="random-questions-yes">Oui <span class="tip">(les questions sont réorganisées dans chaque banque, à chaque fois que l'activité/examen est commencé(e))</span></label>
+    </p>
+    <p>
+        <input type="radio" name="random-questions" id="random-questions-no" value="false">
+        <label for="random-questions-no">Non <span class="tip">(les questions s'affichent dans l'ordre que vous les voyez dans l'éditeur)</span></label>
+    </p>
+</fieldset>
+
+<style>
+    .tip {
+        font-weight: 400;
+        font-size: 13px;
+    }
+</style>

@@ -1,3 +1,9 @@
+require([
+	'../../../../js/editor/LOM_labels',
+], function (labels) {
+    window.labels = labels;
+});
+
 // Register the plugin within the editor.
 CKEDITOR.plugins.add( 'abbr', {
 
@@ -28,7 +34,7 @@ CKEDITOR.plugins.add( 'abbr', {
 		editor.ui.addButton( 'Abbr', {
 
 			// The text part of the button (if available) and the tooltip.
-			label: 'Insert Abbreviation',
+			label: labels.resourcesEdit.abbr.insert,
 
 			// The command to execute on click.
 			command: 'abbr',
@@ -47,7 +53,7 @@ CKEDITOR.plugins.add( 'abbr', {
 		if ( editor.contextMenu ) {
 			editor.addMenuGroup( 'abbrGroup' );
 			editor.addMenuItem( 'abbrItem', {
-				label: 'Edit Abbreviation',
+				label: labels.resourcesEdit.abbr.edit,
 				icon: this.path + 'icons/abbr.png',
 				command: 'abbr',
 				group: 'abbrGroup'

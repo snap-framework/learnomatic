@@ -1,3 +1,9 @@
+require([
+	'../../../../js/editor/LOM_labels',
+], function (labels) {
+    window.labels = labels;
+});
+
 // Register the plugin within the editor.
 CKEDITOR.plugins.add( 'glossary', {
 
@@ -9,7 +15,7 @@ CKEDITOR.plugins.add( 'glossary', {
 		/* --------------------------------------------
 		 *                     ALLOWED AND REQUIRED
 		 *--------------------------------------------*/
-		var allowed ="a[href,class]";
+		var allowed ="a[href, class]";
 		//var glossaryList=masterStructure.resourcesManager.getGlossary();
 		
 		
@@ -32,7 +38,7 @@ CKEDITOR.plugins.add( 'glossary', {
 		editor.ui.addButton( 'Glossary', {
 
 			// The text part of the button (if available) and the tooltip.
-			label: 'Insert Term',
+			label: labels.resourcesEdit.glossary.insert,
 
 			// The command to execute on click.
 			command: 'glossary',
@@ -51,14 +57,16 @@ CKEDITOR.plugins.add( 'glossary', {
 		if ( editor.contextMenu ) {
 			editor.addMenuGroup( 'glossaryGroup' );
 			editor.addMenuItem( 'glossaryItem', {
-				label: 'Edit Term',
+				label: labels.resourcesEdit.glossary.edit,
 				icon: this.path + 'icons/glossary.png',
 				command: 'glossary',
 				group: 'glossaryGroup'
 			});
 			//SET LISTENER for new glossary elements
 			editor.contextMenu.addListener( function( element ) {
-				if ( element.getAscendant( 'glossary', true ) ) {
+				if ( element.getAscendant(function( el ) {
+                    return (el.$.tagName == "A" && $(el.$).hasClass("csps-glossary"));
+                }, true ) ) {
 					 return { glossaryItem: CKEDITOR.TRISTATE_OFF };
 				 }
 			});			

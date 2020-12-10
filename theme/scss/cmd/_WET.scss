@@ -1,0 +1,130 @@
+
+
+// THIS IS A workaround
+
+.LOM-command-center{
+    .overlay-def {
+      header {
+        background-color: #eee;
+      }
+      header, button.mfp-close {
+        color: #555;
+      }
+        button.mfp-close:focus{
+            outline-color: #555;
+        }
+
+      &, .modal-body {
+        background-color: #fff;
+      }
+    }
+
+    .modal-dialog {
+      border-radius: 0;
+
+      > .modal-body {
+        overflow: auto;
+      }
+      &.modal-content.overlay-def {
+
+        margin: 0 auto;
+        @media (min-width: 576px) {
+            width: 70%;
+        }
+        @media (max-width: 576px) {
+            width: 100%;
+        }	
+      }
+    }
+    html.mobile .modal-dialog.modal-content.overlay-def {
+
+    }
+
+    /* Small view */
+    @media (max-width: 768px) {
+        .modal-dialog.modal-content.overlay-def {
+            width: auto !important;
+        }	
+    }
+    
+    button.btn, input[type="submit"].btn, input[type="button"].btn, a.btn{
+        border-radius: 0px;
+        border: none;
+
+        transition: background-color 0.2s;
+    }
+
+
+    .mfp-zoom-in {
+       /* start state */
+       .mfp-with-anim {
+          opacity: 0;
+          transition: all 0.2s ease-in-out;
+          transform: scale(0.8);
+       }
+       &.mfp-bg {
+          opacity: 0;
+          transition: all 0.3s ease-out;
+       }
+       /* animate in */
+       &.mfp-ready {
+          .mfp-with-anim {
+             opacity: 1;
+             transform: scale(1);
+          }
+          &.mfp-bg {
+             opacity: 0.8;
+          }
+       }
+       /* animate out */
+       &.mfp-removing {
+          .mfp-with-anim {
+             transform: scale(0.8);
+             opacity: 0;
+          }
+          &.mfp-bg {
+             opacity: 0;
+          }
+       }
+    }
+}
+
+
+    .btn.btn-default{
+        background-color: #3b3b3b;
+        height: auto;
+        min-height: 36px;
+        min-width: 36px;
+        white-space: normal;
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        padding: 6px 12px;
+        font-size: 16px;
+        line-height: 1.4375;
+        border-radius: 4px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border-radius: 0px;
+        border: none;
+        transition: background-color 0.2s;
+        color: white !important;
+    }
+    
+    .btn.btn-default:hover, .btn.btn-default:focus{
+        background-color: #4f4f4f;
+        border-color: #bbbfc5;
+        color: white!important;
+        text-decoration: none;
+        outline: none;
+    }

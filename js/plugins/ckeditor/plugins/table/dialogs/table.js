@@ -429,7 +429,8 @@
 							requiredContent: 'table[cellspacing]',
 							controlStyle: 'width:3em',
 							label: editor.lang.table.cellSpace,
-							'default': editor.filter.check( 'table[cellspacing]' ) ? 1 : 0,
+							//'default': editor.filter.check( 'table[cellspacing]' ) ? 1 : 0,
+							'default': 0,
 							validate: CKEDITOR.dialog.validate.number( editor.lang.table.invalidCellSpacing ),
 							setup: function( selectedTable ) {
 								this.setValue( selectedTable.getAttribute( 'cellSpacing' ) || '' );

@@ -1,19 +1,20 @@
 define([
 	'jquery',
 	'settings-core',
-	'./../pageEdit/elementClass'
-], function ($, CoreSettings, ElementClass) {
-	
-    'use strict';
+	'./../pageEdit/elementClass',
+	'utils'
+], function ($, CoreSettings, ElementClass, Utils) {
+
+	'use strict';
 	return ElementClass.extend({
-        
+
 		initialize: function (options) {
 			this.options = options;
 			this.courseFolder = "courses/" + this.editor.courseFolder;
 			this.folder = "content/medias/audios/";
 
 		},
-        
+
 		changePermissions: function () {
 			this.permissions.editButtons.add = false;
 			this.permissions.editButtons.config = true;
@@ -22,14 +23,25 @@ define([
 			this.permissions.subElements.audio = false;
 		},
 
+		setLabels: function () {
+			this.typeName = this.labels.type.audio;
+			this.setLabelsDone = true;
+			return false;
+		},
+
+		initDefaultDomValues: function ($template) {
+			$template.find("#inline-captions summary .LOM-editable").html(this.labels.default.transcript)
+
+			return $template;
+		},
+
 		customAfterLoad: function () {
 			var that = this;
-            
-			var id = this.id + "-md";
-			this.vid = document.getElementById(id);
+
+			this.player = this.$el.find("audio").get(0)
 			this.$el.children("figcaption").prepend("<div class='markers LOM-delete-on-save'></div>");
 			if (this.$holder.children(".LOM-element").length > 0) {
-				this.vid.oncanplay = function () {
+				this.player.oncanplay = function () {
 					for (var i = 0; i < that.elements.length; i++) {
 						that.elements[i].setMarker();
 					}
@@ -38,24 +50,15 @@ define([
 
 			return false;
 		},
-        
-		customRemoveBeforeSave: function () {
-			this.$el.removeClass("audio");
-			this.$el.removeClass("wb-mltmd-inited");
-			this.$el.find(".wb-mm-ctrls").remove();
-			this.$el.find(".wb-mm-cc").remove();
-			var $audio = this.$el.find("audio");
-			if ($audio.parent().hasClass("display")) {
-				$audio.unwrap();
-			}
-		},
+
+
 
 		/*---------------------------------------------------------------------------------------------
 		-------------------------CONFIGURATION
 		---------------------------------------------------------------------------------------------*/
 
 		changeDefaultLbxSettings: function (params) {
-			params.title = "Audio Configuration";
+			params.title = (Utils.lang === "en") ? "Audio Configuration" : "Configuration du fichier audio";
 			return params;
 		},
 
@@ -72,13 +75,17 @@ define([
 		},
 
 		loadConfigCustom: function (params) {
-			$("#" + params.lbx.targetId).append("<section id='LOM-audio-files' class='row'><h3 class='col-md-12'>Audio File</h3><div class='col-md-6'></div></div>");
+			$("#" + params.lbx.targetId).append("<section id='LOM-audio-files' class='row'><div class='col-md-6'><h3>" + ((Utils.lang === "en") ? "Available Audio Files" : "Fichiers audio disponibles") + "</h3><div class='audio-files'></div></div></section>");
 			this.loadAudioList(params);
 			/*No longer needed poster*/
 			/*
-		   	$("#"+params.lbx.targetId).append("<details id='LOM-img-gallery'><summary>Audio Poster</summary></details>");
+				  $("#"+params.lbx.targetId).append("<details id='LOM-img-gallery'><summary>Audio Poster</summary></details>");
 			this.loadImageList(params);
 			*/
+		},
+
+		initDom: function () {
+			initWbAdd(".wb-mltmd");
 		},
 
 		/*---------------------------------------------------------------------------------------------
@@ -103,18 +110,18 @@ define([
 			});
 
 		},
-        
+
 		loadAudios: function (list, params) {
 
 			var aAudios = list.split(",");
 			aAudios = this.cleanGallery(aAudios);
 			this.generateAudioList(aAudios, params);
 		},
-        
+
 		generateAudioList: function (aAudio, params) {
 			var that = this;
 
-			var $btnHolder = $("#LOM-audio-files").children("div");
+			var $btnHolder = $("#LOM-audio-files").find(".audio-files");
 			var btnSelected, fileValue, filePath;
 
 
@@ -125,10 +132,15 @@ define([
 
 			}
 
-			for (var i = 0; i < aAudio.length; i++) {
-				btnSelected = (fileValue === aAudio[i]) ? " btn-selected" : "";
-				$btnHolder.append("<button class='snap-lg ico-LOM-audio" + btnSelected + "' value='" + aAudio[i] + "'>" + aAudio[i] + "</button>");
+			if (aAudio.length > 0) {
+				for (var i = 0; i < aAudio.length; i++) {
+					btnSelected = (fileValue === aAudio[i]) ? " btn-selected" : "";
+					$btnHolder.append("<button class='snap-lg ico-LOM-audio" + btnSelected + "' value='" + aAudio[i] + "'>" + aAudio[i] + "</button>");
 
+				}
+			}
+			else {
+				$btnHolder.append("<p>" + ((Utils.lang === "en") ? "There are no availables files, please upload files using the option on the right." : "Il n'y a aucun fichier disponible, veuillez téléverser des fihiers en utilisant la fonction à droite.") + "</p>")
 			}
 
 			$btnHolder.children("button").click(function () {
@@ -140,11 +152,19 @@ define([
 			var $upload = $("#LOM-audio-upload");
 			this.createUploadAudio($upload);
 		},
-        
+
 		selectAudio: function (filename) {
 			var $buttons = $("#LOM-audio-files").find(".ico-LOM-audio");
 			var $selected = $("#LOM-audio-files").find(".ico-LOM-audio[value=\"" + filename + "\"]");
+
+			var $bkp = this.getBkp();
+
 			this.$el.find("audio").children("source").attr("src", "content/medias/audios/" + filename);
+			$bkp.find("#" + this.id).find("audio").children("source").attr("src", "content/medias/audios/" + filename);
+
+			this.saveBkp($bkp);
+
+			$(".wb-mltmd").trigger("wb-init.wb-mltmd");
 
 			$buttons.removeClass("btn-selected");
 			$selected.addClass("btn-selected");
@@ -171,7 +191,7 @@ define([
 			});
 
 		},
-        
+
 		loadPosters: function (images, params) {
 			var aImages = images.split(",");
 
@@ -181,7 +201,7 @@ define([
 
 
 		},
-        
+
 		cleanGallery: function (aImages) {
 			var newArray = [];
 			for (var i = 0; i < aImages.length; i++) {
@@ -193,7 +213,7 @@ define([
 			}
 			return newArray;
 		},
-        
+
 		generateGallery: function (aImages, params) {
 			var that = this;
 			var modulo = (aImages.length % 6 === 0) ? 6 : 4;
@@ -248,7 +268,7 @@ define([
 
 
 		},
-        
+
 		imageSelected: function (obj) {
 			var newSrc = $(obj).find("img").attr("src");
 			$("#LOM-data-poster").attr("value", newSrc);
@@ -271,12 +291,12 @@ define([
 
 
 		},
-        
+
 		createUploadAudio: function ($container) {
 
 			var params = {
 				"id": this.id + "_vid",
-				"title": "Upload Audio",
+				"title": ((Utils.lang === "en") ? "Upload Audio File" : "Téléverser un fichier audio"),
 				$container: $container,
 				"filetype": ['mp3'],
 				"obj": this,
@@ -288,11 +308,12 @@ define([
 
 
 		},
-        
+
 		fileUploaded: function (data) {
 			var file = data.location + data.filename;
 			var params = {};
-			params.lbx = this.defaultLbxSettings("Configuration", "config", "Save Configuration");
+			var save = ((Utils.lang === "en") ? "Save Configuration" : "Sauvegarder la configuration")
+			params.lbx = this.defaultLbxSettings("Configuration", "config", save);
 			params.config = this.configLbxSettings();
 
 			if (data.extention === "jpg" || data.extention === "jpeg") {
@@ -304,18 +325,19 @@ define([
 				$("#LOM-audio-files").children(".col-md-6").html("");
 				this.selectAudio(data.filename);
 			}
-            else if (data.extention === "mp3") {
+			else if (data.extention === "mp3") {
 				this.loadAudioList(params);
-				$("#LOM-audio-files").children(".col-md-6").html("");
+				$("#LOM-audio-files").find(".audio-files").html("");
+				$("#LOM-audio-files #LOM-audio-upload").html("");
 				this.selectAudio(data.filename);
 			}
 
 		},
-        
+
 		submitCustomConfig: function () {
 			console.log("tihs is happening trigger");
 		},
-        
+
 		/*---------------------------------------------------------------------------------------------
 		-------------------------TRANSCRIPTS
 		---------------------------------------------------------------------------------------------*/
@@ -443,14 +465,14 @@ define([
 
 
 			};
-            
+
 			obj.strInt = function (vStr) {
 				vStr = vStr.replace("s", "");
 				var vFloat = parseInt(vStr, 10);
 				var vInt = Math.floor(vFloat);
 				return vInt;
 			};
-            
+
 			obj.intStr = function (vInt) {
 				var vStr = vInt + ".0s";
 				return vStr;
@@ -470,8 +492,8 @@ define([
 					var total = Math.floor((this.begin / this.parent.getDuration()) * 100);
 					this.$marker.css("left", total + "%");
 					this.$marker.click(function () {
-						that.parent.vid.currentTime = that.begin;
-						that.parent.vid.play();
+						that.parent.player.currentTime = that.begin;
+						that.parent.player.play();
 					});
 					this.$marker.hover(
 						function () {

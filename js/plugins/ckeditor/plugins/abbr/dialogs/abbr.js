@@ -1,10 +1,26 @@
+require([
+	'../../../../js/editor/LOM_labels',
+], function (labels) {
+    window.labels = labels;
+});
 
 // Our dialog definition.
 CKEDITOR.dialog.add( 'abbrDialog', function( editor ) {
+	
+	/*
+	var glossaryList=masterStructure.resourcesManager.getGlossary();
+	var selection = editor.getSelection();
+	var element = selection.getStartElement();
+	//Line manager
+	var value=$(element.$).text();
+	
+	console.log(value);
+	*/
+	
 	return {
-
+		
 		// Basic properties of the dialog window: title, minimum size.
-		title: 'Abbreviation Properties',
+		title: labels.resourcesEdit.abbr.insert,
 		minWidth: 400,
 		minHeight: 200,
 
@@ -14,65 +30,58 @@ CKEDITOR.dialog.add( 'abbrDialog', function( editor ) {
 				// Definition of the Basic Settings dialog tab (page).
 				id: 'tab-basic',
 				label: 'Basic Settings',
-
+				
 				// The tab content.
 				elements: [
 					{
-						// Text input field for the abbreviation text.
-						type: 'text',
-						id: 'abbr',
-						label: 'Abbreviation',
+						type: 'select',
+						id: 'selectAbbr',
+						label: labels.resourcesEdit.abbr.term,
+						style: 'width : 100%;',
+						'items': abbrList(),
+						//'default':setDefault(this),
+						'default':abbrList()[0][1].toString(),
+						onChange: targetChanged,
+						setup: function( data ) {
+							//var list=masterStructure.resourcesManager.getGlossaryArray();
+							var index=$(data.$).attr("title");
+							if (typeof index !=="undefined"){
+								this.setValue(index);
+							}
+							
 
-						// Validation checking whether the field is not empty.
-						validate: CKEDITOR.dialog.validate.notEmpty( "Abbreviation field cannot be empty." ),
-						setup: function(element){
-							//get the text from inside the element (abbr)
-							this.setValue(element.getText() );
+							
+							/*
+							if ( data.target )
+								this.setValue( data.target.type || 'notSet' );
+							targetChanged.call( this );
+							*/
 						},
-						commit:function(element){
-							//commit is to update the element instead of override
-							element.setText(this.getValue());
+						commit: function( element ) {
+							element.setAttribute("href", "#"+this.getValue());
+							/*
+							if ( !data.target )
+								data.target = {};
+
+							data.target.type = this.getValue();
+							*/
 						}
 					},
-					{
-						// Text input field for the abbreviation title (explanation).
-						type: 'text',
-						id: 'title',
-						label: 'Explanation',
-						validate: CKEDITOR.dialog.validate.notEmpty( "Explanation field cannot be empty." ),
-						setup: function( element ) {
-							//get the title attribute.
-							this.setValue( element.getAttribute( "title" ) );
-						},
-						commit:function(element){
-							element.setAttribute("title", this.getValue());
-						}
-					}
-				]
-			},
 
-			// Definition of the Advanced Settings dialog tab (page).
-			{
-				id: 'tab-adv',
-				label: 'Advanced Settings',
-				elements: [
-					{
-						// Another text field for the abbr element id.
+					/*{
+						// Text input field for the glossary title (explanation).
 						type: 'text',
-						id: 'id',
-						label: 'Id',
+						id: 'href',
+						label: 'Abbr ID',
+						//validate: CKEDITOR.dialog.validate.notEmpty( "Explanation field cannot be empty." ),
 						setup: function( element ) {
-							this.setValue( element.getAttribute( "id" ) );
+							//get the href attribute.
+							this.setValue( element.getAttribute( "href" ).substring(1)  );
 						},
 						commit:function(element){
-							var id=this.getValue();
-							if(id){
-								element.setAttribute('id', id);
-							}else if(!this.insertMode){
-								element.removeAttribute('id');
-							}
+							//element.setAttribute("href", "#"+this.getValue());
 						}
-					}
+					}*/
 				]
 			}
 		],
@@ -83,58 +92,141 @@ CKEDITOR.dialog.add( 'abbrDialog', function( editor ) {
 			// The code that will be executed when a dialog window is loaded.
 			var selection = editor.getSelection();
 			var element = selection.getStartElement();
+			var selectedText= editor.getSelection().getSelectedText();
+			
+			
+			
 			//check if there'S an element selected
-			if ( element ){
-				element = element.getAscendant( 'abbr', true );
+			if (element){
+				element = element.getAscendant('abbr', true);
+
 			}
 			
-			if ( !element || element.getName() !== 'abbr' ) {
+			if (!element || element.getName() !== 'abbr') {
 				//-----CREATE
 				element = editor.document.createElement( 'abbr' );
+				element.setAttribute("title", "description")
+				
 				this.insertMode = true;
-			}
-			else{
+			}else{
 				//-----EDIT
 				this.insertMode = false;			
 			}
 			this.element = element;
-			if ( !this.insertMode ){
-				this.setupContent( element );
+            
+			if (!this.insertMode){
+				this.setupContent(element);
+			}
+            else{
+				//
+				//console.log(this);
+				//this.
 			}
 		},
 		/* --------------------------------------------
 		 *                     on OK
 		 *--------------------------------------------*/
 		onOk: function() {
-			/* BASIC VERSION
-			// The context of this function is the dialog object itself.
-			var dialog = this;
 
-			// Create a new <abbr> element.
-			var abbr = editor.document.createElement( 'abbr' );
-
-			// Set element attribute and text by getting the defined field values.
-			abbr.setAttribute( 'title', dialog.getValueOf( 'tab-basic', 'title' ) );
-			abbr.setText( dialog.getValueOf( 'tab-basic', 'abbr' ) );
-
-			// Now get yet another field value from the Advanced Settings tab.
-			var id = dialog.getValueOf( 'tab-adv', 'id' );
-			if ( id ){
-				abbr.setAttribute( 'id', id );
-			}
-
-			// Finally, insert the element into the editor at the caret position.
-			editor.insertElement( abbr );
-			// end basic version
-			*/
 			var dialog = this,
 				abbr = dialog.element;
+			//glossary.setAttribute("class", "csps-glossary");
+			
+			var textOverride=dialog.getValueOf('tab-basic', 'selectAbbr');
+			var label = Object.keys(masterStructure.resourcesManager.abbrs)[textOverride];
+			
+			abbr.setText(label);            
+            //abbr.setAttribute("title", Object.values(masterStructure.resourcesManager.abbrs)[textOverride].description)
+			dialog.commitContent(abbr);
 
-			dialog.commitContent( abbr );
-
-			if ( dialog.insertMode ){
-				editor.insertElement( abbr );			
+			if (dialog.insertMode){
+				editor.insertElement(abbr);			
 			}
 		}
 	};
+	
 });
+	/* --------------------------------------------
+	 *                     ABBR LIST
+	 *--------------------------------------------*/
+	function abbrList(){
+        
+		var terms = Object.keys(masterStructure.resourcesManager.abbrs);
+		var defs = Object.values(masterStructure.resourcesManager.abbrs);
+		//var returnList=[["Create New","default"]];
+		var returnList=[];
+        if(terms.length > 0){
+            for (var i=0;i<terms.length;i++){
+                //console.log(terms[i]);
+                returnList[returnList.length]=[terms[i], i];//terms[i].term;
+                //returnList[i][1]="id";//terms[i].id;
+            }
+        }
+        else{
+            returnList[returnList.length] = ["", ""];
+        }
+        
+		return returnList;
+	}
+	/* --------------------------------------------
+	 *                     se4t default
+	 *--------------------------------------------*/
+	function setDefault(editor){
+		//console.log(CKEDITOR.dialog);
+		/*
+			var selection = editor.getSelection();
+			//var element = selection.getStartElement();
+			var selectedText= editor.getSelection().getSelectedText();
+		//var list=masterStructure.resourcesManager.getGlossaryArray();
+		var results= masterStructure.resourcesManager.getGlossary("job");
+		console.log(selectedText);*/
+		/*var returnList=[["Create New","default"]];
+		for (var i=0;i<list.length;i++){
+			//console.log(list[i]);
+			returnList[returnList.length]=[list[i].term, list[i].id];//list[i].term;
+			//returnList[i][1]="id";//list[i].id;
+		}
+		return returnList;*/
+		
+		
+		return "default";
+
+	}
+
+function targetChanged(){
+
+
+
+				//var dialog = this.getDialog(),
+					//targetName = dialog.getContentElement( 'target', 'linkTargetName' ),
+					//glossaryId=dialog.getContentElement('id'),
+					//value = this.getValue();
+
+				/*if ( !popupFeatures || !targetName )
+					return;
+					*/
+/*
+				popupFeatures = popupFeatures.getElement();
+				popupFeatures.hide();
+				targetName.setValue( '' );
+*/
+	/*
+				switch ( value ) {
+					case 'frame':
+						targetName.setLabel( editor.lang.link.targetFrameName );
+						targetName.getElement().show();
+						break;
+					case 'popup':
+						popupFeatures.show();
+						targetName.setLabel( editor.lang.link.targetPopupName );
+						targetName.getElement().show();
+						break;
+					default:
+						targetName.setValue( value );
+						targetName.getElement().hide();
+						break;
+				}	
+	
+	*/
+}
+

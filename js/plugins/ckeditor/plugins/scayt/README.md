@@ -1,14 +1,14 @@
-SCAYT Plugin for CKEditor 4
+﻿SCAYT Plugin for CKEditor 4
 =====================
 
-SpellCheckAsYouType (SCAYT) instantly underlines spelling and grammar errors while users type. To correct spelling or grammar error, a user simply needs to right-click the marked word to select from suggested corrections.
+SpellCheckAsYouType (SCAYT) instantly underlines spelling and grammar errors while users type. To correct spelling or grammar error, a user simply needs to right-click the marked word to select from suggested corrections. 
 ![SCAYT Plugin for CKEditor 4 View](https://webspellchecker.com/app/images/scayt_plugin_for_ckeditor4.png)
 
-This plugin brings the multi-language SCAYT functionality into CKEditor 4. It is integrated by default starting with [Standard Package of CKEditor 4](https://ckeditor.com/ckeditor-4/download/). You can find it on the CKEditor 4 toolbar panel under the ABC button (Enable SCAYT).
+This plugin brings the multi-language SCAYT functionality into CKEditor 4. It is integrated by default starting with [Standard Package of CKEditor 4](https://ckeditor.com/ckeditor-4/download/). You can find it on the CKEditor 4 toolbar panel under the ABC button (Enable SCAYT). 
 
 If your version of CKEditor doesn’t have SCAYT built-in, you can easily add it by following the steps outlined in the Get Started section.
 
-The default version of SCAYT plugin for CKEditor 4 is using the free services of WebSpellChecker. It is provided with a banner ad and has some [limitations](https://docs.webspellchecker.net/display/WebSpellCheckerCloud/Free+and+Paid+WebSpellChecker+Cloud+Services+Comparison+for+CKEditor).
+The default version of SCAYT plugin for CKEditor 4 is using the free services of WebSpellChecker. It is provided with a banner ad and has some [limitations](https://docs.webspellchecker.net/display/WebSpellCheckerCloud/Free+and+Paid+WebSpellChecker+Cloud+Services+Comparison+for+CKEditor). 
 
 To lift the limitations and get rid of the banner, [obtain a license](https://webspellchecker.com/wsc-scayt-ckeditor4/#pricing). Depending on your needs, you can choose a Cloud-based or Server (self-hosted) solution.
 
@@ -21,7 +21,7 @@ Supported Languages
 
 The SCAYT plugin for CKEditor as a part of the free services supports the next languages for check spelling: American English, British English, Canadian English, Canadian French, Danish, Dutch, Finnish, French, German, Greek, Italian, Norwegian Bokmal, Spanish, Swedish.
 
-There are also additional languages and specialized dictionaries available for a commercial license, you can check the full list [here](https://webspellchecker.com/additional-dictionaries/).
+There are also additional languages and specialized dictionaries available for a commercial license, you can check the full list [here](https://webspellchecker.com/additional-dictionaries/). 
 
 Get Started
 ------------
@@ -60,11 +60,11 @@ Resources
 Technical Support or Questions
 -------
 
-In cooperation with the CKEditor team, during the past 10 years we have simplified the installation and built the extensive amount of documentation devoted to SCAYT plugin for CKEditor 4 and less.
+In cooperation with the CKEditor team, during the past 10 years we have simplified the installation and built the extensive amount of documentation devoted to SCAYT plugin for CKEditor 4 and less. 
 
 If you are experiencing any difficulties with the setup of the plugin, please check the links provided in the Resources section.
 
-Holders of an active subscription to the services or a commercial license have access to professional technical assistance directly from the WebSpellChecker team. [Contact us here](https://webspellchecker.com/contact-us/)!
+Holders of an active subscription to the services or a commercial license have access to professional technical assistance directly from the WebSpellChecker team. [Contact us here](https://webspellchecker.com/contact-us/)! 
 
 Reporting Issues
 -------

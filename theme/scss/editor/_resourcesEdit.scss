@@ -1,0 +1,41 @@
+#glossaryList .glossary-term, #abbrList .abbr-term{
+    .term, .definition{
+        margin-bottom: 25px;
+    }
+    .term input{
+        width: 100%;
+    }
+}
+
+#extList .ext-term{
+    .text, .link, .desc{
+        margin-bottom: 25px;
+    }
+    .text input, .link input{
+        width: 100%;
+    }
+    .alert{
+        margin-bottom: 40px;
+    }
+}
+
+.cke_editable abbr{
+    border-bottom: 1px dotted #767676;
+    text-decoration: underline dotted;
+}
+
+.error{
+    color: red;
+}
+
+.LOM-resources-active{
+    .modal-dialog{
+        border-radius: 0px;
+    }
+    button.btn, input[type="submit"].btn, input[type="button"].btn, a.btn{
+        border-radius: 0px;
+        border: none;
+        
+        transition: background-color 0.2s;
+    }
+}

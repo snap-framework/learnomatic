@@ -1,0 +1,270 @@
+{
+	"users": {
+		"admin_sjomphe": {
+			"name": "Stef (admin)",
+			"lastname": "Jomphe",
+			"password": "",
+			"role": "admin",
+			"team": "ux"
+		},
+		"admin_tdumas": {
+			"name": "Thierry (admin)",
+			"lastname": "dumas",
+			"password": "",
+			"role": "admin",
+			"team": "ux"
+		},
+		"admin_blord": {
+			"name": "Benoit (admin)",
+			"lastname": "Lord",
+			"password": "",
+			"role": "admin",
+			"team": "ux"
+		},
+		"admin_csabourin": {
+			"name": "Christian (admin)",
+			"lastname": "Sabourin",
+			"password": "",
+			"role": "admin",
+			"team": "GcSkills"
+		},
+		"admin_sgilbert": {
+			"name": "Sébastien (admin)",
+			"lastname": "Gilbert",
+			"password": "",
+			"role": "admin",
+			"team": "GcSkills"
+		},
+		"admin_bdesbiens": {
+			"name": "Blythe (admin)",
+			"lastname": "Desbiens",
+			"password": "",
+			"role": "admin",
+			"team": "GcSkills"
+		},
+		"admin_nbrennan": {
+			"name": "Nicholas (admin)",
+			"lastname": "Brennan",
+			"password": "",
+			"role": "admin",
+			"team": "GcSkills"
+		},
+		"admin_kprevost": {
+			"name": "Davyd-Kristopher (admin)",
+			"lastname": "Prévost",
+			"password": "",
+			"role": "admin",
+			"team": "ExLearning"
+		},
+		"admin_dtoal": {
+			"name": "Dylan (admin)",
+			"lastname": "Toal",
+			"password": "",
+			"role": "admin",
+			"team": "TranSkills"
+		},
+		"admin_rtorres": {
+			"name": "René (admin)",
+			"lastname": "Torres",
+			"password": "",
+			"role": "admin",
+			"team": "RIW"
+		},
+		"jlevac": {
+			"name": "Julie",
+			"lastname": "Levac",
+			"password": "",
+			"role": "designer",
+			"team": "GcSkills"
+		},
+		"ddion": {
+			"name": "David",
+			"lastname": "Dion",
+			"password": "",
+			"role": "manager",
+			"team": "ESDC"
+		},
+		"mlamontagne": {
+			"name": "Myriam",
+			"lastname": "Lamontagne",
+			"password": "",
+			"role": "manager",
+			"team": "ux"
+		},
+		"sbose": {
+			"name": "Subir",
+			"lastname": "Bose",
+			"password": "",
+			"role": "manager",
+			"team": "ESDC"
+		},
+		"cdaaboul": {
+			"name": "Charles",
+			"lastname": "Daaboul",
+			"password": "",
+			"role": "manager",
+			"team": "ESDC"
+		},
+		"admin_vtimbro": {
+			"name": "Vincent",
+			"lastname": "Timbro",
+			"password": "",
+			"role": "admin",
+			"team": "ESDC"
+		},
+		"mtremblay": {
+			"name": "Melissa",
+			"lastname": "Tremblay",
+			"password": "",
+			"role": "reviewer",
+			"team": "ESDC"
+		},
+		"tdhillon": {
+			"name": "Tejvanse",
+			"lastname": "Dhillon",
+			"password": "",
+			"role": "reviewer",
+			"team": "ESDC"
+		},
+		"jbelisle": {
+			"name": "Julie",
+			"lastname": "Bélisle-Boutet",
+			"password": "",
+			"role": "manager",
+			"team": "ux"
+		},
+		"jdeschatelets": {
+			"name": "Josianne",
+			"lastname": "Deschatelets",
+			"password": "",
+			"role": "manager",
+			"team": "ux"
+		},
+		"sstgermain": {
+			"name": "Sarah",
+			"lastname": "St-Germain",
+			"password": "",
+			"role": "designer",
+			"team": "GcSkills"
+		},
+		"sjomphe": {
+			"name": "Stef",
+			"lastname": "Jomphe",
+			"password": "",
+			"role": "designer",
+			"team": "ux"
+		},
+		"tdumas": {
+			"name": "Thierry",
+			"lastname": "dumas",
+			"password": "",
+			"role": "designer",
+			"team": "ux"
+		},
+		"blord": {
+			"name": "Benoit",
+			"lastname": "Lord",
+			"password": "",
+			"role": "designer",
+			"team": "ux"
+		},
+		"csabourin": {
+			"name": "Christian",
+			"lastname": "Sabourin",
+			"password": "",
+			"role": "designer",
+			"team": "GcSkills"
+		},
+		"bdesbiens": {
+			"name": "Blythe",
+			"lastname": "Desbiens",
+			"password": "",
+			"role": "designer",
+			"team": "GcSkills"
+		},
+		"nbrennan": {
+			"name": "Nicholas",
+			"lastname": "Brennan",
+			"password": "",
+			"role": "designer",
+			"team": "GcSkills"
+		},
+		"sgilbert": {
+			"name": "Sébastien",
+			"lastname": "Gilbert",
+			"password": "",
+			"role": "designer",
+			"team": "GcSkills"
+		},
+		"dprevost": {
+			"name": "Davyd-Kristopher",
+			"lastname": "Prévost",
+			"password": "",
+			"role": "designer",
+			"team": "ExLearning"
+		},
+		"dtoal": {
+			"name": "Dylan",
+			"lastname": "Toal",
+			"password": "",
+			"role": "designer",
+			"team": "TranSkills"
+		},
+		"rtorres": {
+			"name": "René",
+			"lastname": "Torres",
+			"password": "",
+			"role": "designer",
+			"team": "RIW"
+		},
+		"msingh": {
+			"name": "Michel",
+			"lastname": "Singh",
+			"password": "",
+			"role": "user",
+			"team": "ux"
+		},
+		"dcolson": {
+			"name": "Derrek",
+			"lastname": "Colson",
+			"password": "",
+			"role": "admin",
+			"team": "ESDC"
+		},
+		"jvilleneuve": {
+			"name": "Josée",
+			"lastname": "Villeneuve",
+			"password": "",
+			"role": "manager",
+			"team": "ESDC"
+		},
+		"jdubeau": {
+			"name": "Joyce",
+			"lastname": "Dubeau",
+			"password": "",
+			"role": "designer",
+			"team": "ESDC"
+		},
+		"reviewerUx": {
+			"name": "Reviewer",
+			"lastname": "in UX",
+			"password": "",
+			"role": "reviewer",
+			"team": "ux"
+		},
+		"userUx": {
+			"name": "User",
+			"lastname": "in UX",
+			"password": "",
+			"role": "user",
+			"team": "ux"
+		},
+		"adminUx": {
+			"name": "Admin",
+			"lastname": "in UX",
+			"password": "",
+			"role": "admin",
+			"team": "ux"
+		}
+	}
+}

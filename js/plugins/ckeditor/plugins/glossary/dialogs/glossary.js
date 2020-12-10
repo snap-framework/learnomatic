@@ -1,3 +1,8 @@
+require([
+	'../../../../js/editor/LOM_labels',
+], function (labels) {
+    window.labels = labels;
+});
 
 // Our dialog definition.
 CKEDITOR.dialog.add( 'glossaryDialog', function( editor ) {
@@ -15,7 +20,7 @@ CKEDITOR.dialog.add( 'glossaryDialog', function( editor ) {
 	return {
 		
 		// Basic properties of the dialog window: title, minimum size.
-		title: 'Term Properties',
+		title: labels.resourcesEdit.glossary.insert,
 		minWidth: 400,
 		minHeight: 200,
 
@@ -31,16 +36,16 @@ CKEDITOR.dialog.add( 'glossaryDialog', function( editor ) {
 					{
 						type: 'select',
 						id: 'selectGlossary',
-						label: "Term",
+						label: labels.resourcesEdit.glossary.term,
 						style: 'width : 100%;',
 						'items': glossaryList(),
-						'default':setDefault(this),
+						//'default':setDefault(this),
+						'default':glossaryList()[0][1],
 						onChange: targetChanged,
 						setup: function( data ) {
 							//var list=masterStructure.resourcesManager.getGlossaryArray();
 							var index=$(data.$).attr("href").substring(1);
 							if (typeof index !=="undefined"){
-								console.log(index);
 								this.setValue(index);
 							}
 							
@@ -62,7 +67,7 @@ CKEDITOR.dialog.add( 'glossaryDialog', function( editor ) {
 							*/
 						}
 					},
-
+/*
 					{
 						// Text input field for the glossary title (explanation).
 						type: 'text',
@@ -76,7 +81,7 @@ CKEDITOR.dialog.add( 'glossaryDialog', function( editor ) {
 						commit:function(element){
 							//element.setAttribute("href", "#"+this.getValue());
 						}
-					}
+					}*/
 				]
 			}
 		],
@@ -112,7 +117,7 @@ CKEDITOR.dialog.add( 'glossaryDialog', function( editor ) {
 				this.setupContent( element );
 			}else{
 				//
-				console.log(this);
+				//console.log(this);
 				//this.
 			}
 		},
@@ -120,15 +125,17 @@ CKEDITOR.dialog.add( 'glossaryDialog', function( editor ) {
 		 *                     on OK
 		 *--------------------------------------------*/
 		onOk: function() {
-
-			var dialog = this,
-				glossary = dialog.element;
-			glossary.setAttribute("class", "csps-glossary");
+			var dialog = this, glossary = dialog.element;
+			
+            glossary.setAttribute("class", "csps-glossary");
 			
 			var textOverride=dialog.getValueOf('tab-basic', 'selectGlossary');
 			var label=masterStructure.resourcesManager.getGlossary(textOverride).term;
 			
 			glossary.setText(label);
+            glossary.setAttribute("href", "#" + textOverride);
+            glossary.setAttribute("data-cke-saved-href", "#" + textOverride);
+            
 			dialog.commitContent( glossary );
 
 			if ( dialog.insertMode ){
@@ -144,12 +151,19 @@ CKEDITOR.dialog.add( 'glossaryDialog', function( editor ) {
 	function glossaryList(){
 
 		var list=masterStructure.resourcesManager.getGlossaryArray();
-		var returnList=[["Create New","default"]];
-		for (var i=0;i<list.length;i++){
-			//console.log(list[i]);
-			returnList[returnList.length]=[list[i].term, list[i].id];//list[i].term;
-			//returnList[i][1]="id";//list[i].id;
-		}
+		//var returnList=[["Create New","default"]];
+		var returnList=[];
+        if(list.length > 0){
+            for (var i=0;i<list.length;i++){
+                //console.log(list[i]);
+                returnList[returnList.length]=[list[i].term, list[i].id];//list[i].term;
+                //returnList[i][1]="id";//list[i].id;
+            }
+        }
+        else{
+            returnList[returnList.length] = ["", ""];
+        }
+        
 		return returnList;
 
 	}
@@ -157,7 +171,7 @@ CKEDITOR.dialog.add( 'glossaryDialog', function( editor ) {
 	 *                     se4t default
 	 *--------------------------------------------*/
 	function setDefault(editor){
-		console.log(CKEDITOR.dialog);
+		//console.log(CKEDITOR.dialog);
 		/*
 			var selection = editor.getSelection();
 			//var element = selection.getStartElement();

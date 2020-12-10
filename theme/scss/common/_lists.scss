@@ -1,0 +1,117 @@
+@import "./_vars";
+
+ul.courselist,ul.userlist,ul.teamlist, ul.pagelist{
+    padding-left: 0;
+    
+	li{
+		width:100%;
+		position:relative;
+		height:47px;
+		list-style:none;
+        
+        &:not(:last-child){
+            margin-bottom: 3px;
+        }
+		button{
+			display: inline-block;
+			margin-top: 1px;
+			position: absolute;
+			&[disabled]:before,&[disabled]:after{
+				opacity:0.3;
+			}
+			&.course-download{
+				text-indent: 0px;
+    			color: transparent;
+				&[lang=en]{
+					
+                margin-left:-225px;
+                
+                //background-color: #ffcccc;
+						&:after{
+							content: 'EN';
+						}
+				}
+				&[lang=fr]{
+				margin-left:-180px;
+						&:after{
+							content: 'FR';
+						}
+                
+            }
+				&:after{
+					position: absolute;
+					 display: block;
+					 background-color: white;
+					 color: $dark-grey;
+					 width: 18px;
+					 height: 18px;
+					 right: 0px;
+					 bottom: 0px;
+					 border: 0px $dark-grey solid;
+					 font-size: 10px;
+					 font-weight: 600;
+					 padding: 2px;
+					 border-radius: 10px;
+					 margin: 0px;			
+				}
+			}
+
+			&.course-delete,&.user-delete{
+                margin-left:-45px;
+            }
+			&.course-users{
+                margin-left:-135px;
+            }
+			&.course-config{
+                margin-left:-90px;
+				
+			}
+		}
+		a{
+			
+			height: 100%;
+			display: inline-block;
+			min-width: 100%;
+			width:100%;
+			background-color: $list-background;
+			overflow:hidden;
+			border:1px solid $list-border;
+			text-decoration: none;
+			span{
+				 max-width: 100%;
+				 word-break: break-all;
+				 /* white-space: nowrap; */
+				 overflow: hidden;
+				 margin: 0;
+				 display: inline-block;
+				 line-height: 2.5em;
+				 height:100%;
+                
+                &:first-of-type{
+                    margin-left: 0.4em;
+                }
+			}
+			&:hover,&:focus{
+				background-color:white;
+			}
+			&:visited{
+				color:black;
+			}
+		}
+
+	} 
+} 
+ul.userlist{
+	a{padding-left:20px;}
+	[data-same-team=false][data-role-override=false]{
+		opacity:0.4;
+	}
+}
+
+.teamlist li{
+	&[data-member=true]{
+		 outline:2px solid #bbb;
+		 background-color:white;
+	}
+	
+}

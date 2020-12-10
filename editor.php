@@ -4,22 +4,32 @@
 //include ("includes/classes.php");
 //include ("includes/filewrite.php");
 require_once(dirname(__FILE__)."/includes/classes.php");
-require_once(dirname(__FILE__)."/includes/filewrite.php");
+require_once(dirname(__FILE__)."/includes/commObj.php");
+require_once(dirname(__FILE__)."/includes/socialController.php");
 
+require_once(dirname(__FILE__)."/includes/filewrite.php");
+require_once(dirname(__FILE__)."/includes/sessions.php");
+require_once(dirname(__FILE__)."/includes/courses.php");
+require_once(dirname(__FILE__)."/includes/comms.php");
+
+session_start([
+	 'cookie_lifetime' => 86400,
+]);
 
 if (empty($_POST))
-{
+{ 
 	//default values for testing
 	$temp = new DataReceive();
-	$temp->action = "closessions";
-	$temp->username="admin_sjomphe";
-	$temp->pw="admin";
-	$temp->br="<br>";
-	//'[{"oldFile":"m2-0","newFile":"m1-3-0"},{"oldFile":"m2-1","newFile":"m1-3-1"},{"oldFile":"m2-2","newFile":"m1-3-2"},{"oldFile":"m3-0","newFile":"m2-0"},{"oldFile":"m3-1","newFile":"m2-1"},{"oldFile":"m3-2-0","newFile":"m2-2-0"},{"oldFile":"m3-2-1","newFile":"m2-2-1"},{"oldFile":"m98-0","newFile":"m3-0"},{"oldFile":"m98-1","newFile":"m3-1"}]';
-	$temp->filename = "m0";
-	// $temp->content = "<h1>Default Content</h1>";
-	
-
+	$temp->action = "createComm";
+	//updateComm getCommsList
+	$temp->userInfo=json_decode('{"username":"sjomphe","team":"ux","courses":["C400", "test_zone"]}');
+	$temp->commInfo=json_decode('{ "type": "announcement", "sender": "sjomphe", "receiver": { "user": [ "all" ] }, "content": "stef can now create new announcements" }');
+	/*
+	$temp->action = "updateCourse";
+	$temp->folder = "test_zone";
+	$temp->json = '{"name":"Zone de test","code":"test_zone", "teams":{}, "users":{"sjomphe":{"role":"admin","owner":"true"}}}';
+	//$temp->json = '{"name":"Zone de test","code":"test_zone"}';
+*/
 	$received = json_encode($temp);
 
 }else{

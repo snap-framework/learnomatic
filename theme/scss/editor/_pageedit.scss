@@ -13,15 +13,24 @@ html:not(.LOM-pageEdit-active){
 //-------------------------------- ACTIVE---------------------------
 -------------------------------------------------------------------------*/
 .LOM-pageEdit-active{
-		// --- defining frames when editing
-		 .LOM-frame{
-			background-color:#fdfdfd;
-			border:1px solid #e2e2e2;
-			border-style:dashed;
+    // --- defining frames when editing
+     .LOM-frame{
+        background-color:#fdfdfd;
+        border:1px solid #555;
+        border-style:dashed;
 
-			padding-top:10px;
-			padding-bottom:10px;
-		}
+        padding-top:10px;
+        padding-bottom:10px;
+    }
+    .modal-dialog{
+        border-radius: 0px;
+    }
+    button.btn, input[type="submit"].btn, input[type="button"].btn, a.btn{
+        border-radius: 0px;
+        border: none;
+        
+        transition: background-color 0.2s;
+    }
 }
 
 /*-------------------------------------------------------------------------
@@ -43,4 +52,22 @@ html:not(.LOM-pageEdit-active){
 	h3{
 		margin:30px 0px 30px 0px;
 	}
+}
+
+/*-------------------- Frame numbers -----------------------*/
+.LOM-frame{
+    position: relative;
+    padding-left: 30px;
+    
+    .LOM-frame-number{
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        background-color: #555;
+        color: #fff;
+        left: 0px;
+        top: 0px;
+        text-align:center;
+        line-height: 25px;
+    }
 }
