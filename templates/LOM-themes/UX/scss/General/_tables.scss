@@ -1,0 +1,30 @@
+/* *************************************************************
+ * caption //yes remember to put it in
+ * ************************************************************/
+
+
+ table{
+	width:100%;
+	th, td{
+		 border: 1px white solid;
+		 font-size: 1.5em;
+		 line-height: 0.5em;
+		 padding: 0.8em 10px 10px 10px;
+	}
+	th{
+		width:auto;
+		background-color:$purple-darker; 
+		color:white;
+	}
+	td{
+		//background-color:#F0F0F0;
+	}
+	tr:nth-child(even) td{
+		background-color:$purple-lighter;
+	}
+	tr:nth-child(odd) td{
+		background-color:$uber-pale-purple;
+	}
+ 
+}
+

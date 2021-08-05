@@ -11,6 +11,12 @@ require_once(dirname(__FILE__)."/includes/filewrite.php");
 require_once(dirname(__FILE__)."/includes/sessions.php");
 require_once(dirname(__FILE__)."/includes/courses.php");
 require_once(dirname(__FILE__)."/includes/comms.php");
+require_once(dirname(__FILE__)."/includes/vars.php");
+
+require_once(dirname(__FILE__)."/includes/colors/colorController.php");
+require_once(dirname(__FILE__)."/includes/colors/colorGroupObj.php");
+require_once(dirname(__FILE__)."/includes/colors/colorObj.php");
+require_once(dirname(__FILE__)."/includes/colors/colorCommentObj.php");
 
 session_start([
 	 'cookie_lifetime' => 86400,
@@ -20,7 +26,7 @@ if (empty($_POST))
 { 
 	//default values for testing
 	$temp = new DataReceive();
-	$temp->action = "createComm";
+	$temp->action = "getvars";
 	//updateComm getCommsList
 	$temp->userInfo=json_decode('{"username":"sjomphe","team":"ux","courses":["C400", "test_zone"]}');
 	$temp->commInfo=json_decode('{ "type": "announcement", "sender": "sjomphe", "receiver": { "user": [ "all" ] }, "content": "stef can now create new announcements" }');

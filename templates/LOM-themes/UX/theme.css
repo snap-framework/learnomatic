@@ -1,0 +1,1066 @@
+/* *************************************************************
+ * IMPORTS
+ * ************************************************************/
+/*@import "./_various";*/
+/*@import "./_prefixers";*/
+.LOM-feedback-transition {
+  /*-webkit-transition: background-color 1s linear;
+   -moz-transition: background-color 1s linear;
+   -o-transition: background-color 1s linear;
+   transition: background-color 1s linear;*/
+  /*background: white;*/
+  -webkit-animation: color-me-in 0.75s;
+          animation: color-me-in 0.75s;
+}
+
+@-webkit-keyframes color-me-in {
+  0% {
+    background: #c8f9af;
+  }
+  100% {
+    background: white;
+  }
+}
+
+@keyframes color-me-in {
+  0% {
+    background: #c8f9af;
+  }
+  100% {
+    background: white;
+  }
+}
+
+/*@import "./_animations";*/
+/*@import "./helpers/_helpers";*/
+.alignLeft {
+  text-align: left;
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.alignCenter {
+  text-align: center;
+}
+
+.verticalCenter {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.w10 {
+  width: 10%;
+}
+
+.w20 {
+  width: 20%;
+}
+
+.w30 {
+  width: 30%;
+}
+
+.w40 {
+  width: 40%;
+}
+
+.w50 {
+  width: 50%;
+}
+
+.w60 {
+  width: 60%;
+}
+
+.w70 {
+  width: 70%;
+}
+
+.w80 {
+  width: 80%;
+}
+
+.w90 {
+  width: 90%;
+}
+
+.w100 {
+  width: 100%;
+}
+
+/* *************************************************************
+ * 
+ * ************************************************************/
+/* *************************************************************
+ * HELVETICA NEUE CONDENSED
+ * ************************************************************/
+@font-face {
+  font-family: "Helvetica Neue Condensed";
+  src: url("fonts/Helvetica/HelveticaNeueLTStd-LtCn.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Helvetica Neue Condensed";
+  src: url("fonts/Helvetica/HelveticaNeue-CondensedBold-08.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* *************************************************************
+ * Arial //why do we need this ?
+ * ************************************************************/
+@font-face {
+  font-family: "Arial";
+  src: url("fonts/Arial/Arial.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Arial";
+  src: url("fonts/Arial/Arial Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* *************************************************************
+ * headings
+ * ************************************************************/
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  font-weight: bold;
+}
+
+h1, .h1 {
+  font-size: 30px !important;
+}
+
+h2, .h2 {
+  font-size: 26px !important;
+  margin-top: 23px;
+  margin-bottom: 11.5px;
+}
+
+/* *************************************************************
+ * paragraphs
+ * ************************************************************/
+p {
+  font-size: 1em;
+}
+
+hr {
+  position: relative;
+  width: 90%;
+  color: #3A526B;
+  background-color: #3A526B;
+  border-color: #3A526B;
+}
+
+/* *************************************************************
+ * remember to check the _vars
+ * ************************************************************/
+/* *************************************************************
+ * FORMS
+ * ************************************************************/
+/* *************************************************************
+ * LABELS
+ * ************************************************************/
+/* *************************************************************
+ * radio buttons
+ * ************************************************************/
+/* *************************************************************
+ * checkboxes
+ * ************************************************************/
+/* *************************************************************
+  * Dropdown
+  * ************************************************************/
+/* *************************************************************
+  * text input and textarea
+  * ************************************************************/
+/* *************************************************************
+  * Submit
+  * ************************************************************/
+/* *************************************************************
+ * caption //yes remember to put it in
+ * ************************************************************/
+table {
+  width: 100%;
+}
+
+table th, table td {
+  border: 1px white solid;
+  font-size: 1.5em;
+  line-height: 0.5em;
+  padding: 0.8em 10px 10px 10px;
+}
+
+table th {
+  width: auto;
+  background-color: #756D86;
+  color: white;
+}
+
+table tr:nth-child(even) td {
+  background-color: #cdccdb;
+}
+
+table tr:nth-child(odd) td {
+  background-color: #F1F0F4;
+}
+
+/* *************************************************************
+ * 
+ * ************************************************************/
+body.launchpage {
+  background: url("../content/medias/images/AdobeStock_131190163_Preview.jpeg") top center no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: "Helvetica";
+  height: 100%;
+}
+
+#wordmark {
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  padding: 1%;
+  width: 100%;
+}
+
+/* ----------------------------------------------------
+                      WHITE AREA
+  ------------------------------------------------------*/
+#splash-content {
+  top: 30%;
+}
+
+#title-area {
+  background-color: rgba(255, 255, 255, 0.69);
+  margin-bottom: 0%;
+  font-family: "Helvetica Neue", Helvetica, Arial, "sans-serif";
+  color: #1f5a7f;
+  text-transform: uppercase;
+  font-size: 150%;
+  margin-left: 30.5%;
+  margin-top: 22%;
+  padding-left: 3%;
+  padding-bottom: 0.5%;
+  padding-top: 0.5%;
+  text-align: left;
+  display: block;
+  z-index: 1;
+}
+
+#subcoursename {
+  display: block;
+}
+
+#title-welcome {
+  font-size: 0.8em;
+}
+
+#coursename {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/* ----------------------------------------------------
+                      LAUNCH
+  ------------------------------------------------------*/
+#launch-area {
+  text-align: left;
+  margin-left: 30.5%;
+  margin-top: 2%;
+}
+
+a#launch-btn {
+  padding: 1% 3%;
+  color: #FFF;
+  background-color: #00567B;
+  font-weight: normal;
+}
+
+#canada-logo {
+  left: 0%;
+  right: 0%;
+  text-align: right;
+}
+
+/*---------------------- Content block -----------------------*/
+html {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+body {
+  min-height: 360px;
+  min-width: 360px;
+  height: 100% !important;
+  width: 100% !important;
+  overflow-x: hidden;
+  color: #3A526B;
+}
+
+main {
+  width: 100% !important;
+  padding-top: 70px;
+  padding-right: 0;
+}
+
+#dynamic_content {
+  height: 100%;
+  min-height: 100%;
+  padding-left: 100px;
+  padding-right: 15%;
+  padding-bottom: 30px;
+}
+
+@media (min-width: 992px) {
+  main.with-dyk #dynamic_content {
+    padding-right: 32%;
+    padding-bottom: 0;
+  }
+  main.with-skewed-image #dynamic_content, main.with-modules #dynamic_content, main.with-img #dynamic_content {
+    padding-bottom: 0;
+  }
+  main.with-dyk {
+    background: linear-gradient(-70deg, #e3f1f0 29%, transparent 29%) !important;
+  }
+  main.with-img {
+    padding-right: 30%;
+    padding-bottom: 100px;
+    min-height: 72%;
+    background-size: 22% !important;
+  }
+  main.with-img #dynamic_content {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  main.with-img {
+    background: none !important;
+  }
+}
+
+/* *************************************************************
+ * Background banner
+ * ************************************************************/
+header[role="banner"] #wb-bnr {
+  background-image: url("UX_images/banner.jpg");
+  background-size: 75%;
+  background-position: 0 63%;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 991px) {
+  header[role="banner"] #wb-bnr {
+    background-size: 70%;
+  }
+}
+
+@media (max-width: 767px) {
+  header[role="banner"] #wb-bnr {
+    background-size: 60%;
+  }
+}
+
+/* *************************************************************
+ * series title
+ * ************************************************************/
+#wb-bar {
+  -webkit-box-shadow: 1px 1px 15px -1px rgba(0, 0, 0, 0.75);
+          box-shadow: 1px 1px 15px -1px rgba(0, 0, 0, 0.75);
+  z-index: 1;
+  position: relative;
+}
+
+#wb-bar > .top-menu.container .row #wb-lng a:not(.lang):not(.tb-item) {
+  height: 100%;
+}
+
+#wb-bar > .top-menu.container .series-title {
+  display: block;
+}
+
+#wb-bar > .top-menu.container .series-title a {
+  font-size: 32px;
+  color: #BFBFBF;
+  position: absolute;
+  left: 30px;
+  top: 5px;
+}
+
+@media (min-width: 1200px) {
+  #wb-bar > .top-menu.container {
+    width: 100%;
+    padding-left: calc(50% - 585px);
+    padding-right: calc(50% - 585px);
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 993px) {
+  #wb-bar > .top-menu.container {
+    width: 100%;
+    padding-left: calc(50% - 485px);
+    padding-right: calc(50% - 485px);
+  }
+}
+
+/* *************************************************************
+ * BOTH TITLES
+ * ************************************************************/
+header > div.container {
+  display: block;
+  width: 25%;
+  margin-left: 75%;
+  height: 100%;
+  padding: 1% 6% 1% 0%;
+  background-color: white;
+}
+
+@media (max-width: 991px) {
+  header > div.container {
+    margin-left: 70%;
+    width: 30%;
+  }
+}
+
+@media (max-width: 767px) {
+  header > div.container {
+    margin-left: 60%;
+    width: 40%;
+  }
+}
+
+header > div.container .row {
+  margin: 0;
+}
+
+header > div.container .row div#wb-sttl > a {
+  text-align: left;
+  margin-top: 5%;
+  line-height: 1.2;
+}
+
+header > div.container .row div#wb-sttl > a span {
+  text-transform: uppercase;
+  display: block;
+  text-align: left;
+  color: #3A526B;
+}
+
+header > div.container .row div#wb-sttl > a > span:not(.subtitle):not(.intro) {
+  position: relative;
+  font-weight: bold;
+  font-size: 28px;
+  bottom: -5%;
+  padding-left: 50px;
+  font-weight: bold;
+}
+
+@media (max-width: 991px) {
+  header > div.container .row div#wb-sttl > a > span:not(.subtitle):not(.intro) {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  header > div.container .row div#wb-sttl > a > span:not(.subtitle):not(.intro) {
+    padding-left: 35px;
+  }
+}
+
+header > div.container .row div#wb-sttl > a > span:not(.subtitle):not(.intro) span.intro {
+  font-size: 20px;
+  font-weight: normal;
+}
+
+@media (max-width: 991px) {
+  header > div.container .row div#wb-sttl > a > span:not(.subtitle):not(.intro) span.intro {
+    font-size: 16px;
+  }
+}
+
+header > div.container .row div#wb-sttl > a > span.subtitle {
+  top: 0;
+  right: 0;
+  font-size: 20px;
+  padding-left: 50px;
+}
+
+@media (max-width: 991px) {
+  header > div.container .row div#wb-sttl > a > span.subtitle {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  header > div.container .row div#wb-sttl > a > span.subtitle {
+    padding-left: 35px;
+  }
+}
+
+header[role="banner"] #wb-bnr {
+  background-size: 75%;
+  background-position: 0 63%;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 991px) {
+  header[role="banner"] #wb-bnr {
+    background-size: 70%;
+  }
+}
+
+@media (max-width: 767px) {
+  header[role="banner"] #wb-bnr {
+    background-size: 60%;
+  }
+}
+
+header[role="banner"] #wb-bnr > div.container {
+  display: block;
+  width: 25%;
+  margin-left: 75%;
+  height: 100%;
+  padding: 1% 6% 1% 0%;
+  background-color: white;
+}
+
+@media (max-width: 991px) {
+  header[role="banner"] #wb-bnr > div.container {
+    margin-left: 70%;
+    width: 30%;
+  }
+}
+
+@media (max-width: 767px) {
+  header[role="banner"] #wb-bnr > div.container {
+    margin-left: 60%;
+    width: 40%;
+  }
+}
+
+header[role="banner"] #wb-bnr > div.container .row {
+  margin: 0;
+}
+
+/* *************************************************************
+ * Just title
+ * ************************************************************/
+/* *************************************************************
+ * Just subtitle
+ * ************************************************************/
+/* *************************************************************
+ *  REMEMBER TO CHECK THE VARS
+ * ************************************************************/
+/* *************************************************************
+ * the icon buttons
+ * ************************************************************/
+/* *************************************************************
+ * the lang toggle
+ * ************************************************************/
+/* *************************************************************
+ * change the icons
+ * ************************************************************/
+/* *************************************************************
+ *  REMEMBER TO CHECK THE VARS
+ * ************************************************************/
+/* *************************************************************
+ * Supermenu button bar (at the top)
+ * ************************************************************/
+header[role="banner"] > nav[role=navigation]#wb-sm {
+  background-color: white;
+  font-family: "Arial";
+  font-weight: bold;
+  font-size: 14px;
+  -webkit-box-shadow: 1px 1px 15px -1px rgba(0, 0, 0, 0.75);
+          box-shadow: 1px 1px 15px -1px rgba(0, 0, 0, 0.75);
+  z-index: 1;
+  position: relative;
+}
+
+header[role="banner"] > nav[role=navigation]#wb-sm .container ul.supermenu .sm.open {
+  border: none;
+}
+
+header[role="banner"] > nav[role=navigation]#wb-sm .container ul.supermenu .sm.open li a {
+  height: 40px !important;
+  position: relative;
+  border: none;
+  border-bottom: 1px solid white;
+  padding-top: 9px;
+}
+
+header[role="banner"] > nav[role=navigation]#wb-sm .container ul.supermenu .sm.open li a:before, header[role="banner"] > nav[role=navigation]#wb-sm .container ul.supermenu .sm.open li a:after {
+  color: #3A526B;
+}
+
+/* *************************************************************
+ * Supermenu button dropped
+ * ************************************************************/
+/* *************************************************************
+ * REMEMBER TO CHECK THE _VARS BEFORE MESSING HERE
+ * ************************************************************/
+footer[role=contentinfo] {
+  bottom: 0px !important;
+  width: 100%;
+  position: relative;
+  background-color: #3a5268;
+  margin: 0 !important;
+}
+
+footer[role=contentinfo] {
+  bottom: 0px !important;
+  width: 100%;
+  position: relative;
+  background-color: #3a5268;
+  margin: 0 !important;
+}
+
+footer[role=contentinfo] .backnext a {
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+footer[role=contentinfo] .backnext a.disabled {
+  background-color: #2d4054 !important;
+  color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled.back:before {
+  border-right-color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled.next:after {
+  border-left-color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled:hover, footer[role=contentinfo] .backnext a.disabled:focus {
+  background-color: #2d4054 !important;
+  color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled:hover.back:before, footer[role=contentinfo] .backnext a.disabled:focus.back:before {
+  border-right-color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled:hover.next:after, footer[role=contentinfo] .backnext a.disabled:focus.next:after {
+  border-left-color: white !important;
+}
+
+/* *************************************************************
+ *  REMEMBER TO CHECK THE VARS
+ * ************************************************************/
+/* *************************************************************
+ *  specifically the top one
+ * ************************************************************/
+.nvbar .backnext {
+  width: 20%;
+  margin-right: 5% !important;
+}
+
+header[role="banner"] > nav[role=navigation] > #wb-sm > .supermenu > .backnext > span {
+  font-size: 0.7em;
+  padding-bottom: 0px;
+  height: 100%;
+  margin-bottom: 0px;
+}
+
+/* *************************************************************
+ * specifically the bottom one
+ * ************************************************************/
+footer[role=contentinfo] {
+  bottom: 0px !important;
+  width: 100%;
+  position: relative;
+  background-color: #3a5268;
+  margin: 0 !important;
+}
+
+footer[role=contentinfo] .backnext a {
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+footer[role=contentinfo] .backnext a.disabled {
+  background-color: #2d4054 !important;
+  color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled.back:before {
+  border-right-color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled.next:after {
+  border-left-color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled:hover, footer[role=contentinfo] .backnext a.disabled:focus {
+  background-color: #2d4054 !important;
+  color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled:hover.back:before, footer[role=contentinfo] .backnext a.disabled:focus.back:before {
+  border-right-color: white !important;
+}
+
+footer[role=contentinfo] .backnext a.disabled:hover.next:after, footer[role=contentinfo] .backnext a.disabled:focus.next:after {
+  border-left-color: white !important;
+}
+
+/* *************************************************************
+ * Standard text element
+ * ************************************************************/
+/* *************************************************************
+ * ribbons
+ * ************************************************************/
+/* *************************************************************
+ * iconbox
+ * ************************************************************/
+/* *************************************************************
+ * Other
+ * ************************************************************/
+/*---------------------- Adding style for lists ----------------------*/
+#dynamic_content .LOM-element[data-lom-element="text"] ul li {
+  position: relative;
+  margin-top: 15px;
+}
+
+/* *************************************************************
+ * VARIABLES
+ * ************************************************************/
+/* *************************************************************
+ * images
+ * ************************************************************/
+/* *************************************************************
+ * Multimedia players
+ * ************************************************************/
+.wb-mm-ctrls {
+  background-color: #3A526B;
+}
+
+.wb-mm-ctrls .btn-default:hover, .wb-mm-ctrls .btn-default:focus {
+  background-color: #1E2B38;
+}
+
+.wb-mm-ctrls progress {
+  border-color: #3A526B;
+}
+
+/* *************************************************************
+ * video player
+ * ************************************************************/
+[data-lom-element="video"] .display:before {
+  background-color: #3A526B;
+}
+
+/* *************************************************************
+ * audio player
+ * ************************************************************/
+/* *************************************************************
+ * Accordions
+ * ************************************************************/
+/*---------------------- Fix for accordions ----------------------*/
+.LOM-element > details:first-of-type {
+  margin-top: 20px;
+}
+
+.LOM-element > details:last-of-type {
+  margin-bottom: 20px;
+}
+
+/*---------------------- Adding style for accordions ----------------------*/
+.LOM-element[data-lom-element="accordion"] details:not([role="tabpanel"]) {
+  border: none;
+  border-radius: 0px;
+  background-color: #F1F0F4;
+}
+
+.LOM-element[data-lom-element="accordion"] details:not([role="tabpanel"]) summary {
+  border: none;
+  border-radius: 0px;
+  background-color: #cdccdb;
+  color: #1E2B38;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.LOM-element[data-lom-element="accordion"] details:not([role="tabpanel"]) summary:hover, .LOM-element[data-lom-element="accordion"] details:not([role="tabpanel"]) summary:focus {
+  background-color: #9F9DBF;
+  color: black;
+}
+
+.LOM-element[data-lom-element="accordion"] details:not([role="tabpanel"]) .LOM-holder {
+  padding-top: 20px;
+}
+
+.LOM-element[data-lom-element="accordion"] details:not([role="tabpanel"]) .LOM-holder p:last-child {
+  margin-bottom: 0px;
+}
+
+/*---------------------- Adding style for accordions ----------------------*/
+.LOM-element[data-lom-element="accordion"].wb-tabs ul[role="tablist"] li {
+  background-color: #cdccdb;
+  border: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.LOM-element[data-lom-element="accordion"].wb-tabs ul[role="tablist"] li a {
+  color: #3A526B;
+  display: block;
+  height: 100%;
+}
+
+.LOM-element[data-lom-element="accordion"].wb-tabs ul[role="tablist"] li:hover, .LOM-element[data-lom-element="accordion"].wb-tabs ul[role="tablist"] li:focus {
+  background-color: #9F9DBF;
+}
+
+.LOM-element[data-lom-element="accordion"].wb-tabs ul[role="tablist"] li:hover a, .LOM-element[data-lom-element="accordion"].wb-tabs ul[role="tablist"] li:focus a {
+  color: black;
+}
+
+.LOM-element[data-lom-element="accordion"].wb-tabs ul[role="tablist"] li.active {
+  background-color: #756D86;
+}
+
+.LOM-element[data-lom-element="accordion"].wb-tabs ul[role="tablist"] li.active a {
+  color: white;
+  border-color: #3A526B;
+}
+
+.LOM-element[data-lom-element="accordion"].wb-tabs details {
+  border: none;
+  background-color: #F1F0F4;
+  padding: 15px;
+  border-radius: 0;
+}
+
+.LOM-element[data-lom-element="accordion"].wb-tabs details .tgl-panel .LOM-editable p:last-child {
+  margin-bottom: 0px;
+}
+
+/* *************************************************************
+ * Carousel
+ * ************************************************************/
+[data-lom-element="carousel"] .wb-tabs.carousel-s2.wb-tabs-inited {
+  padding-bottom: 4.375em;
+}
+
+[data-lom-element="carousel"] .wb-tabs.carousel-s2.wb-tabs-inited .control.nxt, [data-lom-element="carousel"] .wb-tabs.carousel-s2.wb-tabs-inited .control.prv, [data-lom-element="carousel"] .wb-tabs.carousel-s2.wb-tabs-inited .control.tab-count {
+  display: table-cell !important;
+  vertical-align: middle;
+}
+
+/* *************************************************************
+ * tabbed interface
+ * ************************************************************/
+/*---------------------- Fix for tabs ----------------------*/
+.wb-tabs {
+  margin-bottom: 20px;
+}
+
+/* *************************************************************
+ * Lightbox
+ * ************************************************************/
+/* *************************************************************
+ * Buttons
+ * ************************************************************/
+/*---------------------- Adding style for quiz buttons ----------------------*/
+html #dynamic_content .qs-submit, .qs-continue, .qs-start {
+  color: #fff;
+  background-color: #756D86 !important;
+  border: none;
+  border-radius: 5px !important;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+html #dynamic_content .qs-submit:hover, html #dynamic_content .qs-submit:focus, .qs-continue:hover, .qs-continue:focus, .qs-start:hover, .qs-start:focus {
+  background-color: #645d72 !important;
+}
+
+html #dynamic_content .qs-submit:before, .qs-continue:before, .qs-start:before {
+  border: none !important;
+  border-radius: 0 !important;
+  background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 49.15'%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill:%23ffffff;%7D%3C/style%3E%3C/defs%3E%3Cpath class='a' d='M89.69,124.61s-7.39-6.07-10.34-7.8c-.79-.47-1.59,0-1.23.74.77,1.65,8.32,14.6,10.82,20.29.36.81,1.37.65,1.83-.11,1-1.7,19.52-32.51,37.08-47.64.22-.19.54-1.56-1.1-.4C106.15,104.27,89.69,124.61,89.69,124.61Z' transform='translate(-78.03 -89.23)'/%3E%3C/svg%3E");
+}
+
+.qs-submit {
+  padding-left: 60px !important;
+  padding-right: 20px !important;
+}
+
+.qs-continue, .qs-start {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+/* *************************************************************
+ * activity-specific
+ * ************************************************************/
+/* *************************************************************
+ * Exam-specific
+ * ************************************************************/
+/* *************************************************************
+ * intro text
+ * ************************************************************/
+/* *************************************************************
+ * final feedback
+ * ************************************************************/
+/*-------------------------------------------------------------------------------*/
+/*---------- Blord - 2019-10-28 - Fixes and additions for LOM skinning ----------*/
+/*-------------------------------------------------------------------------------*/
+/*---------------------- Fix for login icon on hover ----------------------*/
+body header #wb-bar .top-menu #wb-lng.visible-md ul.text-right #LOM-user a.login:hover, body header #wb-bar .top-menu #wb-lng.visible-md ul.text-right #LOM-user a.login:focus {
+  background-position: -445px -38px;
+}
+
+/*---------------------- fix for LOM toolbars ----------------------*/
+#LOM-toolbox, #LOM-login-container {
+  z-index: 1000;
+}
+
+#LOM-login-container {
+  top: 230px;
+}
+
+/*---------------------- Fix for scrolling ----------------------*/
+html.skrollr-disabled body {
+  height: 100% !important;
+}
+
+.row.wb-eqht {
+  margin-bottom: 10px;
+}
+
+/*---------------------- TABLE ----------------------*/
+#LOM-toolbox {
+  z-index: 2;
+}
+
+/*---------------------- navigation style buttons ----------------------*/
+.fnav-square {
+  background-color: #3A526B;
+  color: white !important;
+  display: block;
+  font-size: 1.5em;
+  padding: 15px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.fnav-square:hover, .fnav-square:focus {
+  text-decoration: underline;
+}
+
+/*---------------------- Landing page object -----------------------*/
+.landing-page .module {
+  transform: skew(-15deg);
+  -webkit-transform: skew(-15deg);
+  -moz-transform: skew(-15deg);
+  -o-transform: skew(-15deg);
+  -ms-transform: skew(-15deg);
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.landing-page .module.col-md-2 {
+  width: calc(16.6666666667% - 20px);
+}
+
+.landing-page .module a {
+  display: block;
+  width: 200%;
+  position: relative;
+  left: -50%;
+  background-color: #e3f1f0;
+  height: 200px;
+  color: #3A526B;
+  font-family: "Helvetica Neue Condensed";
+  font-weight: bold;
+  text-align: center;
+  padding: 40px 48% 30px 60%;
+  font-size: 22px;
+  text-decoration: none;
+  transform: skew(15deg);
+  -webkit-transform: skew(15deg);
+  -moz-transform: skew(15deg);
+  -o-transform: skew(15deg);
+  -ms-transform: skew(15deg);
+}
+
+.landing-page .module a:hover, .landing-page .module a:focus {
+  background-color: #81B6B3;
+  color: black;
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+}
+
+@media (max-width: 1599px) {
+  .landing-page .module a {
+    padding: 35px 62% 30px 72%;
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .landing-page .module.col-sm-4 {
+    width: calc(33.3333333333% - 20px);
+    margin-bottom: 20px;
+  }
+  .landing-page .module a {
+    padding: 35px 62% 30px 72%;
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 767px) {
+  .landing-page .module {
+    transform: skew(0deg);
+    -webkit-transform: skew(0deg);
+    -moz-transform: skew(0deg);
+    -o-transform: skew(0deg);
+    -ms-transform: skew(0deg);
+  }
+  .landing-page .module.col-xs-6 {
+    width: calc(50% - 15px);
+    margin-right: 15px;
+    padding: 0;
+    margin-bottom: 15px;
+  }
+  .landing-page .module a {
+    padding: 10% 20px;
+    font-size: 17px;
+    width: 100%;
+    left: 0;
+    font-size: 16px;
+    transform: skew(0deg);
+    -webkit-transform: skew(0deg);
+    -moz-transform: skew(0deg);
+    -o-transform: skew(0deg);
+    -ms-transform: skew(0deg);
+  }
+}
+
+/*----------------------------- Project box element --------------------------------*/
+.project-box {
+  background-color: #cdccdb;
+  padding: 40px;
+}
+
+.project-box a {
+  color: #3A526B;
+}
+/*# sourceMappingURL=theme.css.map */

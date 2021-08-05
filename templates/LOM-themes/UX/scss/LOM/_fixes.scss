@@ -1,0 +1,42 @@
+
+/*-------------------------------------------------------------------------------*/
+/*---------- Blord - 2019-10-28 - Fixes and additions for LOM skinning ----------*/
+/*-------------------------------------------------------------------------------*/
+
+
+/*---------------------- Fix for login icon on hover ----------------------*/
+body header #wb-bar .top-menu #wb-lng.visible-md ul.text-right #LOM-user a.login:hover, body header #wb-bar .top-menu #wb-lng.visible-md ul.text-right #LOM-user a.login:focus {
+    background-position: -445px -38px;
+}
+
+/*---------------------- fix for LOM toolbars ----------------------*/
+#LOM-toolbox, #LOM-login-container {
+	z-index: 1000;
+}
+
+ #LOM-login-container {
+	 top: 230px;
+}
+
+/*---------------------- Fix for scrolling ----------------------*/
+html.skrollr-disabled body {
+    height: 100%!important;
+}
+
+
+
+
+
+
+
+.row.wb-eqht {
+    margin-bottom: 10px;
+}
+
+
+
+/*---------------------- TABLE ----------------------*/
+
+
+
+#LOM-toolbox{z-index:2;}

@@ -1,0 +1,44 @@
+/* *************************************************************
+ * 
+ * ************************************************************/
+
+//this is a good place to put all the font-related stuff
+
+
+
+/* *************************************************************
+ * HELVETICA NEUE CONDENSED
+ * ************************************************************/
+ @font-face {
+	font-family: "Helvetica Neue Condensed";
+	src: url("fonts/Helvetica/HelveticaNeueLTStd-LtCn.ttf")format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Helvetica Neue Condensed";
+	src: url("fonts/Helvetica/HelveticaNeue-CondensedBold-08.ttf")format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}
+
+
+ /* *************************************************************
+ * Arial //why do we need this ?
+ * ************************************************************/
+
+ 
+@font-face {
+	font-family: "Arial";
+	src: url("fonts/Arial/Arial.ttf")format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Arial";
+	src: url("fonts/Arial/Arial Bold.ttf")format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}

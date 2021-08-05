@@ -27,7 +27,6 @@ $o-icoLOM-packs: (
 );
 
 
-
 @each $pack-name, $pack in $o-icoLOM-packs {
     @each $index, $value in $pack{
           button[class*=snap-], input[type='button'][class*=snap-], input[type='file'][class*=snap-]{

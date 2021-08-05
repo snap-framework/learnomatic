@@ -1,0 +1,163 @@
+
+
+
+
+
+
+
+
+
+
+/* *************************************************************
+ * Accordions
+ * ************************************************************/
+
+
+
+
+
+/*---------------------- Fix for accordions ----------------------*/
+.LOM-element > details:first-of-type{
+	margin-top: 20px;
+}
+.LOM-element > details:last-of-type{
+	margin-bottom: 20px;
+}
+
+
+
+
+/*---------------------- Adding style for accordions ----------------------*/
+.LOM-element[data-lom-element="accordion"] details:not([role="tabpanel"]){
+	border: none;
+	border-radius: 0px;
+	background-color:$uber-pale-purple;
+	
+	summary{
+		border: none;
+		border-radius: 0px;
+		background-color: $purple-lighter;
+		color: $uber-dark-blue;
+		
+		-webkit-transition: all 0.3s;
+		-moz-transition: all 0.3s;
+		-o-transition: all 0.3s;
+		-ms-transition: all 0.3s;
+		transition: all 0.3s;
+		
+		&:hover, &:focus{
+			background-color: $purple;
+			color: black;
+		}
+	}
+	.LOM-holder{
+		padding-top: 20px;
+		
+		p:last-child{
+			margin-bottom: 0px;
+		}
+	}
+}
+
+/*---------------------- Adding style for accordions ----------------------*/
+.LOM-element[data-lom-element="accordion"].wb-tabs{
+	ul[role="tablist"] li{
+		background-color: $purple-lighter;
+		border: none;
+		
+		-webkit-transition: all 0.3s;
+		-moz-transition: all 0.3s;
+		-o-transition: all 0.3s;
+		-ms-transition: all 0.3s;
+		transition: all 0.3s;
+		
+		a{
+			color: $blue-darker;
+            display: block;
+            height: 100%;
+		}
+		
+		&:hover, &:focus{
+			background-color: $purple;
+			
+			a{
+				color: black;
+			}
+		}
+		&.active{
+			background-color: $purple-darker;
+			
+			a{
+				color: white;
+				border-color: $blue-darker;
+			}
+		}
+	}
+	details{
+		border: none;
+		background-color: #F1F0F4;
+		padding: 15px;
+		border-radius: 0;
+		
+		.tgl-panel .LOM-editable p:last-child {
+			margin-bottom: 0px;
+		}
+	}
+}
+
+
+ 
+/* *************************************************************
+ * Carousel
+ * ************************************************************/
+
+ 
+[data-lom-element="carousel"]{
+    .wb-tabs.carousel-s2.wb-tabs-inited{
+        padding-bottom: 4.375em;
+    
+        .control{
+            &.nxt,&.prv,&.tab-count{
+                display:table-cell !important; vertical-align:middle;
+            }  
+        }
+    }
+}
+
+
+
+ 
+/* *************************************************************
+ * tabbed interface
+ * ************************************************************/
+/*---------------------- Fix for tabs ----------------------*/
+.wb-tabs{
+	margin-bottom: 20px;
+}
+
+
+
+
+/* *************************************************************
+ * Lightbox
+ * ************************************************************/
+//remember to change $modal- vars in the _vars file
+
+.modal-dialog{
+
+
+}
+
+
+
+/* *************************************************************
+ * Buttons
+ * ************************************************************/
+
+
+[data-lom-element="button"]{
+//dont forget to check the iconogray section in vars
+
+
+}
+

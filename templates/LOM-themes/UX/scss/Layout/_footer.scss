@@ -1,0 +1,58 @@
+
+
+/* *************************************************************
+ * REMEMBER TO CHECK THE _VARS BEFORE MESSING HERE
+ * ************************************************************/
+
+
+
+ footer[role=contentinfo]{
+	bottom:0px !important;
+	width:100%;
+	position: relative;
+	background-color: #3a5268;
+	margin:0 !important;
+
+	
+}
+
+footer[role=contentinfo]{
+	bottom:0px !important;
+	width:100%;
+	position: relative;
+	background-color: #3a5268;
+	margin:0 !important;
+
+	.backnext{
+		a{
+			-webkit-transition: all 0.3s;
+			-moz-transition: all 0.3s;
+			-o-transition: all 0.3s;
+			-ms-transition: all 0.3s;
+			transition: all 0.3s;
+
+			&.disabled{
+				background-color: darken($blue-darker, 7%)!important;
+				color: white!important;
+
+				&.back:before{
+					border-right-color: white!important;
+				}
+				&.next:after{
+					border-left-color: white!important;
+				}
+				&:hover, &:focus{
+					background-color: darken($blue-darker, 7%)!important;
+					color: white!important;
+
+					&.back:before{
+						border-right-color: white!important;
+					}
+					&.next:after{
+						border-left-color: white!important;
+					}
+				}
+			}
+		}
+	}
+}

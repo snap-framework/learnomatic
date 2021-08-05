@@ -1,0 +1,43 @@
+/* *************************************************************
+ * headings
+ * ************************************************************/
+
+
+
+ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
+	//font-family: "Helvetica Neue Condensed";
+	font-weight: bold;
+}
+
+h1, .h1{
+	font-size: 30px!important;
+}
+
+h2, .h2{
+	font-size: 26px!important;
+    margin-top: 23px;
+    margin-bottom: 11.5px;
+}
+
+
+ /* *************************************************************
+ * paragraphs
+ * ************************************************************/
+ 
+
+ p{
+	font-size: 1em; 
+}
+
+
+hr {
+	position:relative;
+	width: 90%;
+	color: $blue-darker;
+	background-color: $blue-darker;
+	border-color: $blue-darker;
+}
+
+
+
+

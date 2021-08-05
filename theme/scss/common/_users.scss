@@ -48,7 +48,11 @@ html[data-role="user"]{
 		html.LOM-not-alone &{@include iconpack(users, md);}
 		html.LOM-editing-locked &{@include iconpack(lock, md);}		
 		
-	}
+    }
+    
+    &.not-empty>p>a{
+        visibility:hidden;
+    }
 
     &.not-empty:hover{
         overflow:visible;
@@ -60,7 +64,12 @@ html[data-role="user"]{
         padding-left: 10px;
         opacity: 0.8;
         left: -199px;
+        p>a{
+            visibility:visible;
+        }
     }
+
+
 }
 
 /*-------------------------------------------------------------------------

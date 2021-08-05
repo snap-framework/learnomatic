@@ -1,0 +1,67 @@
+
+
+/* *************************************************************
+ *  REMEMBER TO CHECK THE VARS
+ * ************************************************************/
+
+
+/* *************************************************************
+ *  specifically the top one
+ * ************************************************************/
+.nvbar .backnext{
+    width:20%;
+    margin-right:5% !important;
+
+}
+ header[role="banner"]{
+    & > nav[role=navigation] > #wb-sm > .supermenu > .backnext > span {
+		font-size: 0.7em;
+		padding-bottom:0px;
+		height:100%;
+		margin-bottom:0px;
+	}
+ }
+/* *************************************************************
+ * specifically the bottom one
+ * ************************************************************/
+
+ footer[role=contentinfo]{
+	bottom:0px !important;
+	width:100%;
+	position: relative;
+	background-color: #3a5268;
+	margin:0 !important;
+
+	.backnext{
+		a{
+			-webkit-transition: all 0.3s;
+			-moz-transition: all 0.3s;
+			-o-transition: all 0.3s;
+			-ms-transition: all 0.3s;
+			transition: all 0.3s;
+
+			&.disabled{
+				background-color: darken($blue-darker, 7%)!important;
+				color: white!important;
+
+				&.back:before{
+					border-right-color: white!important;
+				}
+				&.next:after{
+					border-left-color: white!important;
+				}
+				&:hover, &:focus{
+					background-color: darken($blue-darker, 7%)!important;
+					color: white!important;
+
+					&.back:before{
+						border-right-color: white!important;
+					}
+					&.next:after{
+						border-left-color: white!important;
+					}
+				}
+			}
+		}
+	}
+}
