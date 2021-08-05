@@ -706,7 +706,6 @@ define([
 
 		autoReview: function (parameters) {
 			var params = (typeof parameters !== "undefined") ? parameters : null;
-			//this.editor.social.reviewManager.popGeneralReviews(this);
 			this.editor.social.reviewManager.popReviews(this);
 			return params;
 		},
@@ -777,29 +776,48 @@ define([
 		/*---------------------------------------------------------------------------------------------
 		-------------------------LBX management
 		---------------------------------------------------------------------------------------------*/
-		defaultLbxSettings: function (title, action, save) {
-			var params = {
-				title: title,
-				action: action,
-				targetId: "custom_lbx",
-				saveBtn: save,
-				obj: this
-			};
-			if (action == "config") {
-				return this.changeDefaultLbxSettings(params);
-			} else {
-				return params;
-			}
-		},
 
 		changeDefaultLbxSettings: function (params) {
 			return params;
 		},
 
-		configLbxSettings: function () {
-			var that = this;
-			var params = {
-				$paramTarget: that.$el,
+
+		changeDefaultConfigSettings: function (params) {
+			return params;
+		},
+
+
+
+		closeLbx: function () {
+			this.editor.lbxController.close();
+		},
+
+		/*---------------------------------------------------------------------------------------------
+		-------------------------CONFIGURATION
+		---------------------------------------------------------------------------------------------*/
+		popConfig: function () {
+			var popParams = {
+				title: "Configuration",
+				obj: this,
+				action: this.configAfterPop
+			};
+			popParams = this.changeDefaultLbxSettings(popParams);
+			//send title and action
+			popParams.config = this.configSettings();
+			//pop lightbox
+
+			this.editor.lbxController.pop(popParams);
+		},
+		configSettings: function () {
+			var config = this.defaultConfigSettings();
+			config = this.changeDefaultConfigSettings(config);
+
+			return config;
+
+		},
+		defaultConfigSettings: function () {
+			var config = {
+				$paramTarget: this.$el,
 				selector: null,
 				files: [
 					//"../../templates/LOM-Elements/element_config_default.html"
@@ -811,88 +829,39 @@ define([
 					   "Option 2"]*/
 				}
 			};
-			return this.changeDefaultConfigSettings(params);
+			return config;
 		},
-
-		changeDefaultConfigSettings: function (params) {
-			return params;
-		},
-
-		loadLbx: function (params) {
-			var that = this;
-			var title = params.lbx.title;
-			var saveBtn = params.lbx.saveBtn;
-			var targetId = params.lbx.targetId;
-			//change the title
-			$("#lbx-title").text(title);
-
-			//change save Msg
-			$("#" + targetId).parent().children(".modal-footer").html("<button class=\"snap-md ico-SNAP-save\">" + saveBtn + "</button></div>");
-
-			switch (params.lbx.action) {
-				case "config":
-					// code block
-					this.loadConfigLbx(params);
-					$("#" + targetId).parent().children(".modal-footer").children("button").click(function () {
-						that.submitConfig(params);
-					});
-					break;
-				case "classPicker":
-					// code block
-					this.loadClassPickerLbx(params);
-					$("#" + targetId).parent().children(".modal-footer").children("button").click(function () {
-						that.submitClassPicker(params);
-					});
-					break;
-				default:
-				// code block
-			}
-		},
-
-		closeLbx: function () {
-			this.editor.closeLbx();
-		},
-
-		/*---------------------------------------------------------------------------------------------
-		-------------------------CONFIGURATION
-		---------------------------------------------------------------------------------------------*/
-		popConfig: function () {
-			var popParams = {};
-			//send title and action
-			var save = (Utils.lang === "en") ? "Save Configuration" : "Sauvegarder la configuration";
-			popParams.lbx = this.defaultLbxSettings("Configuration", "config", save);
-			popParams.config = this.configLbxSettings();
-
-			this.editor.popLightbox(popParams);
-		},
-
-		loadConfigLbx: function (params) {
+		configAfterPop: function ($lbx, params) {
+			var that = params.obj;
 			//load files
 			if (params.config.files.length > 0) {
-				this.loadConfigFiles(params);
+				that.loadConfigFiles($lbx, params);
 			}
 			//load attributes
-			this.loadConfigAttributes(params);
+			that.loadConfigAttributes($lbx, params);
 
-			this.loadConfigCustom(params);
+			that.loadConfigCustom($lbx, params);
+			var saveBtn = (typeof params.save === "undefined") ? ((Utils.lang === "en") ? "Save Configuration" : "Sauvegarder la configuration") : params.save;
 
-
+			$lbx.parent().children(".modal-footer").html("<button class=\"snap-md ico-SNAP-save\">" + saveBtn + "</button></div>");
+			$lbx.parent().children(".modal-footer").children("button.ico-SNAP-save").click(function () {
+				that.submitConfig($lbx, params);
+			});
 		},
 
 		/*
 		 * this loads ajax files for the configuration
 		 */
-		loadConfigFiles: function (params) {
+		loadConfigFiles: function ($lbx, params) {
 			var that = this;
 			var files = params.config.files;
-			var $target = $("#" + params.lbx.targetId);
 			that.configPages = 0;
 			that.configPagesCount = files.length;
 
 			for (var i = 0; i < that.configPagesCount; i++) {
-				$target.append("<div class='LOM-config-load'></div>");
-				$target.children(".LOM-config-load").eq(i).load(files[i], function () {
-					that.checkConfigFilesInit(params);
+				$lbx.append("<div class='LOM-config-load'></div>");
+				$lbx.children(".LOM-config-load").eq(i).load(files[i], function () {
+					that.checkConfigFilesInit($lbx, params);
 				});
 			}
 		},
@@ -900,17 +869,16 @@ define([
 		/*
 		 * this relays after the config files were loaded
 		 */
-		checkConfigFilesInit: function (params) {
-			var $target = $("#" + params.lbx.targetId);
+		checkConfigFilesInit: function ($lbx, params) {
 			this.configPages++;
 
 			if (this.configPages === this.configPagesCount) {
-				this.editor.parent.initWbs($target);
+				this.editor.parent.initWbs($lbx);
 				this.initializeConfigFiles(params);
-				if ($target.children(".LOM-config-load").children(".config-action").length > 0) {
-					this.initializeAction(params);
+				if ($lbx.children(".LOM-config-load").children(".config-action").length > 0) {
+					this.initializeAction($lbx, params);
 				}
-				this.initializeCustomFiles(params);
+				this.initializeCustomFiles($lbx, params);
 			}
 		},
 
@@ -927,14 +895,14 @@ define([
 			return false;
 		},
 
-		submitConfig: function (params) {
+		submitConfig: function ($lbx, params) {
+
 			var $bkp = this.getBkp();
 
-			var id = params.lbx.targetId;
 			var $paramTarget = params.config.$paramTarget;
 
 			//LOM-attr-value
-			var $attributes = $("#" + id).find(".LOM-attr-value");
+			var $attributes = $lbx.find(".LOM-attr-value");
 			var value;
 			var name;
 
@@ -955,37 +923,37 @@ define([
 			}
 
 			this.updateBkp($bkp);
-			this.submitCustomConfig(params);
+			this.submitCustomConfig($lbx, params);
 			this.closeLbx();
 			this.editor.refreshHtml();
 		},
 
-		submitCustomConfig: function (params) {
+		submitCustomConfig: function ($lbx, params) {
 			return params;
 		},
 
 		/*---------------------------------------------------------------------------------------------
 		-------------------------CONFIGURATION ACTIONS
 		---------------------------------------------------------------------------------------------*/
-		initializeAction: function (params) {
-			var $target = $("#" + params.lbx.targetId);
+		initializeAction: function ($lbx, params) {
+			var $target = $lbx;
 			var $actionDiv = $target.children(".LOM-config-load").children(".config-action");
 			if ($actionDiv.length > 0) {
 				//init Lightbox Buttons
-				this.initActionLightbox(params);
-				this.initActionNavigation(params);
-				this.initActionOther(params);
-				this.initActionCustom(params);
+				this.initActionLightbox($lbx, params);
+				this.initActionNavigation($lbx, params);
+				this.initActionOther($lbx, params);
+				this.initActionCustom($lbx, params);
 				//setting action override
 				$actionDiv.find("[name='onclick']").html(this.$el.attr("onclick"));
 
 			}
 		},
 
-		initActionLightbox: function (params) {
+		initActionLightbox: function ($lbx, params) {
 			var $btn;
 			var script;
-			var $target = $("#" + params.lbx.targetId);
+			var $target = $lbx;
 			var $container = $target.find(".lbx-list");
 			//save the button template
 			var template = $container.html();
@@ -1008,7 +976,7 @@ define([
 					$btn.attr("id", "lbx" + i);
 
 					//GODDAMN WB ADD!!! i KNOW this is messy but direct click doenst work cuz of wb-tabs
-					script = "masterStructure.editor.findElement('" + this.id + "').setActionLbx('" + $lbx.eq(i).attr("id") + "_lbx', '#lbx" + i + "', '#" + params.lbx.targetId + "');"
+					script = "masterStructure.editor.findElement('" + this.id + "').setActionLbx('" + $lbx.eq(i).attr("id") + "_lbx', '#lbx" + i + "', '#" + params.targetId + "');"
 					$btn.attr("onclick", script);
 
 					if ($("#" + this.id).find("button.LOM-btn").attr("onclick") && $("#" + this.id).find("button.LOM-btn").attr("onclick").indexOf($lbx.eq(i).attr("id") + "_lbx") >= 0) {
@@ -1037,10 +1005,10 @@ define([
 			return false;
 		},
 
-		initActionNavigation: function (params) {
+		initActionNavigation: function ($lbx, params) {
 			var $btn;
 			var script;
-			var $target = $("#" + params.lbx.targetId);
+			var $target = $lbx;
 			var $container = $target.find(".nav-list");
 
 			//save the button template
@@ -1066,7 +1034,7 @@ define([
 							$btn.attr("id", "page" + i);
 
 							//GODDAMN WB ADD!!! i KNOW this is messy but direct click doenst work cuz of wb-tabs
-							script = "masterStructure.editor.findElement('" + this.id + "').setActionNav('" + pages[i].sPosition + "', '#page" + i + "', '#" + params.lbx.targetId + "');"
+							script = "masterStructure.editor.findElement('" + this.id + "').setActionNav('" + pages[i].sPosition + "', '#page" + i + "', '#" + $lbx.attr("ID") + "');"
 							$btn.attr("onclick", script);
 
 							if ($("#" + this.id).find("button.LOM-btn").attr("onclick") && $("#" + this.id).find("button.LOM-btn").attr("onclick").indexOf(pages[i].sPosition) >= 0) {
@@ -1120,8 +1088,8 @@ define([
 			return false;
 		},
 
-		initActionOther: function (params) {
-			var $target = $("#" + params.lbx.targetId);
+		initActionOther: function ($lbx, params) {
+			var $target = $lbx;
 			var $container = $target.find(".other-list");
 
 			var $btns = $container.find("button");
@@ -1130,7 +1098,7 @@ define([
 			$btns.each(function (i) {
 				$(this).attr("id", "other" + i);
 
-				var script = "masterStructure.editor.findElement('" + that.id + "').setActionOther('" + $(this).data("script") + "', '#other" + i + "', '#" + params.lbx.targetId + "');";
+				var script = "masterStructure.editor.findElement('" + that.id + "').setActionOther('" + $(this).data("script") + "', '#other" + i + "', '#" + $lbx.attr("id") + "');";
 				$(this).attr("onclick", script);
 
 				if ($("#" + that.id).find("button.LOM-btn").attr("onclick") && $("#" + that.id).find("button.LOM-btn").attr("onclick") == $(this).data("script")) {
@@ -1154,8 +1122,8 @@ define([
 			return false;
 		},
 
-		initActionCustom: function (params) {
-			var $target = $("#" + params.lbx.targetId);
+		initActionCustom: function ($lbx, params) {
+			var $target = $lbx;
 			var $container = $target.find(".custom-script");
 
 			if ($("#" + this.id).find("button.LOM-btn").attr("onclick")) {
@@ -1164,7 +1132,7 @@ define([
 
 			var $btn = $container.find("button");
 
-			var script = "masterStructure.editor.findElement('" + this.id + "').setActionCustom('#" + params.lbx.targetId + "');";
+			var script = "masterStructure.editor.findElement('" + this.id + "').setActionCustom('#" + $lbx.attr("id") + "');";
 			$btn.attr("onclick", script);
 		},
 
@@ -1188,10 +1156,10 @@ define([
 		-------------------------CONFIGURATION ATTRIBUTES
 		---------------------------------------------------------------------------------------------*/
 
-		loadConfigAttributes: function (params) {
+		loadConfigAttributes: function ($lbx, params) {
 			var that = this;
 			var attr = params.config.attributes;
-			var $target = $("#" + params.lbx.targetId);
+			var $target = $lbx;
 			var oldValue;
 			var newAttr;
 			var value;
@@ -1199,7 +1167,7 @@ define([
 			Object.keys(attr).forEach(function (key) {
 				//whats the attr
 				newAttr = key;
-				oldValue = params.config.$paramTarget.attr(newAttr);
+				oldValue = params.config.$paramTarget.attr(newAttr);;
 				switch (typeof attr[key]) {
 					case "string":
 						//------------------------ TEXT BOX
@@ -1264,23 +1232,21 @@ define([
 		---------------------------------------------------------------------------------------------*/
 
 		popClassPicker: function () {
-			var popParams = {};
 			//send title and action
-			popParams.lbx = this.defaultLbxSettings(this.labels.editview.classPicker.lbxTitle, "classPicker", this.labels.editview.save);
-			popParams.config = this.configLbxSettings();
+			this.editor.lbxController.pop({
+				obj: this,
+				action: this.initClassPickerLbx,
+				title: this.labels.editview.classPicker.lbxTitle,
 
-			this.editor.popLightbox(popParams);
+			});
 		},
 
-		loadClassPickerLbx: function (params) {
-			var id = params.lbx.targetId;
-			//var $paramTarget = params.config.$paramTarget;
 
-			$("#" + id + ".modal-body").append("<div class=\"row\"><div class=\"col-md-6\"><h2>" + this.labels.editview.classPicker.current + "</h2><div class=\"classes\"></div></div><div class=\"col-md-6\"><h2>" + this.labels.editview.classPicker.add + "</h2><label for=\"add-class\">" + this.labels.editview.classPicker.label + "</label> <input type=\"text\" name=\"add-class\" id=\"add-class\"><input class=\"btn btn-default\" type=\"submit\" value=\"" + this.labels.editview.add + "\" name=\"submit-add-class\" id=\"submit-add-class\" style=\"margin-left: 5px;\"></div></div>");
 
-			this.loadClasses(params);
-
-			var that = this;
+		initClassPickerLbx: function ($lbx, params) {
+			var that = params.obj;
+			$lbx.append("<div class=\"row\"><div class=\"col-md-6\"><h2>" + that.labels.editview.classPicker.current + "</h2><div class=\"classes\"></div></div><div class=\"col-md-6\"><h2>" + that.labels.editview.classPicker.add + "</h2><label for=\"add-class\">" + that.labels.editview.classPicker.label + "</label> <input type=\"text\" name=\"add-class\" id=\"add-class\"><input class=\"btn btn-default\" type=\"submit\" value=\"" + that.labels.editview.add + "\" name=\"submit-add-class\" id=\"submit-add-class\" style=\"margin-left: 5px;\"></div></div>");
+			that.loadClasses(params);
 			$("#submit-add-class").click(function () {
 				if ($("#add-class").val() != "") {
 					$("#add-class").val($("#add-class").val().replace(/\ /g, '-'));
@@ -1288,21 +1254,41 @@ define([
 					$("#add-class").val("");
 				}
 			});
+
 		},
 
-		loadClasses: function (params) {
-			var id = params.lbx.targetId;
-			var $paramTarget = params.config.$paramTarget;
+		loadClasses: function () {
+			var id = "generic_LBX";
 
 			//Empty the list
 			$("#" + id + " .classes").html("");
 
-			var excludedClasses = ["LOM-element", "LOM-editable", "ui-sortable", "highlight", "wb-tabs", "qs-elearning-activity", "qs-exercise", "wb-mltmd", "img-responsive", "placeholder", "default", "snap-sm", "snap-md", "snap-lg"];
+			var excludedClasses = [
+				"LOM-element",
+				"LOM-editable",
+				"ui-sortable",
+				"highlight",
+				"wb-tabs",
+				"qs-elearning-activity",
+				"qs-exercise",
+				"wb-mltmd",
+				"img-responsive",
+				"placeholder",
+				"default",
+				"snap-sm",
+				"snap-md",
+				"snap-lg",
+				"wb-mltmd-inited",
+				"video",
+				"audio",
+				"carousel-s2",
+				"LOM-has-review"
+			];
 
-			if ($paramTarget.attr('class')) {
+			if (this.$el.attr('class')) {
 
 				//Get the list of classes
-				var classList = $paramTarget.attr('class').split(/\s+/);
+				var classList = this.$el.attr('class').split(/\s+/);
 
 				//Remove the excluded ones
 				classList = classList.filter(function (value) {
@@ -1335,54 +1321,38 @@ define([
 			}
 
 			$("#" + id + " .classes button.ico-SNAP-delete").click(function () {
-				that.removeClass($(this).data("remove-class"), params);
+				that.removeClass($(this).data("remove-class"));
 			});
 		},
 
-		addClass: function (targetClass, params) {
-			//var id = params.lbx.targetId;
+		addClass: function (targetClass) {
 			//create temp element to do the searching
 			var $bkp = this.getBkp();
 			$bkp.find("#" + this.id).addClass(targetClass);
 			//save it
 			this.saveBkp($bkp);
 			//update the interface
-			var $paramTarget = params.config.$paramTarget;
-			$paramTarget.addClass(targetClass);
+			this.$el.addClass(targetClass);
 			//load the classes
-			this.loadClasses(params);
+			this.loadClasses();
 		},
 
-		removeClass: function (targetClass, params) {
-			//var id = params.lbx.targetId;
+		removeClass: function (targetClass) {
 			//create temp element to do the searching
 			var $bkp = this.getBkp();
 			$bkp.find("#" + this.id).removeClass(targetClass);
 			//save it
 			this.saveBkp($bkp);
 
-			var $paramTarget = params.config.$paramTarget;
-			$paramTarget.removeClass(targetClass);
+			this.$el.removeClass(targetClass);
 
-			this.loadClasses(params);
+			this.loadClasses();
 		},
 
-		submitClassPicker: function (params) {
-			//var id = params.lbx.targetId;
-			//var $paramTarget = params.config.$paramTarget;
+		submitClassPicker: function () {
 
 			this.closeLbx();
-
-			return params;
 		},
-
-
-
-
-
-
-
-
 
 
 

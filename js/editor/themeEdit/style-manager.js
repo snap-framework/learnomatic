@@ -50,38 +50,46 @@ define([
 		* ***********************************/
 		initLbx: function () {
 			var that = this;
-			//POP IT
-			$.magnificPopup.open({
-				items: {
-					src: this.root.relPath + 'templates/LOM-Elements/style_en.html'
-				},
-				type: 'ajax',
-				removalDelay: 500,
-				callbacks: {
-					beforeOpen: function () {
-						this.st.mainClass = "mfp-zoom-in";
-					},
-					ajaxContentAdded: function () {
-						that.$body = $("#LOM_style_manager"); //LBX body
-						$(this.content).children(".modal-header").children(".modal-title").html("Style Editor"); //TITLE
-						that.setLbx($(this.content));//initiate the lighbox content
-					}
-				},
-				midClick: true
+			this.root.lbxController.pop({
+				obj: this,
+				action: this.setLbx,
+				title: "Style Editor",
+				file: "templates/LOM-Elements/style_en.html"
 			});
-
-
+			/*
+							//POP IT
+							$.magnificPopup.open({
+								items: {
+									src: this.root.relPath + 'templates/LOM-Elements/style_en.html'
+								},
+								type: 'ajax',
+								removalDelay: 500,
+								callbacks: {
+									beforeOpen: function () {
+										this.st.mainClass = "mfp-zoom-in";
+									},
+									ajaxContentAdded: function () {
+										that.$body = $("#LOM_style_manager"); //LBX body
+										$(this.content).children(".modal-header").children(".modal-title").html("Style Editor"); //TITLE
+										that.setLbx($(this.content));//initiate the lighbox content
+									}
+								},
+								midClick: true
+							});
+			
+			*/
 		},
 		/* ************************************
 		 * SET LIGHTBOX
 		 * initialize the lbx body content
 		 * returns nothing
 		 * ***********************************/
-		setLbx: function () {
-			var that = this;
-			this.initResult(); // setup the results box
-			this.initStyles(); //setup the different styles (ribbons, icons, grids)
-			this.$body.children("button.ico-SNAP-save").click(function () {
+		setLbx: function ($lbx, params) {
+			var that = params.obj;
+			that.$body = $lbx;
+			that.initResult(); // setup the results box
+			that.initStyles(); //setup the different styles (ribbons, icons, grids)
+			that.$body.children("button.ico-SNAP-save").click(function () {
 				that.applyChanges(); // SAVE / apply the changes to the actual DOM
 			})
 		},
@@ -119,11 +127,11 @@ define([
 			//SELECT GRID
 			//if NO GRID
 			if (this.currentGrid === null) {
-				console.log(this.currentGrid);
+				//console.log(this.currentGrid);
 
 				this.gridList[0].isSelected();
 			} else {
-				console.log(this.currentGrid);
+				//console.log(this.currentGrid);
 				this.currentGrid.isSelected();
 			}
 

@@ -47,7 +47,37 @@ define([
 				//this.parentElement.storeValue();
 			}
 		},
+		/*---------------------------------------------------------------------------------------------
+				-------------------------init
+		---------------------------------------------------------------------------------------------*/
+		ready: function () {
+			var that = this
+			if (this.parentElement.subtype && this.parentElement.subtype == "html") {
+				this.editBox = $("#" + that.ckeId).find("textarea.cke_source");
+			} else {
+				this.editBox = this.$el.next();
+			}
 
+			this.editBox.on('keyup change paste keypress', function (e) {
+
+				if (that.isRestricted) {
+					//prevent space from messing up the details
+					if (e.type === "keyup" && e.keyCode === 32) {
+						e.preventDefault();
+					}
+					//prevent chariot return
+					if (e.type === "keypress" && e.keyCode === 13) {
+						e.preventDefault();
+
+					}
+				} else {
+					that.keyPress(e);
+				}
+			});
+			if (!this.editor.locked) {
+				this.checkOverflow();
+			}
+		},
 
 		/*---------------------------------------------------------------------------------------------
 				-------------------------get value
@@ -74,6 +104,7 @@ define([
 
 
 			if (oldValue !== value) {
+				value = this.cleanupFormat(value);
 				$old.find("#" + this.id).html(value);
 				this.editor.originalHtml = $old.html();
 				this.editor.refreshHtml();
@@ -84,6 +115,17 @@ define([
 
 
 			return false;
+		},
+		cleanupFormat: function (value) {
+
+			if (this.parentElement.subtype === "title" || this.isRestricted) {
+
+				var $old = $("<div>");
+				$old.html(value);
+				value = $old.text();
+			}
+
+			return value
 		},
 		/*---------------------------------------------------------------------------------------------
 				-------------------------LAUNCH CKE
@@ -96,8 +138,7 @@ define([
 				setTimeout(function () {
 					that.activate();
 				}, 50);
-			}
-			else {
+			} else {
 				if (!that.isActivated) {
 					this.refreshInfo();
 
@@ -109,46 +150,8 @@ define([
 					this.isActivated = true;
 					this.refreshInfo(); //why twice??
 
-					this.instance.on("instanceReady", function () {
-						if (that.parentElement.subtype && that.parentElement.subtype == "html") {
-							that.editBox = $("#" + that.ckeId).find("textarea.cke_source");
-						}
-						else {
-							that.editBox = that.$el.next();
-						}
-
-
-						that.editBox.change(function (e) {
-							that.keyPress(e);
-						});
-
-						that.editBox.on('keyup change paste keypress', function (e) {
-
-							if (that.isRestricted) {
-								//prevent space from messing up the details
-								if (e.type === "keyup" && e.keyCode === 32) {
-									e.preventDefault();
-								}
-								//prevent chariot return
-								if (e.type === "keypress" && e.keyCode === 13) {
-									e.preventDefault();
-									//save on enter key if it'S a single-line
-
-								}
-							} else {
-								that.keyPress(e);
-							}
-						});
-						if (!that.editor.locked) {
-							that.checkOverflow();
-						}
-					});
 				}
-				this.instance.on("instanceReady", function () {
-					that.editBox.focusout(function (e) {
-						that.focusOut(e);
-					});
-				});
+
 			}
 		},
 		deactivate: function () {
@@ -157,7 +160,6 @@ define([
 				this.isActivated = false;
 				this.refreshInfo();
 				this.storeValue();
-				//this.parentElement.storeValue();
 				if (!this.isRogue) {
 					this.parentElement.$el.removeClass("LOM-editing");
 				}
@@ -168,8 +170,7 @@ define([
 		initCKE: function () {
 			if (this.parentElement.subtype == "html") {
 				CKEDITOR.replace(this.id, this.config);
-			}
-			else {
+			} else {
 				CKEDITOR.inline(this.id, this.config);
 			}
 		},
@@ -219,8 +220,7 @@ define([
 			//save whats now in the ID is the textarea
 			if (this.parentElement.subtype == "html") {
 				this.newHtml = $("#" + this.ckeId).find("textarea.cke_source").val();
-			}
-			else {
+			} else {
 				this.newHtml = $textarea.next().html();
 			}
 
@@ -290,13 +290,15 @@ define([
 				-------------------------CONFIGURATION FOR CKE
 		---------------------------------------------------------------------------------------------*/
 		configCke: function () {
-
+			var that = this;
 			var editorConfig = {
 				toolbar: []
 				/*,
 								language: lang*/
 
 			};
+			editorConfig = this.editEvents(editorConfig)
+
 			if (this.parentElement && this.parentElement.subtype == "html") {
 				/*editorConfig.toolbar.push({
 					name: 'HTML',
@@ -321,8 +323,7 @@ define([
 					groups: ['selection'],
 					items: ['SelectAll'],
 				});
-			}
-			else {
+			} else {
 				if (!this.isRogue) {
 					if (this.parentElement && this.parentElement.type === "custom") {
 
@@ -340,8 +341,8 @@ define([
 					editorConfig.enterMode = CKEDITOR.ENTER_BR;
 					editorConfig.allowedContent = true;
 					editorConfig.keystrokes = [
-						[13 /* Enter */, 'john'],
-						[CKEDITOR.SHIFT + 13 /* Shift + Enter */, 'blur']
+						[13 /* Enter */ , 'john'],
+						[CKEDITOR.SHIFT + 13 /* Shift + Enter */ , 'blur']
 					];
 				} else {
 					//FULL TEXT
@@ -356,7 +357,7 @@ define([
 					});
 					editorConfig.toolbar.push({
 						name: 'paragraph',
-						items: ['NumberedList', 'BulletedList' /*, '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' */]
+						items: ['NumberedList', 'BulletedList' /*, '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' */ ]
 					});
 					editorConfig.toolbar.push({
 						name: 'table',
@@ -390,8 +391,7 @@ define([
 					var items;
 					if (Object.keys(this.editor.master.resourcesManager.exts).length > 0) {
 						items = ['ext-links', 'linktopage']
-					}
-					else {
+					} else {
 						items = ['Link', 'linktopage']
 					}
 					if (Object.keys(this.editor.master.resourcesManager.abbrs).length > 0) {
@@ -421,22 +421,61 @@ define([
 				*/
 				editorConfig.extraPlugins = "abbr, glossary, ext-links, table, tableresize, tableselection, tabletools, colordialog, pastefromexcel, tabletoolstoolbar, linktopage, QS";
 				if (Object.keys(this.editor.master.resourcesManager.exts).length > 0) {
-					editorConfig.removePlugins = "link, uploadfile";
-				}
-				else {
-					editorConfig.removePlugins = "uploadfile";
+					editorConfig.removePlugins = "link, uploadfile,scayt,wsc";
+				} else {
+					editorConfig.removePlugins = "uploadfile,scayt,wsc";
 				}
 				editorConfig.extraAllowedContent = "a(*); span(*)";
 			}
+			//check if the accessibility checker is enabled
+			if (typeof this.editor.a11y !== "undefined") {
+				editorConfig = this.editor.a11y.singleEditBoxConfig(editorConfig)
+			}
+
+
 
 			return editorConfig;
 
 		},
+
+
+
 		/*---------------------------------------------------------------------------------------------
-				-------------------------
+				-------------------------EVENTS
 		---------------------------------------------------------------------------------------------*/
+		editEvents: function (config) {
+			var that = this;
+
+			config.on = {
+				instanceReady: function () {
+					that.ready();
+				},
+				blur: function () {
+					that.focusOut();
+				},
+				afterPaste: function () {
+					that.afterPaste();
+				},
+				key: function () {
+					//a key is pressed... there'S already actions bound here and it might get tricky fast
+				},
+				change: function (e) {
+					that.onchange(e);
+				}
+			};
+			return config;
+		},
+		// -------- after paste
+		afterPaste: function () {
+			//console.log("someone pasted some shit in here");
+		},
+		// -------- KEY PRESS
 		keyPress: function () {
 			this.checkOverflow();
+		},
+
+		onchange: function (event) {
+			this.keyPress(event);
 		},
 		checkOverflow: function () {
 			var maxchar = 3000;
@@ -455,12 +494,14 @@ define([
 				warningFlag = true;
 				//alert("Slow down on those paragraphs, cowboy!\n\n(review msg)");
 			}
-			if (warningFlag) {
-				this.$el.parent().addClass("LOM-overflow-warning");
-			} else {
-				this.$el.parent().removeClass("LOM-overflow-warning");
+			/*
+						if (warningFlag) {
+							this.$el.parent().addClass("LOM-overflow-warning");
+						} else {
+							this.$el.parent().removeClass("LOM-overflow-warning");
 
-			}
+						}
+						*/
 		},
 		/*
 		 * 

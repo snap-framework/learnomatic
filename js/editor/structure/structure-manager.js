@@ -58,8 +58,7 @@ define([
 
 			if (this.local.reloadNecessary) {
 				location.href = location.href.substr(0, location.href.indexOf("?"));
-			}
-			else {
+			} else {
 				$(".backnext").show();
 				$(".menu.supermenu").show();
 			}
@@ -91,8 +90,8 @@ define([
 			var newSub = ObjSubUtils.findSub([97]);
 
 			newSub.altTitle = altTitle;
-			newSub.move(sPosition);
 			newSub.keywords = keywords;
+			newSub.move(sPosition);
 			//dont know why;
 			newSub.viewed = true;
 			return newSub;
@@ -148,18 +147,21 @@ define([
 				action: "page",
 				filename: file_en,
 				content: en_content
-			}, function () { }).fail(function () {
+			}, function () {}).fail(function () {
 				alert("Posting failed while updating supermenu in main language.");
 			});
 			$.post('../../editor.php', {
 				action: "page",
 				filename: file_fr,
 				content: fr_content
-			}, function () { }).fail(function () {
+			}, function () {}).fail(function () {
 				alert("Posting failed while updating supermenu in main language.");
 			});
 		},
 
+		saveKeywords: function () {
+			//var subs=this.master.flatList
+		},
 		appendSupermenu: function () {
 			this.master.generateSupermenu = function () {
 
@@ -205,7 +207,7 @@ define([
 				$en.append(ending);
 				$fr.append(ending);
 
-				var en_content = $en.html();//</li></ul></li>
+				var en_content = $en.html(); //</li></ul></li>
 				var fr_content = $fr.html();
 
 				en_content = en_content.replace(/<\/ul><\/li>/g, "\n\t\t\t\t</ul>\n\t\t\t</li>\n");
@@ -220,6 +222,8 @@ define([
 				//console.error("action stack - app.js call to PHP");
 				this.editor.moveFile(filename);
 			};
+
+			this.saveKeywords();
 		}
 
 

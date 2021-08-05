@@ -18,6 +18,9 @@ define(['utils'], function (Utils) {
             template: (Utils.lang === "en")
                 ? "Save as Template"
                 : "Sauvegarder le Gabarit",
+            a11y: (Utils.lang === "en")
+                ? "Accessibility Scan"
+                : "Scan d'accessibilité",
             searchreplace: (Utils.lang === "en")
                 ? "Search/Replace in the course"
                 : "Rechercher/remplacer dans le cours",
@@ -38,7 +41,10 @@ define(['utils'], function (Utils) {
                 : "Vue Locale",
             globalView: (Utils.lang === "en")
                 ? "Global View"
-                : "Vue D'ensemble"
+                : "Vue D'ensemble",
+            colors: (Utils.lang === "en")
+                ? "Build Theme"
+                : "Construire le thème"
         },
         modes: {
             preview: (Utils.lang === "en")

@@ -49,9 +49,15 @@ define([
 				course = null;
 			}
 			if (this.user !== null) {
-				$.post(this.root.relPath + 'editor.php', { action: "othersessions", filename: filename, username: username, course: course }, function (data) {
+				$.post(this.root.relPath + 'editor.php', {
+					action: "othersessions",
+					filename: filename,
+					username: username,
+					course: course
+				}, function (data) {
+					//console.log("checked")
 					data = $.parseJSON(data);
-					var warning = data.users[that.root.session.user.username].warning;
+					var warning = (typeof data.users[that.root.session.user.username] === "undefined") ? null : data.users[that.root.session.user.username].warning;
 					that.locateUsers(data.users);
 					if (that.root.type === "command") {
 						that.updateCommandCenter();
@@ -61,14 +67,13 @@ define([
 					}
 					that.updateSocial(warning);
 				}).fail(function () {
-					alert("Posting failed while checking sessions.");
+					that.lostConnection();
 				});
 			}
 		},
 
 
 		autoCheckSession: function () {
-
 			var that = this;
 			this.root.ticker = true;
 			this.autotimer = setInterval(function () {
@@ -76,6 +81,12 @@ define([
 					that.checkOtherSessions();
 				}
 			}, 2000);
+
+		},
+
+		lostConnection: function () {
+			this.root.session.logOut();
+			//alert("Posting failed while checking sessions.");
 
 		},
 		/* *******************************************************************************
@@ -131,7 +142,7 @@ define([
 
 			var $watcher;
 
-			$watcher = $("#LOM-watcher");
+			$watcher = $("#LOM-watcher,.LOM-watcher");
 			$watcher.html("");
 			$watcher.removeClass("LOM-not-alone").removeClass("not-empty");
 
@@ -153,7 +164,7 @@ define([
 						} else {
 							//people IN SAME COURSE
 							$watcher.addClass("not-empty");
-							$watcher.append("<p>data-usermsg=\"" + currentLocation.user.username + "\">" + currentLocation.user.fullname + "</a> - <a href='#' onclick='fNav(\"" + currentLocation.page + "\")'>" + currentLocation.page + "</a></p>");
+							$watcher.append("<p><a href='#' data-usermsg=\"" + currentLocation.user.username + "\">" + currentLocation.user.fullname + "</a> - <a href='#' onclick='fNav(\"" + currentLocation.page + "\")'>" + currentLocation.page + "</a></p>");
 							//$watcher.append("<p>" + currentLocation.user.fullname + " - <a href='#' onclick='fNav(\"" + users[key].page + "\")'>" + users[key].page + "</a></p>");
 						}
 					}
@@ -205,7 +216,9 @@ define([
 			//this.root.userManager.setOnlineStatus();
 			this.setOnlineStatus();
 
-			if (warning) { this.root.social.receivedWarning(); }
+			if (warning) {
+				this.root.social.receivedWarning();
+			}
 		},
 
 		getPageName: function (name) {
@@ -242,4 +255,3 @@ define([
 
 	});
 });
-

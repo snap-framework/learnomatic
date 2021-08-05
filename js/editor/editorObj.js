@@ -8,14 +8,18 @@ define([
 	'./helpers/LOM-utils',
 	'modules/BaseModule',
 
+	'./../version/version-controller',
+
 	'./../session/sessionObj',
 	'./../command/progress-Manager',
+	'./helpers/a11y',
 	'./../command/team-Manager',
 	'./../command/user-Manager',
 	'./../command/course-Manager',
 	'./../social/social-Manager',
 	'./../session/roles-Manager',
 	'./../session/traffic-controller',
+	'./../lbx/lbx-controller',
 
 
 	'./ui/ui-manager',
@@ -33,13 +37,12 @@ define([
 	'./../plugins/jquery-ui/ui/widgets/sortable'
 
 
-], function ($, labels, CoreSettings, LomSettings, Utils, LOMUtils, BaseModule, Session, ProgressManager, TeamManager, UserManager, CourseManager, SocialManager, RolesManager, TrafficController, UImanager, SettingsManager, LOMLabels, LOMButtons, CKEDITOR, EditBoxObj, LayoutObj, ElementObj, Structure, ThemeEditor, ResourcesEditor, searchReplaceObj, Sortable) {
+], function ($, labels, CoreSettings, LomSettings, Utils, LOMUtils, BaseModule, VersionController, Session, ProgressManager, A11y, TeamManager, UserManager, CourseManager, SocialManager, RolesManager, TrafficController, LbxController, UImanager, SettingsManager, LOMLabels, LOMButtons, CKEDITOR, EditBoxObj, LayoutObj, ElementObj, Structure, ThemeEditor, ResourcesEditor, searchReplaceObj, Sortable) {
 	'use strict';
 
 	return BaseModule.extend({
 		initialize: function (options) {
 			this.type = "editor";
-			this.version = "1.0.3";
 			var that = this;
 			this.parent = options.parent;
 			this.master = this.parent;
@@ -83,6 +86,14 @@ define([
 
 			//append the css file for LOM
 			$('head').append('<link rel="stylesheet" type="text/css" href="../../theme/LOM_editor.css">');
+
+			this.lbxController = new LbxController({
+				root: this
+			});
+
+			this.version = new VersionController({
+				root: this
+			})
 
 			//we need to move this somewhere
 			$.fn.outerHTML = function () {
@@ -138,6 +149,9 @@ define([
 			//reset the page's default html
 			this.originalHtml = $(CoreSettings.contentContainer).html();
 			if (mode === "pageEdit") {
+				//reset CKE editors
+				$(".cke_reset_all").remove();
+
 				$(CoreSettings.contentContainer).first("h1").find("span.wb-inv").remove();
 
 				$(".qs-question").attr("data-random-answers", false).addClass("random-answers-removed");
@@ -172,17 +186,22 @@ define([
 			//this.setupUI();
 			this.setupSettings();
 			this.setupStructure();
-			//this.setupThemes();
+			this.setupThemes();
 			this.setupResources();
+			this.setupAccessibility();
 			this.initDone();
 		},
 
 		detectLOMLayout: function () {
+
 			if ($(".LOM-frame, .LOM-element").length == 0) {
 				this.addNotLOMWarning();
 			} else if ($(".LOM-frame.converted-page").length !== 0) {
 				this.addConvertedWarning();
+			} else {
+				this.layout.addRowBtn();
 			}
+
 		},
 		/*---------------------------------------------------------------------------------------------
 				-------------------------LOCKING SYSTEM
@@ -202,7 +221,6 @@ define([
 		},
 
 		lockMessage: function (location) {
-			var params = {};
 			var title, msg;
 			if (Utils.lang === "en") {
 				title = "Locked";
@@ -213,22 +231,17 @@ define([
 				location = (location === "course") ? "dans le même cours" : "sur la même page";
 				msg = "Cette fonction est verrouillé parce que les utilisateurs suivants sont " + location;
 			}
-			params.lbx = {
+
+			var params = {
 				title: title,
-				action: "locked",
-				targetId: "custom_lbx",
-				saveBtn: "ok",
-				obj: null,
+				obj: this,
+				action: this.lockAfterPop,
 				msg: msg,
-				location: location
+				location: location,
+				saveBtn: "ok"
 			};
-			params.config = {
-				$paramTarget: null,
-				selector: null,
-				files: [],
-				attributes: {}
-			};
-			this.popLightbox(params);
+
+			this.lbxController.pop(params)
 
 		},
 		lockEdits: function () {
@@ -237,6 +250,18 @@ define([
 		unlockEdits: function () {
 			this.activateEditors();
 		},
+
+		lockAfterPop: function ($lbx, params) {
+			var that = params.obj;
+			var samecourse = (params.location === "course") ? " LOM-same-course" : "";
+			//-----------LOCKED POP UP
+			$lbx.append("<p>" + params.msg + "</p>");
+			$lbx.append("<ul class='LOM-watcher" + samecourse + "'></ul>");
+
+		},
+
+
+
 		/*---------------------------------------------------------------------------------------------
 				-------------------------PAGE CONVERTER
 		---------------------------------------------------------------------------------------------*/
@@ -547,6 +572,12 @@ define([
 			});
 
 		},
+		setupAccessibility: function () {
+
+			this.a11y = new A11y({
+				parent: this
+			})
+		},
 		/*
 		 * @start the structure manager for pages inside the supermenu
 		 */
@@ -691,6 +722,8 @@ define([
 				$(".LOM-404").find(".LOM-template").text(labels.createtemplate);
 				that.ui.modeList[1].select();
 				that.ui.currentMode = that.ui.modeList[1];
+				//reset CKE
+				$(".cke_reset_all").remove();
 
 				$(".LOM-scratch").click(function () {
 					that.blankPage();
@@ -716,7 +749,7 @@ define([
 			html += "</div></h1>";
 			html += "";
 			html += "\n<!-- default Object, spawns an object picker -->";
-			html += "\n<button class=\"snap-lg ico-LOM-layout LOM-blankpage-layout\" onclick=\"masterStructure.editor.popLayoutPicker();return false;\">" + chooseLabel + "</button>";
+			html += "\n<button class=\"snap-lg ico-LOM-layout LOM-blankpage-layout\" onclick=\"masterStructure.editor.layout.popPicker();return false;\">" + chooseLabel + "</button>";
 			html += "\n</section>";
 			html += "</section>";
 			html += "</section>	";
@@ -729,35 +762,7 @@ define([
 			$("html").removeClass("page404 ");
 			this.pageLoaded();
 		},
-		popLayoutPicker: function () {
-			/*$(document).trigger("open.wb-lbx", [
-				[{
-					src: "../../templates/LOM-Layouts/layout_picker_" + Utils.lang + ".html",
-					type: "ajax"
-				}]
-			]);*/
 
-			// POP with animation!!
-			var that = this;
-			$.magnificPopup.open({
-				items: {
-					src: "../../templates/LOM-Layouts/layout_picker_" + Utils.lang + ".html"
-				},
-				type: "ajax",
-
-				removalDelay: 500,
-				callbacks: {
-					beforeOpen: function () {
-						this.st.mainClass = "mfp-zoom-in";
-					},
-					ajaxContentAdded: function () {
-						this.content.find(".modal-title").attr("id", "lbx-title");
-						that.loadLayoutList()
-					}
-				},
-				midClick: true
-			}, 0);
-		},
 		popTemplatePicker: function () {
 			/*$(document).trigger("open.wb-lbx", [
 				[{
@@ -768,6 +773,14 @@ define([
 
 			// POP with animation!!
 			var that = this
+			this.lbxController.pop({
+				file: "templates/LOM-Layouts/template_picker_" + Utils.lang + ".html",
+				action: this.loadTemplateList,
+				title: "Pick a Template",
+				obj: this
+			});
+
+			/*
 			$.magnificPopup.open({
 				items: {
 					src: "../../templates/LOM-Layouts/template_picker_" + Utils.lang + ".html"
@@ -786,43 +799,19 @@ define([
 				},
 				midClick: true
 			}, 0);
+			*/
 		},
-		loadLayoutList: function () {
-			var defaultFolder = "../../templates/LOM-Layouts/";
-			var customFolder = "content/templates/layouts/";
 
 
-			var that = this;
-
-			$("#layoutpicker").find("button[data-id]").click(function () {
-				that.loadChosenLayout(defaultFolder + $(this).attr("data-id") + ".html");
-			});
 
 
-			$.post(this.relPath + 'editor.php', {
-				action: "readfolder",
-				filename: 'courses/' + this.courseFolder + '/' + customFolder,
-				regex: "/^.*\.(html|htm)$/i"
-			}, function (data) {
-				//parse the jSON
-				//console.log(data);
-				if (data !== "false") {
-					that.loadCustomLayouts(data.slice(0, -1), customFolder);
-				}
-
-
-			}).fail(function () {
-				alert("Posting failed while reading folder.");
-			});
-
-		},
-		loadTemplateList: function () {
+		loadTemplateList: function ($lbx, params) {
 			$("#templatepicker").prepend("<section id='LOM_language_template'></section>");
 			var customFolder = "content/templates/pages/";
-			var that = this;
+			var that = params.obj;
 			$.post('../../editor.php', {
 				action: "readfolder",
-				filename: 'courses/' + this.courseFolder + '/' + customFolder,
+				filename: 'courses/' + that.courseFolder + '/' + customFolder,
 				regex: "/^.*\.(html|htm)$/i"
 			}, function (data) {
 				//parse the jSON
@@ -834,7 +823,7 @@ define([
 			}).fail(function () {
 				alert("Posting failed while loading template list.");
 			});
-			var targetPath = this.master.currentSub.pagePath();
+			var targetPath = that.master.currentSub.pagePath();
 			if (Utils.lang === "fr") {
 				targetPath = targetPath.replace("_fr", "_en");
 			} else {
@@ -884,31 +873,8 @@ define([
 			});
 
 		},
-		loadChosenLayout: function (filename) {
-			//maybe I need to save content?
-			this.layout.change(filename);
-			//close the popper
-			$.magnificPopup.close();
-
-		},
-		loadCustomLayouts: function (pages, folder) {
-			var that = this;
-			var aPages = pages.split(",");
-			$("#layoutpicker").prepend("<section id='LOM_custom_layouts'></section>");
-			var $holder = $("#LOM_custom_layouts");
-			$holder.append("<h3>" + ((Utils.lang === "en") ? "Custom Layouts" : "Dispositions personnalisées") + "</h3>");
-
-			for (var i = 0; i < aPages.length; i++) {
-				//console.log(aPages[i]);
-				//
-				$holder.append("<button class=\"snap-lg ico-LOM-custom\" data-id=\"" + aPages[i] + "\">" + aPages[i] + "</button>");
-			}
-			$holder.find(".ico-LOM-custom").click(function () {
-				that.loadChosenLayout(folder + $(this).attr("data-id"));
-			});
 
 
-		},
 		loadCustomPages: function (pages, folder) {
 			var that = this;
 			var aPages = pages.split(",");
@@ -1098,88 +1064,7 @@ define([
 			return endString;
 		},
 
-		/*---------------------------------------------------------------------------------------------
-				-------------------------LIGHTBOX POPPERS
-		---------------------------------------------------------------------------------------------*/
-		popLightbox: function (params) {
-			this.lbxParams = params;
 
-			// POP!
-			/*$(document).trigger("open.wb-lbx", [
-				[{
-					src: "../../templates/LOM-Elements/lbx.html",
-					type: "ajax"
-				}, ],
-			]);*/
-
-			// POP with animation!!
-			var that = this;
-			$.magnificPopup.open({
-				items: {
-					src: "../../templates/LOM-Elements/lbx.html"
-				},
-				type: "ajax",
-
-				removalDelay: 500,
-				callbacks: {
-					beforeOpen: function () {
-						this.st.mainClass = "mfp-zoom-in";
-					},
-					ajaxContentAdded: function () {
-						this.content.find(".modal-title").attr("id", "lbx-title");
-						that.loadLbx()
-					}
-				},
-				midClick: true
-			}, 0);
-		},
-		loadLbx: function () {
-			var params = this.lbxParams;
-			if (this.lbxParams.lbx.obj === null || this.lbxParams.lbx.obj === this) {
-				this.afterLoadLbx(params);
-
-			} else {
-				this.lbxParams.lbx.obj.loadLbx(params);
-			}
-
-			this.lbxParams = null;
-		},
-		afterLoadLbx: function (params) {
-			var that = this;
-			var title = params.lbx.title;
-			var saveBtn = params.lbx.saveBtn;
-			var targetId = params.lbx.targetId;
-			//change the title
-			$("#lbx-title").text(title);
-
-			//change save Msg
-			$("#" + targetId).parent().children(".modal-footer").html("<button class=\"snap-md ico-SNAP-save\">" + saveBtn + "</button></div>");
-
-			switch (params.lbx.action) {
-				case "locked":
-					//-----------LOCKED POP UP
-					var samecourse = (params.lbx.location === "course") ? " LOM-same-course" : "";
-					$("#" + targetId).append("<p>" + params.lbx.msg + "</p>");
-					$("#" + targetId).append("<ul class='LOM-watcher" + samecourse + "'></ul>");
-
-					$("#" + targetId).parent().children(".modal-footer").children("button")
-						.removeClass("ico-SNAP-save")
-						.addClass("ico-QS-check")
-						.click(function () {
-							that.closeLbx();
-						});
-					this.traffic.checkOtherSessions();
-					break;
-
-
-				default:
-				// code block
-			}
-
-		},
-		closeLbx: function () {
-			$.magnificPopup.close();
-		},
 		/*---------------------------------------------------------------------------------------------
 				-------------------------ELEMENTS
 		---------------------------------------------------------------------------------------------*/
@@ -1244,7 +1129,7 @@ define([
 
 			var options; // this will be transfered to the object as options
 			if (dismissPopup) {
-				this.unpopElementPicker();
+				this.lbxController.close();
 			}
 
 			//create the options
@@ -1280,57 +1165,30 @@ define([
 		/*
 		 * popElementPicker: pops the lightbox to pick elements
 		 * pass the obj to prepare
-		 * pass the mode ("add" or "switch" ... altghou switch seems to be on its way out)
 		 */
-		popElementPicker: function (obj, mode) {
-			mode = (typeof mode === "undefined") ? "add" : mode;
-			//define the mode.
-			this.elementMode = mode;
+		popElementPicker: function (obj) {
 			//prepare the targts and all
 			this.prepareElement(obj);
 
+			this.lbxController.pop({
+				file: "templates/LOM-Elements/element_picker_" + Utils.lang + ".html",
+				action: this.initElementList,
+				obj: this
+			})
 
-			// POP!
-			/*$(document).trigger("open.wb-lbx", [
-				[{
-					src: "../../templates/LOM-Elements/element_picker_" + Utils.lang + ".html",
-					type: "ajax"
-				}]
-			]);*/
 
-			// POP with animation!!
-			var that = this;
-			$.magnificPopup.open({
-				items: {
-					src: "../../templates/LOM-Elements/element_picker_" + Utils.lang + ".html"
-				},
-				type: "ajax",
-
-				removalDelay: 500,
-				callbacks: {
-					beforeOpen: function () {
-						this.st.mainClass = "mfp-zoom-in";
-					},
-					ajaxContentAdded: function () {
-						this.content.find(".modal-title").attr("id", "lbx-title");
-						that.loadElementList();
-					}
-				},
-				midClick: true
-			}, 0);
 		},
-		unpopElementPicker: function () {
-			$.magnificPopup.close();
-		},
+
 		/*
 		 * once the popper for the elements is loaded
 		 * add some buttons and remove what's not supposed to be there
+		 * formerly loadElementList
 		 */
 
-		loadElementList: function () {
+		initElementList: function ($lbx, params) {
 
-			var that = this;
-			var $pickBox = $("#elementpicker");
+			var that = params.obj;
+			var $pickBox = $lbx;
 			var $chooseElement = $pickBox.find("button[data-element-type]");
 			var isElement = !that.targetParent.isFrame;
 			var elemType;
@@ -1340,7 +1198,7 @@ define([
 				elemType = $chooseElement.eq(i).attr("data-element-type");
 				if (isElement) {
 					//check out all the permissions of this element
-					perms = this.targetParent.permissions.subElements;
+					perms = that.targetParent.permissions.subElements;
 
 				} else {
 					perms = {
@@ -1364,14 +1222,14 @@ define([
 						perms.faq = false;
 						perms.activity = false;
 						perms.exam = false;
-						perms.lightbox = false;
+						perms.carousel = false;
 					}
 					if (that.targetParent.$el.hasClass("col-md-4") || that.targetParent.$el.hasClass("col-md-3") || that.targetParent.$el.hasClass("col-md-2") || that.targetParent.$el.hasClass("col-md-1")) {
 						perms.faq = false;
 						perms.video = false;
-						perms.lightbox = false;
-						perms.activity = false;
+						perms.carousel = false;
 						perms.exam = false;
+						perms.activity = false;
 					}
 				}
 				for (var key in perms) {
@@ -1384,7 +1242,7 @@ define([
 						}
 					}
 				}
-				if (this.targetParent.type == "faq") {
+				if (that.targetParent.type == "faq") {
 					$pickBox.find("button[data-element-type=\"button\"]").text((Utils.lang === "en") ? "Filter" : "Filtre")
 				}
 			}
@@ -1766,7 +1624,7 @@ define([
 					filename: filename,
 					content: "",
 					folder: this.courseFolder
-				}, function () { }).fail(function () {
+				}, function () {}).fail(function () {
 					alert("Posting failed while moving files.");
 				});
 			}

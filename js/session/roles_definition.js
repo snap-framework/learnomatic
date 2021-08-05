@@ -53,6 +53,9 @@ define([], function () {
 				changeTitles: true,
 				changeMenu: true
 			},
+			theme: {
+				default: true
+			},
 			resources: {
 				default: true
 			},
@@ -106,6 +109,9 @@ define([], function () {
 				changeTitles: true,
 				changeMenu: true
 			},
+			theme: {
+				default: true
+			},
 			resources: {
 				default: true
 			},
@@ -149,6 +155,9 @@ define([], function () {
 				default: true
 			},
 			settings: {
+				default: true
+			},
+			theme: {
 				default: true
 			},
 			resources: {
@@ -196,6 +205,9 @@ define([], function () {
 			settings: {
 				default: false
 			},
+			theme: {
+				default: true
+			},
 			resources: {
 				default: true
 			},
@@ -241,6 +253,9 @@ define([], function () {
 			settings: {
 				default: false
 			},
+			theme: {
+				default: true
+			},
 			resources: {
 				default: false
 			},
@@ -276,6 +291,9 @@ define([], function () {
 			},
 			settings: {
 				default: false
+			},
+			theme: {
+				default: true
 			},
 			resources: {
 				default: false

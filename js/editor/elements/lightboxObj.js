@@ -17,6 +17,7 @@ define([
 			this.permissions.subElements.text = true;
 			this.permissions.subElements.image = true;
 			this.permissions.subElements.custom = true;
+			this.permissions.subElements.html = true;
 		},
 
 		setLabels: function () {

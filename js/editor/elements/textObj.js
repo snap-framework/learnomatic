@@ -31,8 +31,7 @@ define([
 				this.permissions.editButtons.config = false;
 				this.permissions.editButtons.classPicker = false;
 			}
-			if (this.parent.subtype === "graphDesc") {
-			}
+			if (this.parent.subtype === "graphDesc") {}
 		},
 
 		initDom: function () {

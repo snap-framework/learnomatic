@@ -33,9 +33,13 @@ define([
 
 		initDom: function () {
 			this.$el.removeAttr("open");
+			//this.$el.removeClass("acc-group");
+			this.$el.children("summary").removeClass("wb-toggle");
+			//this.$el.children("summary").removeClass("tgl-tab");
 			return false;
 		},
 		// customizing where the LOM-edit-view (the contextual buttons) appears
+		// it needs to be inside the summary.
 		appendEditBar: function () {
 			this.$el.children("summary").append("<div class=\"LOM-delete-on-save LOM-edit-view\" tabindex=\"-1\"><span class=\"LOM-label\"></span></div>");
 			return this.$el.children("summary").children(".LOM-edit-view").eq(0);

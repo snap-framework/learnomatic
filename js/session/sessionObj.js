@@ -17,7 +17,6 @@ define([
 			this.$login = $(".login");
 			this.$loginBox = $("#LOM-login-container");
 			this.$loggedinBox = $(".loggedin");
-			this.checkSession();
 		},
 
 		/* ***************************************
@@ -134,6 +133,7 @@ define([
 			this.root.reset();
 			this.user = null;
 			this.switchRole(this.root.roleManager.defaultRole);
+			$(".LOM-modetoggle").children("button").hide();
 			this.$loginBox.html();
 			this.loadLogin();
 			//this.removeSidebars();
@@ -141,7 +141,8 @@ define([
 		},
 		closeSession: function () {
 			var that = this;
-			//this.stopAutoCheck();
+			this.root.traffic.stopAutoCheck();
+
 			if (this.user !== null) {
 				$.post(this.root.relPath + 'editor.php', {
 					action: "closessions",

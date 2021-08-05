@@ -46,7 +46,6 @@ function updateSessions($json){
 			//DESTROY TIMESTAMP?
 			unset($json->users->$key);
 		}
-
 	}
 	return $json;
 }
@@ -71,34 +70,30 @@ function othersessions($received){
 	$json=getSessions();
 	//-----update sessions timestamps
 	$json=updateSessions($json);
-	// loop users
-	/*foreach ($json->users as $key => $value) {
-		//same course? same page? different user ? 
-		if($value->course===$course &&$value->page===$page && $key!== $user){
-			//watchers will probably be replaced.
 
-			$lockflag=true;
-			$msg="need to tell the console something.";
-		}
+	if(isset($json->users->$user)){
 
-	}*/
-	//JSON to write to file
-	$json->users->$user->page=$page;
-	$json->users->$user->timestamp=time();
-	$json->users->$user->course=$course;
-	//$json->users->$user->locked=$lockflag;
-	
-	//unset($json->users->$user->locked);
-	//echo json_encode($json);
+		//JSON to write to file
+		$json->users->$user->page=$page;
+		$json->users->$user->timestamp=time();
+		$json->users->$user->course=$course;
+		//$json->users->$user->locked=$lockflag;
+
+	}else{
+		$current='{"page":"'.$page.'","timestamp":"'.time().'","course":"'.$course.'"}';
+		$bla=json_decode($current);
+		$json->users->$user=json_decode($current);
+
+		
+	}
 	$received->filename="courses/_system/sessions.json";
 	$received->content=json_encode($json);
 	
 	saveSession($json);
-	$json->comms=$_SESSION["lastComm"];
+	//$json->comms=$_SESSION["lastComm"];
 	//JSON for the browser's user
 	//$json->msg=$msg;
 	//send to browser
-	
 	
 	
 	echo json_encode($json);	
@@ -137,7 +132,7 @@ function saveSession($json){
 	$newFile=fopen("courses/_system/sessions.json", "w") or die("Unable to open file ");
 	fwrite($newFile, json_encode($json));
 	fclose($newFile);
-	
+	return json_encode($json);
 }
 
 

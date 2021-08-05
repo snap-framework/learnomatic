@@ -74,6 +74,7 @@ define([
 			}
 			this.checkLockPage();
 			//this.updateLockPages();
+			this.getKeywords();
 		},
 
 		/*
@@ -764,6 +765,15 @@ define([
 				this.subs[i].resetDepths(newDepth);
 			}
 
+		},
+
+		getKeywords: function () {
+
+			if (this.aPosition[0] !== 98) {
+				if (typeof this.$el.attr("data-keywords") !== "undefined") {
+					this.keywords = this.$el.attr("data-keywords");
+				}
+			}
 		}
 
 

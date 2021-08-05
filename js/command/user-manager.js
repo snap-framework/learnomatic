@@ -33,6 +33,7 @@ define([
 					that.createUser(users[key]);
 				}
 				that.inited = true;
+				that.root.session.checkSession(); // start loading the session
 				that.root.initDone();
 				//that.modifyPermissions();
 				//that.setupUserManagement();
@@ -82,21 +83,21 @@ define([
 			//userArray=userArray.sort((a, b) => (a.fullname > b.fullname) ? 1 : -1);
 			switch (sort) {
 				case "level-name":
-					userArray = userArray.sort(function(a, b){
+					userArray = userArray.sort(function (a, b) {
 						return (a.role.level > b.role.level) ? 1 : (a.role.level === b.role.level) ? ((a.fullname.toLowerCase() > b.fullname.toLowerCase()) ? 1 : -1) : -1
 					});
 					break;
 
 				case "team-name":
-										userArray = userArray.sort(function(a, b){
+					userArray = userArray.sort(function (a, b) {
 						return (a.team.name.toLowerCase() > b.team.name.toLowerCase()) ? 1 : (a.team.name.toLowerCase() === b.team.name.toLowerCase()) ? ((a.fullname.toLowerCase() > b.fullname.toLowerCase()) ? 1 : -1) : -1
 					});
 					break;
 				default:
 					// code block
-				userArray = userArray.sort(function(a, b){
-					return (a.fullname.toLowerCase() > b.fullname.toLowerCase()) ? 1 : -1
-				});
+					userArray = userArray.sort(function (a, b) {
+						return (a.fullname.toLowerCase() > b.fullname.toLowerCase()) ? 1 : -1
+					});
 			}
 			//use THIS syntax to avoid confusing IE;
 
@@ -113,15 +114,15 @@ define([
 		},
 
 
-		resetLocations:function(){
+		resetLocations: function () {
 			var userArray = this.userList;
 
 			for (var i = 0; i < userArray.length; i++) {
 
-				userArray[i].location=null;
+				userArray[i].location = null;
 			}
-		
-	}
+
+		}
 
 
 	});

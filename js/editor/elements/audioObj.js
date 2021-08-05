@@ -56,32 +56,23 @@ define([
 		/*---------------------------------------------------------------------------------------------
 		-------------------------CONFIGURATION
 		---------------------------------------------------------------------------------------------*/
-
 		changeDefaultLbxSettings: function (params) {
-			params.title = (Utils.lang === "en") ? "Audio Configuration" : "Configuration du fichier audio";
+			params.title = (Utils.lang === "en") ? "Audio Configuration" : "Configuration de l'audio'";
 			return params;
 		},
-
-		changeDefaultConfigSettings: function (params) {
-
-			params.$paramTarget = this.$el.find("audio");
-
-			params.attributes = {
+		configSettings: function () {
+			var config = this.defaultConfigSettings();
+			config.attributes = {
 				"title": ""
 
 			};
-			return params;
+			config.$paramTarget = this.$el.find("audio");
+			return config;
 
 		},
-
-		loadConfigCustom: function (params) {
-			$("#" + params.lbx.targetId).append("<section id='LOM-audio-files' class='row'><div class='col-md-6'><h3>" + ((Utils.lang === "en") ? "Available Audio Files" : "Fichiers audio disponibles") + "</h3><div class='audio-files'></div></div></section>");
+		loadConfigCustom: function ($lbx, params) {
+			$lbx.append("<section id='LOM-audio-files' class='row'><div class='col-md-6'><h3>" + ((Utils.lang === "en") ? "Available Audio Files" : "Fichiers audio disponibles") + "</h3><div class='audio-files'></div></div></section>");
 			this.loadAudioList(params);
-			/*No longer needed poster*/
-			/*
-				  $("#"+params.lbx.targetId).append("<details id='LOM-img-gallery'><summary>Audio Poster</summary></details>");
-			this.loadImageList(params);
-			*/
 		},
 
 		initDom: function () {
@@ -138,8 +129,7 @@ define([
 					$btnHolder.append("<button class='snap-lg ico-LOM-audio" + btnSelected + "' value='" + aAudio[i] + "'>" + aAudio[i] + "</button>");
 
 				}
-			}
-			else {
+			} else {
 				$btnHolder.append("<p>" + ((Utils.lang === "en") ? "There are no availables files, please upload files using the option on the right." : "Il n'y a aucun fichier disponible, veuillez téléverser des fihiers en utilisant la fonction à droite.") + "</p>")
 			}
 
@@ -324,8 +314,7 @@ define([
 				this.loadAudioList(params);
 				$("#LOM-audio-files").children(".col-md-6").html("");
 				this.selectAudio(data.filename);
-			}
-			else if (data.extention === "mp3") {
+			} else if (data.extention === "mp3") {
 				this.loadAudioList(params);
 				$("#LOM-audio-files").find(".audio-files").html("");
 				$("#LOM-audio-files #LOM-audio-upload").html("");
