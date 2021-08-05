@@ -910,7 +910,7 @@
       "de": "Alle  \"area\"-Elemente mit einer Verknüpfung zu einer Audio-Datei sollten auch eine Verknüpfung zu einem Transkript enthalten",
       "en": "All \"area\" elements which link to a sound file should also provide a link to a transcript",
       "nl": "Alle \"area\"-elementen met een link naar een geluidsbestand moeten ook een link bevatten naar een transcriptie",
-      "pt-br": "Todos os elementos de \"area\" que ligam a um arquivo de som devem também fornecer um link para uma transcrição" 
+      "pt-br": "Todos os elementos de \"area\" que ligam a um arquivo de som devem também fornecer um link para uma transcrição"
     },
     "description": {
       "de": "Alle  \"area\"-Elemente mit einer Verknüpfung Audio-Datei sollten eine Verknüpfung zu einem Transkript haben.",
@@ -4914,7 +4914,6 @@
       "pt-br": "Todos os elementos \"input\" devem ter um elemento \"label\" correspondente"
     },
     "description": {
-
       "de": "Alle <code>input</code>-Elemente sollten ein dazugehöriges <code>label</code>-Element haben. Bildschirmleseprogramme haben oftmals eine Formular-Modus, in dem nur Labels vorgelesen werden.",
       "en": "All <code>input</code> elements should have a corresponding <code>label</code> element. Screen readers often enter a \"form mode\" where only label text is read aloud to the user",
       "nl": "Alle <code>input</code>-elementen moeten een bijbehorend <code>label</code>-element hebben. Schermlezers maken vaak gebruik van een \"formuliereninstelling\" waarbij alleen de tekst van de labels hardop aan de gebruiker wordt voorgelezen.",
@@ -5452,7 +5451,7 @@
       "de": "Wenn ein <code>legend</code>-Element in einem Fieldset verwendet wird, sollte das <code>legend</code>-Element keine Platzhalter enthalten.",
       "en": "If a <code>legend</code> element is used in a fieldset, the <code>legend</code> should not contain useless placeholder text like \"form\" or \"field\".",
       "nl": "Als een <code>legend</code>-element wordt gebruikt in een fieldset, moet de <code>legend</code> geen placeholdertekst bevatten zoals \"form\" of \"field\".",
-      "pt-br":"Se um elemento <code> legenda </code> for usado em um fieldset, a <code> legenda </code> não deve conter texto reservado inútil como \"form\" ou \"field\"."
+      "pt-br": "Se um elemento <code> legenda </code> for usado em um fieldset, a <code> legenda </code> não deve conter texto reservado inútil como \"form\" ou \"field\"."
     },
     "guidelines": {
       "wcag": {

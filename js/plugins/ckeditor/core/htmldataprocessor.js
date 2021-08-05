@@ -1,9 +1,11 @@
 /**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 ( function() {
+	var removeReservedKeywords;
+
 	/**
 	 * Represents an HTML data processor, which is responsible for translating and
 	 * transforming the editor data on input and output.
@@ -52,9 +54,9 @@
 				data = evtData.dataValue,
 				fixBodyTag;
 
-			// Before we start protecting markup, make sure there's no externally injected <cke:encoded> elements. Only
-			// HTML processor can use this tag, any external injections should discarded.
-			data = data.replace( reservedElementsRegex, '' );
+			// Before we start protecting markup, make sure there are no externally injected
+			// protection keywords.
+			data = removeReservedKeywords( data );
 
 			// The source data is already HTML, but we need to clean
 			// it up and apply the filter.
@@ -212,7 +214,7 @@
 		 * This method fires the {@link CKEDITOR.editor#toHtml} event which makes it possible
 		 * to hook into the process at various stages.
 		 *
-		 * **Note:** Since CKEditor 4.3 the signature of this method changed and all options
+		 * **Note:** Since CKEditor 4.3.0 the signature of this method changed and all options
 		 * are now grouped in one `options` object. Previously `context`, `fixForBody` and `dontFilter`
 		 * were passed separately.
 		 *
@@ -245,7 +247,7 @@
 				enterMode = options.enterMode;
 				protectedWhitespaces = options.protectedWhitespaces;
 			}
-			// Backward compatibility. Since CKEDITOR 4.3 every option was a separate argument.
+			// Backward compatibility. Since CKEDITOR 4.3.0 every option was a separate argument.
 			else {
 				context = options;
 			}
@@ -801,8 +803,7 @@
 		// Note: we use lazy star '*?' to prevent eating everything up to the last occurrence of </style> or </textarea>.
 	var protectElementsRegex = /(?:<style(?=[ >])[^>]*>[\s\S]*?<\/style>)|(?:<(:?link|meta|base)[^>]*>)/gi,
 		protectTextareaRegex = /(<textarea(?=[ >])[^>]*>)([\s\S]*?)(?:<\/textarea>)/gi,
-		encodedElementsRegex = /<cke:encoded>([^<]*)<\/cke:encoded>/gi,
-		reservedElementsRegex = createReservedElementsRegex();
+		encodedElementsRegex = /<cke:encoded>([^<]*)<\/cke:encoded>/gi;
 
 		// Element name should be followed by space or closing angle bracket '>' to not protect custom tags (#988).
 	var protectElementNamesRegex = /(<\/?)((?:object|embed|param|html|body|head|title)([\s][^>]*)?>)/gi,
@@ -863,72 +864,6 @@
 				encodeURIComponent( match ).replace( /--/g, '%2D%2D' ) +
 				'-->';
 		} );
-	}
-
-	// Produces regex matching reserved `cke:encoded` element for valid HTML symbol codes.
-	// Matches `cke:encoded` element in hexadecimal, HTML-code, or HTML-entity.
-	function createReservedElementsRegex() {
-		return new RegExp( '(' +
-			// Create closed element regex i.e `<cke:encoded>xxx</cke:encoded>`.
-			createEncodedRegex( '<cke:encoded>' ) +
-			'(.*?)' +
-			createEncodedRegex( '</cke:encoded>' ) +
-			')|(' +
-			// Create unclosed element regex i.e `<cke:encoded>xxx` or `xxx</cke:encoded>` to make sure that
-			// element won't be closed by HTML parser and matched by `unprotectElements` function.
-			createEncodedRegex( '<' ) +
-			createEncodedRegex( '/' ) + '?' +
-			createEncodedRegex( 'cke:encoded>' ) +
-			')', 'gi' );
-	}
-
-	function createEncodedRegex( str ) {
-		return CKEDITOR.tools.array.reduce( str.split( '' ), function( cur, character ) {
-			// Produce case insensitive regex. `i` flag is not enough thus code entities differs
-			// depending on case sensitivity.
-			var lowerCase = character.toLowerCase(),
-				upperCase = character.toUpperCase(),
-				regex = createCharacterEncodedRegex( lowerCase );
-
-			if ( lowerCase !== upperCase ) {
-				regex += '|' + createCharacterEncodedRegex( upperCase );
-			}
-
-			cur += '(' + regex + ')';
-
-			return cur;
-		}, '' );
-	}
-
-	function createCharacterEncodedRegex( character ) {
-		var map = getCharRegexMap( character ),
-			charRegex = character;
-
-		for ( var code in map ) {
-			if ( map[ code ] ) {
-				charRegex += '|' + map[ code ];
-			}
-		}
-
-		return charRegex;
-	}
-
-	function getCharRegexMap( character ) {
-		var entities = {
-				'<': '&lt;',
-				'>': '&gt;',
-				':': '&colon;'
-			},
-			charCode = character.charCodeAt( 0 ),
-			hex = charCode.toString( 16 );
-
-		return {
-			// `;` is optional and HTML parser is able to recognize codes without it.
-			htmlCode: '&#' + charCode + ';?',
-			// Hexadecimal value is valid despite leading zero padding e.g. `&#x0065` === `&#x65`.
-			hex: '&#x0*' + hex + ';?',
-			entity: entities[ character ]
-		};
 	}
 
 	// Replace all "on\w{3,}" strings which are not:
@@ -1001,7 +936,8 @@
 
 		// Different protection pattern is used for those that
 		// live in attributes to avoid from being HTML encoded.
-		// Why so serious? See https://dev.ckeditor.com/ticket/9205, https://dev.ckeditor.com/ticket/8216, https://dev.ckeditor.com/ticket/7805, https://dev.ckeditor.com/ticket/11754, https://dev.ckeditor.com/ticket/11846.
+		// Why so serious? See https://dev.ckeditor.com/ticket/9205, https://dev.ckeditor.com/ticket/8216, https://dev.ckeditor.com/ticket/7805,
+		// https://dev.ckeditor.com/ticket/11754, https://dev.ckeditor.com/ticket/11846.
 		data = data.replace( /<\w+(?:\s+(?:(?:[^\s=>]+\s*=\s*(?:[^'"\s>]+|'[^']*'|"[^"]*"))|[^\s=\/>]+))+\s*\/?>/g, function( match ) {
 			return match.replace( /<!--\{cke_protected\}([^>]*)-->/g, function( match, data ) {
 				store[ store.id ] = decodeURIComponent( data );
@@ -1026,6 +962,93 @@
 			root.add( fixBodyElement );
 		}
 	}
+
+	// Removes reserved htmldataprocessor keywords ensuring that they are only used internally.
+	// This function produces very complicated regex code. Using IIFE ensures that the regex
+	// is build only once for this module.
+	removeReservedKeywords = ( function() {
+		var encodedKeywordRegex = createEncodedKeywordRegex(),
+			sourceKeywordRegex = createSourceKeywordRegex();
+
+		return function( data ) {
+			return data.replace( encodedKeywordRegex, '' )
+				.replace( sourceKeywordRegex, '' );
+		};
+
+		// Produces regex matching `cke:encoded` element.
+		function createEncodedKeywordRegex() {
+			return new RegExp( '(' +
+				// Create closed element regex i.e `<cke:encoded>xxx</cke:encoded>`.
+				createEncodedRegex( '<cke:encoded>' ) +
+				'(.*?)' +
+				createEncodedRegex( '</cke:encoded>' ) +
+				')|(' +
+				// Create unclosed element regex i.e `<cke:encoded>xxx` or `xxx</cke:encoded>` to make sure that
+				// element won't be closed by HTML parser and matched by `unprotectElements` function.
+				createEncodedRegex( '<' ) +
+				createEncodedRegex( '/' ) + '?' +
+				createEncodedRegex( 'cke:encoded>' ) +
+				')', 'gi' );
+		}
+
+		// Produces regex matching `{cke_protected}` and `{cke_protected_id}` keywords.
+		function createSourceKeywordRegex() {
+			return new RegExp( '((' +
+				createEncodedRegex( '{cke_protected' ) +
+				')(_[0-9]*)?' +
+				createEncodedRegex( '}' ) +
+				')' , 'gi' );
+		}
+
+		function createEncodedRegex( str ) {
+			return CKEDITOR.tools.array.reduce( str.split( '' ), function( cur, character ) {
+				// Produce case insensitive regex. `i` flag is not enough thus code entities differs
+				// depending on case sensitivity.
+				var lowerCase = character.toLowerCase(),
+					upperCase = character.toUpperCase(),
+					regex = createCharacterEncodedRegex( lowerCase );
+
+				if ( lowerCase !== upperCase ) {
+					regex += '|' + createCharacterEncodedRegex( upperCase );
+				}
+
+				cur += '(' + regex + ')';
+
+				return cur;
+			}, '' );
+		}
+
+		function createCharacterEncodedRegex( character ) {
+			var map = getCharRegexMap( character ),
+				charRegex = character;
+
+			for ( var code in map ) {
+				if ( map[ code ] ) {
+					charRegex += '|' + map[ code ];
+				}
+			}
+
+			return charRegex;
+		}
+
+		function getCharRegexMap( character ) {
+			var entities = {
+				'<': '&lt;',
+				'>': '&gt;',
+				':': '&colon;'
+			},
+				charCode = character.charCodeAt( 0 ),
+				hex = charCode.toString( 16 );
+
+			return {
+				// `;` is optional and HTML parser is able to recognize codes without it.
+				htmlCode: '&#' + charCode + ';?',
+				// Hexadecimal value is valid despite leading zero padding e.g. `&#x0065` === `&#x65`.
+				hex: '&#x0*' + hex + ';?',
+				entity: entities[ character ]
+			};
+		}
+	} )();
 } )();
 
 /**
@@ -1043,7 +1066,7 @@
  *				return false;
  *		};
  *
- * @since 3.5
+ * @since 3.5.0
  * @cfg {Boolean/Function} [fillEmptyBlocks=true]
  * @member CKEDITOR.config
  */
@@ -1073,7 +1096,7 @@
  *			evt.data.dataValue; // -> CKEDITOR.htmlParser.fragment instance
  *		}, null, null, 7 );
  *
- * @since 4.1
+ * @since 4.1.0
  * @event toHtml
  * @member CKEDITOR.editor
  * @param {CKEDITOR.editor} editor This editor instance.
@@ -1113,7 +1136,7 @@
  *			evt.data.dataValue; // -> CKEDITOR.htmlParser.fragment instance
  *		}, null, null, 12 );
  *
- * @since 4.1
+ * @since 4.1.0
  * @event toDataFormat
  * @member CKEDITOR.editor
  * @param {CKEDITOR.editor} editor This editor instance.

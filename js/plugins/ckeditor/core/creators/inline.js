@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -12,7 +12,8 @@
 	 * allowed element names.
 	 *
 	 * **Note:** If the DOM element for which inline editing is being enabled does not have
-	 * the `contenteditable` attribute set to `true`, the editor will start in read-only mode.
+	 * the `contenteditable` attribute set to `true` or the {@link CKEDITOR.config#readOnly `config.readOnly`}
+	 * configuration option is set to `false`, the editor will start in read-only mode.
 	 *
 	 *		<div contenteditable="true" id="content">...</div>
 	 *		...
@@ -28,14 +29,11 @@
 	 * @returns {CKEDITOR.editor} The editor instance created.
 	 */
 	CKEDITOR.inline = function( element, instanceConfig ) {
-		if ( !CKEDITOR.env.isCompatible )
+		element = CKEDITOR.editor._getEditorElement( element );
+
+		if ( !element ) {
 			return null;
-
-		element = CKEDITOR.dom.element.get( element );
-
-		// Avoid multiple inline editor instances on the same element.
-		if ( element.getEditor() )
-			throw 'The editor instance "' + element.getEditor().name + '" is already attached to the provided element.';
+		}
 
 		var editor = new CKEDITOR.editor( instanceConfig, element, CKEDITOR.ELEMENT_MODE_INLINE ),
 			textarea = element.is( 'textarea' ) ? element : null;
@@ -57,6 +55,12 @@
 			if ( textarea.$.form )
 				editor._attachToForm();
 		} else {
+			// If editor element does not have contenteditable attribute, but config.readOnly
+			// is explicitly set to false, set the contentEditable property to true (#3866).
+			if ( instanceConfig && typeof instanceConfig.readOnly !== 'undefined' && !instanceConfig.readOnly ) {
+				element.setAttribute( 'contenteditable', 'true' );
+			}
+
 			// Initial editor data is simply loaded from the page element content to make
 			// data retrieval possible immediately after the editor creation.
 			editor.setData( element.getHtml(), null, true );
@@ -96,11 +100,16 @@
 
 		// Handle editor destroying.
 		editor.on( 'destroy', function() {
+			var container = editor.container;
 			// Remove container from DOM if inline-textarea editor.
 			// Show <textarea> back again.
+			// Editor can be destroyed before container is created (#3115).
+			if ( textarea && container ) {
+				container.clearCustomData();
+				container.remove();
+			}
+
 			if ( textarea ) {
-				editor.container.clearCustomData();
-				editor.container.remove();
 				textarea.show();
 			}
 
@@ -113,12 +122,12 @@
 	};
 
 	/**
-	 * Calls {@link CKEDITOR#inline} for all page elements with
-	 * the `contenteditable` attribute set to `true`.
-	 *
+	 * Calls the {@link CKEDITOR#inline `CKEDITOR.inline()`} method for all page elements with the `contenteditable` attribute set to
+	 * `true` that are allowed in the {@link `CKEDITOR.dtd#$editable`} object.
 	 */
 	CKEDITOR.inlineAll = function() {
-		var el, data;
+		var el,
+			data;
 
 		for ( var name in CKEDITOR.dtd.$editable ) {
 			var elements = CKEDITOR.document.getElementsByTag( name );
@@ -126,7 +135,8 @@
 			for ( var i = 0, len = elements.count(); i < len; i++ ) {
 				el = elements.getItem( i );
 
-				if ( el.getAttribute( 'contenteditable' ) == 'true' ) {
+				// Check whether an element is editable and if an editor attached is not to it already (#4293).
+				if ( el.getAttribute( 'contenteditable' ) == 'true' && !el.getEditor() ) {
 					// Fire the "inline" event, making it possible to customize
 					// the instance settings and eventually cancel the creation.
 
@@ -135,8 +145,9 @@
 						config: {}
 					};
 
-					if ( CKEDITOR.fire( 'inline', data ) !== false )
+					if ( CKEDITOR.fire( 'inline', data ) !== false ) {
 						CKEDITOR.inline( el, data.config );
+					}
 				}
 			}
 		}

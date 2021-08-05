@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -24,38 +24,54 @@ CKEDITOR.plugins.colordialog = {
 		 * @param [scope] The scope in which the callback will be bound.
 		 * @member CKEDITOR.editor
 		 */
-		editor.getColorFromDialog = function( callback, scope ) {
+		editor.getColorFromDialog = function( callback, scope, options ) {
 			var onClose,
+				onShow,
 				releaseHandlers,
 				bindToDialog;
 
 			onClose = function( evt ) {
 				releaseHandlers( this );
 				var color = evt.name == 'ok' ? this.getValueOf( 'picker', 'selectedColor' ) : null;
+
+				if ( color && !CKEDITOR.tools._isValidColorFormat( color ) ) {
+					color = null;
+				}
+
 				// Adding `#` character to hexadecimal 3 or 6 digit numbers to have proper color value (#565).
 				if ( /^[0-9a-f]{3}([0-9a-f]{3})?$/i.test( color ) ) {
 					color = '#' + color;
 				}
+
 				callback.call( scope, color );
 			};
+			onShow = function( evt ) {
+				if ( options ) {
+					evt.data = options;
+				}
+			};
+
 			releaseHandlers = function( dialog ) {
 				dialog.removeListener( 'ok', onClose );
 				dialog.removeListener( 'cancel', onClose );
+				dialog.removeListener( 'show', onShow );
 			};
 			bindToDialog = function( dialog ) {
 				dialog.on( 'ok', onClose );
 				dialog.on( 'cancel', onClose );
+				// Priority is set here to pass the data before actually displaying the dialog.
+				dialog.on( 'show', onShow, null, null, 5 );
 			};
 
 			editor.execCommand( 'colordialog' );
 
-			if ( editor._.storedDialogs && editor._.storedDialogs.colordialog )
+			if ( editor._.storedDialogs && editor._.storedDialogs.colordialog ) {
 				bindToDialog( editor._.storedDialogs.colordialog );
-			else {
+			} else {
 				CKEDITOR.on( 'dialogDefinition', function( e ) {
-					if ( e.data.name != 'colordialog' )
+					if ( e.data.name != 'colordialog' ) {
 						return;
-
+					}
 					var definition = e.data.definition;
 
 					e.removeListener();
@@ -64,15 +80,14 @@ CKEDITOR.plugins.colordialog = {
 							return function() {
 								bindToDialog( this );
 								definition.onLoad = orginal;
-								if ( typeof orginal == 'function' )
+								if ( typeof orginal == 'function' ) {
 									orginal.call( this );
+								}
 							};
 						} );
 				} );
 			}
 		};
-
-
 	}
 };
 

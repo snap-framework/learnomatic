@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -10,6 +10,8 @@
 
 /**
  * Manages plugins registration and loading.
+ *
+ * **Note** This object is an instance of {@link CKEDITOR.resourceManager}.
  *
  * @class
  * @extends CKEDITOR.resourceManager
@@ -47,6 +49,12 @@ CKEDITOR.plugins.load = CKEDITOR.tools.override( CKEDITOR.plugins.load, function
 										'.png' );
 								}
 							}
+
+							// Plugin is supported by default (#2692).
+							plugin.isSupportedEnvironment = plugin.isSupportedEnvironment || function() {
+								return true;
+							};
+
 							initialized[ pluginName ] = 1;
 						}
 
