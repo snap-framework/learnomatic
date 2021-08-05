@@ -12,8 +12,11 @@ define([
 	'./../session/traffic-controller',
 	'./../editor/ui/ui-manager',
 	'./../editor/ui/LOM_ui_buttons',
+
+	'./../lbx/lbx-controller',
+	'./../version/version-controller',
 	'magnific'
-], function ($, LomSettings, LOMLabels, Session, UserManager, CourseManager, TeamManager, ProgressManager, SocialManager, RolesManager, TrafficController, UImanager, LOMButtons) {
+], function ($, LomSettings, LOMLabels, Session, UserManager, CourseManager, TeamManager, ProgressManager, SocialManager, RolesManager, TrafficController, UImanager, LOMButtons, LbxController, VersionController) {
 	'use strict';
 
 	function command() {
@@ -22,6 +25,13 @@ define([
 		this.relPath = "";
 		this.labels = LOMLabels;
 		this.settings = LomSettings;
+
+
+		this.lbxController = new LbxController({
+			root: this
+		});
+
+		this.version = new VersionController({ root: this })
 
 		this.ui = new UImanager({
 			parent: this,

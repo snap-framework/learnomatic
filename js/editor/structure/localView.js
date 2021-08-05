@@ -145,10 +145,10 @@ define([
 			//----- DELETE 
 			//disable the delete if it's the only entry (except m98)
 			if (
-				level === 0
-				&& (
-					this.master.subs.length === 1
-					|| (this.master.subs.length === 2 && this.master.subs[1].sPosition === "m98")
+				level === 0 &&
+				(
+					this.master.subs.length === 1 ||
+					(this.master.subs.length === 2 && this.master.subs[1].sPosition === "m98")
 				)
 			) {
 				$("#LOM-structure0").find(".ico-SNAP-delete").eq(0).attr("disabled", true);
@@ -244,25 +244,24 @@ define([
 		/*---------------------------------------------------------------------------------------------
 				-------------------------LIGHTBOX
 		---------------------------------------------------------------------------------------------*/
-		loadLbx: function (params) {
-			var $target = $("#" + params.lbx.targetId);
-			var that = this;
+		loadLbx: function ($lbx, params) {
+			var that = params.obj;
 			switch (params.lbx.action) {
 				case "addpage":
-					this.loadAddElementScreen(params);
+					that.loadAddElementScreen($lbx, params);
 
 					break;
 				case "addfolder":
-					this.loadAddElementScreen(params);
+					that.loadAddElementScreen($lbx, params);
 
 					break;
 				case "editpage":
-					$target.load("../../templates/LOM-Elements/structure_newpage_" + Utils.lang + ".html", function () {
+					$lbx.load("../../templates/LOM-Elements/structure_newpage_" + Utils.lang + ".html", function () {
 						that.editPageScreen(params);
 					});
 					break;
 				case "editfolder":
-					$target.load("../../templates/LOM-Elements/structure_newfolder_" + Utils.lang + ".html", function () {
+					$lbx.load("../../templates/LOM-Elements/structure_newfolder_" + Utils.lang + ".html", function () {
 						that.editFolderScreen(params);
 					});
 					break;
@@ -274,29 +273,30 @@ define([
 		addPageLbx: function () {
 			var that = this;
 			var params = {
+				title: (Utils.lang === "en") ? "New Page" : "Nouvelle page",
+				obj: this,
+				action: this.loadLbx,
 				lbx: {
-					title: (Utils.lang === "en") ? "New Page" : "Nouvelle page",
 					action: "addpage",
-					targetId: "custom_lbx",
-					saveBtn: (Utils.lang === "en") ? "Save" : "Sauvegarder",
-					obj: that
+					saveBtn: (Utils.lang === "en") ? "Save" : "Sauvegarder"
 				}
 			};
-			that.editor.popLightbox(params);
+			that.editor.lbxController.pop(params);
 
 		},
 		addFolderLbx: function () {
 			var that = this;
 			var params = {
+
+				title: (Utils.lang === "en") ? "New Folder" : "Nouveau dossier",
+				obj: this,
+				action: this.loadLbx,
 				lbx: {
-					title: (Utils.lang === "en") ? "New Folder" : "Nouveau dossier",
 					action: "addfolder",
-					targetId: "custom_lbx",
-					saveBtn: (Utils.lang === "en") ? "Save" : "Sauvegarder",
-					obj: that
+					saveBtn: (Utils.lang === "en") ? "Save" : "Sauvegarder"
 				}
 			};
-			that.editor.popLightbox(params);
+			that.editor.lbxController.pop(params);
 		},
 		editLbx: function (action, obj) {
 			var sPosition = $(obj).parent().parent().attr("data-id");
@@ -304,35 +304,35 @@ define([
 			var sub = ObjSubUtils.findSub(aPosition);
 
 			var that = this;
-			var params = {
+			that.editor.lbxController.pop({
+
+				title: (Utils.lang === "en") ? "Edit Structure Element" : "Édition d'un élément de structure",
+				obj: this,
+				action: this.loadLbx,
 				lbx: {
-					title: (Utils.lang === "en") ? "Edit Structure Element" : "Édition d'un élément de structure",
 					action: action,
-					targetId: "custom_lbx",
-					saveBtn: "save",
-					obj: that,
+					saveBtn: (Utils.lang === "en") ? "Save" : "Sauvegarder",
 					sub: sub
 				}
-			};
-			that.editor.popLightbox(params);
+			});
+
 		},
 		/*---------------------------------------------------------------------------------------------
 				------------------------- PAGE/FOLDER SCREENS
 		---------------------------------------------------------------------------------------------*/
 
-		loadAddElementScreen: function (params) {
-			var $target = $("#" + params.lbx.targetId);
+		loadAddElementScreen: function ($lbx, params) {
 			var that = this;
-			$(".modal-title").text(params.lbx.title);
+
 
 			if (params.lbx.action === "addpage") {
 				//Load screen New Page
-				$target.load("../../templates/LOM-Elements/structure_newpage_" + Utils.lang + ".html", function () {
+				$lbx.load(this.editor.relPath + "templates/LOM-Elements/structure_newpage_" + Utils.lang + ".html", function () {
 					that.newPageScreen(params);
 				});
 			} else {
 				//Load screen New FOLDER
-				$target.load("../../templates/LOM-Elements/structure_newfolder_" + Utils.lang + ".html", function () {
+				$lbx.load(this.editor.relPath + "templates/LOM-Elements/structure_newfolder_" + Utils.lang + ".html", function () {
 					that.newFolderScreen(params);
 				});
 			}
@@ -368,8 +368,7 @@ define([
 				if (sub.parent && sub.parent.sPosition == folderList[i][1].sPosition) {
 					selected = folderList[i][1].sPosition;
 					noneSelected = false;
-				}
-				else if (noneSelected) {
+				} else if (noneSelected) {
 					selected = "root";
 				}
 			}
@@ -383,14 +382,14 @@ define([
 			$("select#location").change(function () {
 				if ($(this).val() != selected) {
 					that.changingFolder = $(this).val();
-				}
-				else {
+				} else {
 					that.changingFolder = false;
 				}
 			});
 		},
 
-		listOfFolders: function (isFolder = false) {
+		listOfFolders: function (isFolder) {
+			isFolder = (typeof isFolder === "undefined") ? false : isFolder;
 			var list = this.master.subs;
 
 			var returnList = [];
@@ -457,8 +456,7 @@ define([
 				if (sub.parent && sub.parent.sPosition == folderList[i][1].sPosition) {
 					selected = folderList[i][1].sPosition;
 					noneSelected = false;
-				}
-				else if (noneSelected) {
+				} else if (noneSelected) {
 					selected = "root";
 				}
 			}
@@ -472,8 +470,7 @@ define([
 			$("select#location").change(function () {
 				if ($(this).val() != selected) {
 					that.changingFolder = $(this).val();
-				}
-				else {
+				} else {
 					that.changingFolder = false;
 				}
 			});
@@ -498,8 +495,7 @@ define([
 		enterPressed: function (params) {
 			if ($("#" + params.lbx.targetId).find(".ico-LOM-editpage.LOM-edit-structure").length !== 0) {
 				$("#" + params.lbx.targetId).find(".ico-LOM-editpage.LOM-edit-structure").click();
-			}
-			else if ($("#" + params.lbx.targetId).find(".ico-SNAP-save.LOM-save-structure").length !== 0) {
+			} else if ($("#" + params.lbx.targetId).find(".ico-SNAP-save.LOM-save-structure").length !== 0) {
 				$("#" + params.lbx.targetId).find(".ico-SNAP-save.LOM-save-structure").click();
 			}
 		},
@@ -514,27 +510,6 @@ define([
 				that.saveAndClose(params);
 			});
 
-
-			/*
-			//this was to prevent the popup drop when sliding over the edge... causes more problems
-			$(".LOM-newpage").mousedown(function () {
-
-				$(".mfp-content").attr("data-temp-stop", true);
-
-				$(".mfp-content").click(function (e) {
-					var temp = $(this).attr("data-temp-stop");
-					if (temp === "true") {
-						e.preventDefault();
-						e.stopPropagation();
-						e.stopImmediatePropagation();
-						$(this).attr("data-temp-stop", false);
-					} else {
-						$.magnificPopup.close();
-					}
-				});
-			});
-
-			*/
 
 		},
 
@@ -694,7 +669,7 @@ define([
 		---------------------------------------------------------------------------------------------*/
 		saveAndEdit: function (params) {
 			var newSub = this.save(params);
-			this.editor.closeLbx();
+			this.editor.lbxController.close();
 			window.fNav(newSub.sPosition);
 		},
 		saveAndClose: function (params) {
@@ -724,7 +699,7 @@ define([
 				}
 			}
 
-			this.editor.closeLbx();
+			this.editor.lbxController.close();
 		},
 		save: function (params) {
 			var title = (Utils.lang === "en") ? $("#title_en").val() : $("#title_fr").val();
@@ -746,7 +721,7 @@ define([
 				isPage = (params.lbx.action === "addpage") ? true : false;
 				sub = this.parent.addPage(newPosition, title, altTitle, isPage, keywords);
 				this.generateList(this.currentParent);
-				$("[data-id='" + sub.sPosition + "']").hide().slideDown("swing", function () { });
+				$("[data-id='" + sub.sPosition + "']").hide().slideDown("swing", function () {});
 
 				/*var currentPageNum;
 				for(var i = 0; i < this.master.flatList.length; i++){

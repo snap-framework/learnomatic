@@ -60,7 +60,6 @@ define([
 			var that = this;
 			this.$el.click(function () {
 
-				//that.modeClicked();
 				if (that.name === "structure") {
 					if (that.root.notAlone) {
 						that.root.lockMessage("course");
@@ -76,6 +75,7 @@ define([
 					}
 				}
 
+				$(window).trigger("LOM:switchMode", this);
 
 			});
 		},
@@ -191,8 +191,13 @@ define([
 					break;
 				case "pageEdit":
 				case "preview":
+					//show the page !
+					if ($('#dynamic_content').is(":hidden")) {
+						$('#dynamic_content').show();
+						$("#LOM_a11y").remove();
+						$("#cke_LOM_a11y").remove();
+					}
 					//(re)Load current page
-
 					this.master.currentSub.loadPage();
 					this.master.targetNav = this.master.currentSub.aPosition;
 					this.master.resetNav();

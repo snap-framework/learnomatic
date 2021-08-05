@@ -78,31 +78,29 @@ define([
             params.saveBtn = (Utils.lang === "en") ? "Save" : "Sauvegarder";
             return params;
         },
-        changeDefaultConfigSettings: function (params) {
-            params.$paramTarget = this.$el.find(".qs-question");
-            params.files = ["../../templates/LOM-Elements/element_config_radio_" + Utils.lang + ".html"];
 
-            return params;
+        configSettings: function () {
+            var config = this.defaultConfigSettings();
+            config.$paramTarget = this.$el.find(".qs-question");
+            config.files = ["../../templates/LOM-Elements/element_config_radio_" + Utils.lang + ".html"];
+            return config;
+
         },
-
-        initializeCustomFiles: function (params) {
-            var $lbx = $("#" + params.lbx.targetId);
+        initializeCustomFiles: function ($lbx, params) {
             var $question = params.config.$paramTarget;
             var $feedback = $question.find(".qs-feedback");
 
             if ($question.attr("data-random-answers") === "true") {
                 $lbx.find("input#random-answers-yes").attr("checked", true);
                 $lbx.find("input#random-answers-no").attr("checked", false);
-            }
-            else {
+            } else {
                 $lbx.find("input#random-answers-yes").attr("checked", false);
                 $lbx.find("input#random-answers-no").attr("checked", true);
             }
 
             if ($feedback.find(".qs-second-chance").length) {
                 $lbx.find("input#second-chance").prop("checked", true);
-            }
-            else {
+            } else {
                 $lbx.find("input#second-chance").prop("checked", false);
             }
 
@@ -143,8 +141,7 @@ define([
             this.saveBkp($bkp);
         },
 
-        submitCustomConfig: function (params) {
-            var $lbx = $("#" + params.lbx.targetId);
+        submitCustomConfig: function ($lbx, params) {
 
             var $bkp = this.getBkp();
 
@@ -181,8 +178,7 @@ define([
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 $feedback.find(".qs-second-chance").remove();
                 $bkpFeedback.find(".qs-second-chance").remove();
 

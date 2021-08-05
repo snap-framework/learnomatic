@@ -21,18 +21,21 @@ define([
 			return false;
 		},
 
-		changeDefaultConfigSettings: function (params) {
-			params.attributes = {
+
+		configSettings: function () {
+			var config = this.defaultConfigSettings();
+			config.attributes = {
 				"data-filter-view": [
 					"visible",
 					"hidden",
-					"notext"]
+					"notext"
+				]
 
-			}
+			};
 
-			return params;
+			return config;
+
 		},
-
 		initDefaultDomValues: function ($template) {
 			$template.attr("data-filter-view", "Hidden");
 			$template.find(".LOM-element[data-lom-element=\"button\"] .LOM-btn-title").html(((Utils.lang === "en") ? "See Everything" : "Voir tout"));

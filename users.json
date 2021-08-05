@@ -70,6 +70,13 @@
 			"role": "admin",
 			"team": "RIW"
 		},
+		"admin_akaur": {
+			"name": "Anoop (admin)",
+			"lastname": "Kaur",
+			"password": "",
+			"role": "admin",
+			"team": "RIW"
+		},
 		"jlevac": {
 			"name": "Julie",
 			"lastname": "Levac",
@@ -213,6 +220,13 @@
 		"rtorres": {
 			"name": "René",
 			"lastname": "Torres",
+			"password": "",
+			"role": "designer",
+			"team": "RIW"
+		},
+		"akaur": {
+			"name": "Anoop",
+			"lastname": "Kaur",
 			"password": "",
 			"role": "designer",
 			"team": "RIW"

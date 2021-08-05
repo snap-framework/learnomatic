@@ -1,0 +1,52 @@
+
+
+/* *************************************************************
+ *  REMEMBER TO CHECK THE VARS
+ * ************************************************************/
+
+
+/* *************************************************************
+ * Supermenu button bar (at the top)
+ * ************************************************************/
+ header[role="banner"]{
+    & > nav[role=navigation]#wb-sm {
+		background-color: white;
+		font-family: "Arial";
+		font-weight: bold;
+		font-size: 14px;
+		box-shadow: 1px 1px 15px -1px rgba(0, 0, 0, 0.75);
+		z-index: 1;
+		position: relative;
+
+		.container {
+			//margin: 0% 0% 0% 15%;
+
+			ul.supermenu .sm.open{
+				border: none;
+
+				li a{
+					height: 40px!important;
+					position: relative;
+					border: none;
+					border-bottom: 1px solid white;
+					padding-top: 9px;
+
+					&:before, &:after{
+						color: $blue-darker;
+					}
+				}
+			}
+		}
+	}
+ }
+
+
+
+/* *************************************************************
+ * Supermenu button dropped
+ * ************************************************************/
+
+ .supermenu>.sm-open>.sm>li>a{
+
+ }
+

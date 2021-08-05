@@ -23,8 +23,12 @@ define(function () {
             history: {
                 exports: 'History'
             },
-            "../../../../js/plugins/ckeditor/ckeditor": { "exports": "CKEDITOR" },
-            magnific: { "exports": "magnific" },
+            "../../../../js/plugins/ckeditor/ckeditor": {
+                "exports": "CKEDITOR"
+            },
+            magnific: {
+                "exports": "magnific"
+            },
             // "plugins/nestable/jquery.nestable": { "exports": "NESTABLE" }
         },
         //shorten path for easier usage
@@ -52,7 +56,8 @@ define(function () {
 
             labels: ['./../courses/_default/core/settings/localization/labels'],
             'settings-core': './../courses/_default/core/settings/settings-core',
-            'settings-general': './../courses/_default/core/settings/settings-general',
+            'settings-general': './../courses/_default/settings/settings-general',
+            'settings-presets': './../courses/_default/core/settings/settings-presets',
             settingsOverride: './../courses/_default/core/helpers/settingsOveride',
             utils: './../courses/_default/core/js/helpers/utils',
             logger: './../courses/_default/core/helpers/logger',

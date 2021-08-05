@@ -25,8 +25,7 @@ define([
 		setLabels: function () {
 			if (this.parent.type == "faq") {
 				this.typeName = (Utils.lang === "en") ? "Filter" : "Filtre";
-			}
-			else {
+			} else {
 				this.typeName = this.labels.type.button;
 			}
 			this.setLabelsDone = true;
@@ -39,21 +38,24 @@ define([
 			return $template;
 		},
 
-		changeDefaultConfigSettings: function (params) {
 
-			params.files = [
+
+		changeDefaultConfigSettings: function () {
+			var config = this.defaultConfigSettings();
+			config.files = [
 				"../../templates/LOM-Elements/config_action_" + Utils.lang + ".html",
 				"../../templates/LOM-Elements/config_iconpack_" + Utils.lang + ".html"
 			];
-			return params;
+
+			return config;
+
 		},
 
-
-		loadConfigCustom: function (params) {
+		loadConfigCustom: function ($lbx, params) {
 			var $bkp = this.getBkp();
-			//$("#" + params.lbx.targetId).append("<div id='LOM-img-gallery'></div>");
+			//$lbx.append("<div id='LOM-img-gallery'></div>");
 			var titleText = $bkp.find("#" + this.id).find("button.LOM-btn").text();
-			$("#" + params.lbx.targetId).prepend("<label>" + ((Utils.lang === "en") ? "Label" : "Libellé ") + ": <input type='text' class='btn-title-text' value='" + titleText + "'></label>");
+			$lbx.prepend("<label>" + ((Utils.lang === "en") ? "Label" : "Libellé ") + ": <input type='text' class='btn-title-text' value=\"" + titleText + "\"></label>");
 
 		},
 		initDom: function () {
@@ -71,11 +73,11 @@ define([
 			return params;
 		},
 		//initialize the "swap icon" sub config file
-		initializeCustomFiles: function (params) {
+		initializeCustomFiles: function ($lbx, params) {
 			var that = this;
 			//sorry about that... WB did it.
 			var script = "masterStructure.editor.findElement('" + this.id + "').swapIcons(this);";
-			var $btns = $("#" + params.lbx.targetId).find(".config-iconpack").find(".snap-md");
+			var $btns = $lbx.find(".config-iconpack").find(".snap-md");
 			var currentClass;
 
 			var thisSize = this.$el.find("button.LOM-btn").attr("class").match(/\w*snap-\w*/)[0];
@@ -157,11 +159,11 @@ define([
 			$(".config-iconpack").find("button").removeClass("snap-sm").removeClass("snap-md").removeClass("snap-lg").addClass(newClass);
 
 		},
-		submitCustomConfig: function (params) {
+		submitCustomConfig: function ($lbx, params) {
 
 			var $bkp = this.getBkp();
 
-			var title = $("#" + params.lbx.targetId).find(".btn-title-text").val();
+			var title = $lbx.find(".btn-title-text").val();
 			$bkp.find("#" + this.id).find("button.LOM-btn").children("span.LOM-btn-title").text(title)
 			this.$el.find("button.LOM-btn").children("span.LOM-btn-title").text(title);
 			this.updateBkp($bkp);

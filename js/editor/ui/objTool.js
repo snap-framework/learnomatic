@@ -71,7 +71,6 @@ define([
 				-------------------------actions
 		---------------------------------------------------------------------------------------------*/
 		actionDispatcher: function () {
-
 			switch (this.name) {
 				case "deletepage":
 					if (!this.root.locked) {
@@ -83,6 +82,9 @@ define([
 					break;
 				case "savetemplate":
 					this.root.saveTemplate();
+					break;
+				case "a11y":
+					this.root.a11y.startA11yCheck();
 					break;
 				case "searchreplace":
 
@@ -99,10 +101,14 @@ define([
 				case "localview":
 					this.root.structure.initLocalView();
 					break;
+				case "colors":
+					//this.root.themes.initVars();
+					this.root.themes.build();
+					break;
 				case "layout":
 
 					if (!this.root.locked) {
-						this.root.popLayoutPicker();
+						this.root.layout.popPicker();
 					} else {
 						this.root.lockMessage();
 					}

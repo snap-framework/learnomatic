@@ -310,7 +310,8 @@ define([
 				name: course.name,
 				code: course.code,
 				teams: course.teams,
-				users: course.users
+				users: course.users,
+				version: course.version
 			});
 
 			this.courses[course.code] = newCourse;

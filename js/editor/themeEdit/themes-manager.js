@@ -6,9 +6,10 @@ define([
 	'./../../../courses/_default/core/settings/settings-core',
 	'utils',
 	'modules/BaseModule',
-	'./../themeEdit/objTheme'
+	'./../themeEdit/objTheme',
+	'./vars/vars-manager'
 
-], function ($, labels, CoreSettings, GeneralSettings, OriginalSettings, Utils, BaseModule, Theme) {
+], function ($, labels, CoreSettings, GeneralSettings, OriginalSettings, Utils, BaseModule, Theme, VarsManager) {
 	'use strict';
 
 	return BaseModule.extend({
@@ -28,37 +29,103 @@ define([
 			this.$template = null;
 			this.labels = options.labels;
 
+			this.locked = null;
+
 			this.initTemplate();
 
+			this.varsManager = new VarsManager({
+				parent: this
+			})
+
+			this.varsManager.init();
 
 		},
 		/*---------------------------------------------------------------------------------------------
 				-------------------------DOM INIT
 		---------------------------------------------------------------------------------------------*/
 		setDom: function () {
-
 			var that = this;
-			$(CoreSettings.contentContainer).html(this.$template.html()).hide().fadeIn();
-			// ----- Set General Themes
-			for (var i = 0; i < this.themes.length; i++) {
-				this.themes[i].generateSelectButton($("#themes-list"));
+			//start filling the page
+			$(CoreSettings.contentContainer).html("<h1>Theme Editor</h1>")
+				.append("<p>Some explanation as to whats going on</p>")
+				.append("<div class='wb-tabs wet-boew-tabbedinterface tabs-style-2 ignore-session'><div class='tabpanels' id='LOM-theme-tabs'></div></div>");
+			var $tabs = $("#LOM-theme-tabs");
+			$tabs
+				.append("<details><summary><span class='LOM-theme-tab LOM-tab-themepick'>Theme Picker</span></summary><div id='themes-list'></div></details>")
+			//.append("<details><summary><span class='LOM-theme-tab LOM-tab-colormanager'>Color Manager</span></summary><div id='LOM-color-vars'></div></details>")
 
-			}
-
-
+			var $themePicker = $("#themes-list");
+			$themePicker
+				.append("<p>First Step, choose a Theme: ")
+				.append(this.$template.html()); //.hide().fadeIn();				
+			initWbAdd(".wb-tabs");
+			// once the tabs are good to go.
+			var handle = window.setInterval(function () {
+				//make sure it's inited
+				if ($tabs.parent().hasClass("wb-tabs-inited")) {
+					//destroy the interval
+					clearInterval(handle);
+					//start the vars manager
+					that.varsManager.setDom($("#LOM-color-vars"));
+					// ----- Set General Themes
+					for (var i = 0; i < that.themes.length; i++) {
+						that.themes[i].generateSelectButton($("#themes-list"));
+					}
+				}
+			}, 100);
 		},
 
-		connectDom: function () {
+
+		connectDom: function () {},
+		/* ************************************************************
+		 * TRANSFER THEME
+		 * take the new theme and transfer it to the right folder
+		 * calls vars manager init
+		 * ************************************************************/
+		transferTheme: function (theme) {
+			var that = this;
+			var folder = "courses/" + this.editor.courseFolder;
+			$.post('../../editor.php', {
+				action: "transfertheme",
+				filename: 'templates/LOM-themes/' + theme.name,
+				course: folder
+			}, function (data) {
+				//parse the jSON
+				if (data !== "false" && typeof data !== "undefined" && data !== "") {
+					//initialize the vars in the color manager
+					that.varsManager.init();
+
+				}
+
+			}).fail(function () {
+				alert("Posting failed while initializing theme.");
+			});
+
 		},
-
-
 
 		stepTwo: function (obj) {
-			//$("#themes-list").find("button").removeClass("btn-selected").removeClass("snap-lg").addClass("snap-md");
-			$("#themes-list").find("button").removeClass("btn-selected");
-			$(obj).addClass("btn-selected");
-			$("#LOM-theme-customize").show().focus().attr("open", "true");
-			$("#LOM-theme-picker").removeAttr('open');
+			//enable 
+
+
+		},
+
+
+
+
+
+		build: function () {
+			this.varsManager.courseScheme.save();
+			this.editor.lbxController.pop({
+				title: "Theme Successfuly Built",
+				obj: this,
+				action: this.afterpopBuild
+			});
+
+		},
+
+		afterpopBuild: function ($pop, params) {
+
+			$pop.html("<p>For now, the Theme compiler isn't up yet. get your friendly Dev to compile it!");
 		},
 
 		/*---------------------------------------------------------------------------------------------
@@ -77,7 +144,6 @@ define([
 					return true;
 				},
 				success: function (tpl) {
-
 					that.$template = $(tpl);
 					that.initThemes();
 				}
@@ -85,10 +151,13 @@ define([
 		},
 		initThemes: function () {
 			var that = this;
-			$.post('../../editor.php', { action: "readfolder", filename: 'templates/LOM-themes/', regex: "/^[a-zA-Z]/" }, function (data) {
+			$.post('../../editor.php', {
+				action: "readfolder",
+				filename: 'templates/LOM-themes/',
+				regex: "/^[a-zA-Z]/"
+			}, function (data) {
 				//parse the jSON
 				if (data !== "false" && typeof data !== "undefined" && data !== "") {
-					//console.log(data.charAt(data.length-1));
 					if (data.charAt(data.length - 1) === ",") {
 						data = data = data.slice(0, -1);
 					}
@@ -99,13 +168,8 @@ define([
 							name: themesList[i]
 						});
 					}
-					//this.themes[this.themes.length]=data.split(",");
-
-
 
 				}
-
-
 
 			}).fail(function () {
 				alert("Posting failed while initializing theme.");
@@ -113,4 +177,3 @@ define([
 		}
 	});
 });
-

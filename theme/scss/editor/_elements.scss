@@ -212,7 +212,9 @@ html.LOM-pageEdit-active{
 	border-color:$element-border;
 	
 	visibility:hidden;
-	
+	#folder-view-container &{
+		margin-left: -30px;
+	}
 	.LOM-pageEdit-active .LOM-frame>.LOM-element>&{border-style:solid;}
 	.LOM-pageEdit-active .LOM-frame>.LOM-element .LOM-element>&{border-style:dotted;}
 

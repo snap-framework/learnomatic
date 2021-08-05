@@ -60,21 +60,21 @@ define([
             switch (this.subtype) {
                 case "exam":
                     this.typeName = this.labels.type.exam;
-                    this.labels.yougot = (this.lang === "en")
-                        ? "You have successfully answered"
-                        : "Vous avez obtenu";
-                    this.labels.begin = (this.lang === "en")
-                        ? "Begin Exam"
-                        : "Débuter l'examen";
+                    this.labels.yougot = (this.lang === "en") ?
+                        "You have successfully answered" :
+                        "Vous avez obtenu";
+                    this.labels.begin = (this.lang === "en") ?
+                        "Begin Exam" :
+                        "Débuter l'examen";
                     break;
                 default:
 
                     this.typeName = this.labels.type.activity;
             }
 
-            this.labels.notFirstTime = (this.lang === "en")
-                ? "You have successfully answered"
-                : "Vous avez obtenu";
+            this.labels.notFirstTime = (this.lang === "en") ?
+                "You have successfully answered" :
+                "Vous avez obtenu";
 
             this.setLabelsDone = true;
             return false;
@@ -96,16 +96,14 @@ define([
             return params;
         },
 
-        changeDefaultConfigSettings: function (params) {
-            params.$paramTarget = this.$el.find(".qs-elearning-activity");
-            params.files = ["../../templates/LOM-Elements/element_config_activity_" + Utils.lang + ".html"];
+        configSettings: function () {
+            var config = this.defaultConfigSettings();
+            config.$paramTarget = this.$el.find(".qs-elearning-activity");
+            config.files = ["../../templates/LOM-Elements/element_config_activity_" + Utils.lang + ".html"];
+            return config;
 
-            return params;
         },
-
-        initializeCustomFiles: function (params) {
-            var $lbx = $("#" + params.lbx.targetId);
-
+        initializeCustomFiles: function ($lbx, params) {
             var $activity = params.config.$paramTarget;
             var $exercises = $activity.find(".qs-exercise");
             var $questions = $exercises.find(".qs-question");
@@ -120,8 +118,7 @@ define([
             if (this.feedbackTypeDeferred) {
                 $lbx.find("#feedback-type-deferred").prop("checked", true);
                 $lbx.find("#feedback-type-instant").prop("checked", false);
-            }
-            else {
+            } else {
                 $lbx.find("#feedback-type-deferred").prop("checked", false);
                 $lbx.find("#feedback-type-instant").prop("checked", true);
             }
@@ -130,16 +127,14 @@ define([
 
             if ($activity.attr("data-trigger-scorm-completion") == "true") {
                 $lbx.find("#trigger-completion").prop("checked", true);
-            }
-            else {
+            } else {
                 $lbx.find("#trigger-completion").prop("checked", false);
             }
 
             if (this.randomQuestions) {
                 $lbx.find("#random-questions-yes").prop("checked", true);
                 $lbx.find("#random-questions-no").prop("checked", false);
-            }
-            else {
+            } else {
                 $lbx.find("#random-questions-yes").prop("checked", false);
                 $lbx.find("#random-questions-no").prop("checked", true);
             }
@@ -197,8 +192,7 @@ define([
 
                 this.deferredButtons($questions, $bkpQuestions, $activity, $bkpActivity);
                 this.saveBkp($bkp);
-            }
-            else if (this.subtype == "exam") {
+            } else if (this.subtype == "exam") {
                 this.instantButtons($questions, $bkpQuestions, $activity, $bkpActivity);
                 this.saveBkp($bkp);
             }
@@ -223,8 +217,7 @@ define([
             }
         },
 
-        submitCustomConfig: function (params) {
-            var $lbx = $("#" + params.lbx.targetId);
+        submitCustomConfig: function ($lbx, params) {
 
             var $activity = params.config.$paramTarget;
             var $exercises = $activity.find(".qs-exercise");
@@ -259,8 +252,7 @@ define([
 
                     this.deferredButtons($questions, $bkpQuestions, $activity, $bkpActivity);
                 }
-            }
-            else if (feedbackType == "instant") {
+            } else if (feedbackType == "instant") {
                 if (this.subtype == "exam") {
                     this.feedbackTypeDeferred = false;
 
@@ -342,8 +334,12 @@ define([
             });
 
             //Hide the navigation
-            $activity.find(".qs-navgroup").css({ display: "none" });
-            $bkpActivity.find(".qs-navgroup").css({ display: "none" });
+            $activity.find(".qs-navgroup").css({
+                display: "none"
+            });
+            $bkpActivity.find(".qs-navgroup").css({
+                display: "none"
+            });
         },
 
         /*---------------------------------------------------------------------------------------------
@@ -563,7 +559,10 @@ define([
             var attrs = [];
             $.each(this.$exercises.eq(this.$exercises.length - 1)[0].attributes, function (i, a) {
                 if (a.name != "id") {
-                    var attr = { attr: a.name, value: a.value };
+                    var attr = {
+                        attr: a.name,
+                        value: a.value
+                    };
                     attrs.push(attr);
                 }
             });
@@ -617,8 +616,7 @@ define([
                 //Determine if we should select the next or the previous holder after deleting this one
                 if (this.$holder.attr("id") == this.$exercises.eq(0).attr("id")) {
                     $newHolder = this.$holder.next();
-                }
-                else {
+                } else {
                     $newHolder = this.$holder.prev();
                 }
 

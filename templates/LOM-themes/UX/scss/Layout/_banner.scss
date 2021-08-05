@@ -1,0 +1,196 @@
+
+
+/* *************************************************************
+ * Background banner
+ * ************************************************************/
+ header[role="banner"]{
+	#wb-bnr{
+		background-image: url("UX_images/banner.jpg"); //
+		background-size: 75%; 
+		background-position: 0 63%;
+		background-repeat: no-repeat;
+		
+		@include breakpoint-lt("medium"){
+			background-size: 70%; 
+		}
+		@include breakpoint-lt("small"){
+			background-size: 60%; 
+		}
+    }
+}
+
+/* *************************************************************
+ * series title
+ * ************************************************************/
+
+
+    #wb-bar{
+        box-shadow: 1px 1px 15px -1px rgba(0, 0, 0, 0.75);
+        z-index: 1;
+        position: relative;
+
+        & > .top-menu.container{	
+
+            .row #wb-lng a:not(.lang):not(.tb-item){
+                height: 100%;
+            }
+            .series-title{
+                display:block;}
+            .series-title a{
+                font-size: 32px;
+                color: #BFBFBF;
+                position: absolute;
+                left: 30px;
+                top: 5px;
+            }
+            @include breakpoint-gte("large"){
+                width: 100%;
+                padding-left: calc(50% - 585px);
+                padding-right: calc(50% - 585px);
+            }
+            @media (max-width: 1200px) and (min-width: 993px){
+                width: 100%;
+                padding-left: calc(50% - 485px);
+                padding-right: calc(50% - 485px);
+            }
+        }
+    }   
+ 
+
+/* *************************************************************
+ * BOTH TITLES
+ * ************************************************************/
+ header{
+    & > div.container{
+        display: block;
+        width: 25%;
+        margin-left: 75%;
+        height: 100%;
+        padding: 1% 6% 1% 0%;
+        background-color: white;
+        
+        @include breakpoint-lt("medium"){
+            margin-left: 70%;
+            width: 30%;
+        }
+        @include breakpoint-lt("small"){
+            margin-left: 60%;
+            width: 40%;
+        }
+
+        .row{
+            margin: 0;
+
+            div#wb-sttl{
+                & > a{
+                    text-align: left;
+                    margin-top: 5%;
+                    line-height: 1.2;
+
+                    span{
+                        text-transform: uppercase;
+                        display: block;
+                        text-align: left;
+                        //font-family: "Helvetica Neue Condensed";
+                        color: $blue-darker;
+                    }
+                    & > span:not(.subtitle):not(.intro) {
+                        position: relative;
+                        font-weight: bold;
+                        font-size: 28px;
+                        //margin-left:76%;
+                        bottom: -5%;
+                        padding-left: 50px;
+                        font-weight: bold;
+                        
+                        @include breakpoint-lt("medium"){
+                            font-size: 24px;
+                        }
+                        @include breakpoint-lt("small"){
+                            padding-left: 35px
+                        }
+
+                        span.intro {
+                            font-size: 20px;
+                            font-weight: normal;
+                            
+                            @include breakpoint-lt("medium"){
+                                font-size: 16px;
+                            }
+                        }
+                    }
+                    & > span.subtitle {
+                        //margin: 0% 0% 0% 76%;
+                        top: 0;
+                        right: 0;
+                        font-size: 20px;
+                        padding-left: 50px;
+                        
+                        @include breakpoint-lt("medium"){
+                            font-size: 16px;
+                        }
+                        @include breakpoint-lt("small"){
+                            padding-left: 35px;
+                        }
+                    }
+                }
+            }
+        }
+    }}
+    header[role="banner"]{
+	
+        #wb-bnr{
+            
+            background-size: 75%; 
+            background-position: 0 63%;
+            background-repeat: no-repeat;
+            
+            @include breakpoint-lt("medium"){
+                background-size: 70%; 
+            }
+            @include breakpoint-lt("small"){
+                background-size: 60%; 
+            }
+    
+            
+            
+            & > div.container{
+                display: block;
+                width: 25%;
+                margin-left: 75%;
+                height: 100%;
+                padding: 1% 6% 1% 0%;
+                background-color: white;
+                
+                @include breakpoint-lt("medium"){
+                    margin-left: 70%;
+                    width: 30%;
+                }
+                @include breakpoint-lt("small"){
+                    margin-left: 60%;
+                    width: 40%;
+                }
+                .row{margin:0;}
+    
+            }
+            
+        }
+        
+    
+    
+        
+    }
+
+/* *************************************************************
+ * Just title
+ * ************************************************************/
+ #wb-sttl>a>span:first-child{
+
+}
+
+/* *************************************************************
+ * Just subtitle
+ * ************************************************************/
+ #wb-sttl>a>span.subtitle{
+
+}

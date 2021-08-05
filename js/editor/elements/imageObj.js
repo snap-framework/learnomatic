@@ -52,18 +52,30 @@ define([
 			params.title = (Utils.lang === "en") ? "Image Configuration" : "Configuration de l'image";
 			return params;
 		},
-		changeDefaultConfigSettings: function (params) {
+		changeDefaultConfigSettings: function (config) {
+			config.$paramTarget = this.$el.find("img");
 
-			params.$paramTarget = this.$el.find("img");
-
-			params.selector = "img";
-			params.attributes = { "alt": "" };
-			return params;
+			config.selector = "img";
+			config.attributes = {
+				"alt": ""
+			};
+			return config;
 
 		},
-		loadConfigCustom: function (params) {
+		configSettings: function () {
+			var config = this.defaultConfigSettings();
+			config.$paramTarget = this.$el.find("img");
+			config.selector = "img";
+			config.attributes = {
+				"alt": ""
+			};
 
-			$("#" + params.lbx.targetId).append("<div id='LOM-img-gallery'></div>");
+			return config;
+
+		},
+		loadConfigCustom: function ($lbx, params) {
+
+			$lbx.append("<div id='LOM-img-gallery'></div>");
 			var that = this;
 			$.post('../../editor.php', {
 				action: "readfolder",
@@ -72,9 +84,9 @@ define([
 			}, function (data) {
 				//parse the jSON
 				//console.log(data);
-				that.loadGraphicDesc(params)
-				that.loadGallery(data, params);
-				that.configClickable();
+				that.loadGraphicDesc($lbx, params)
+				that.loadGallery($lbx, data, params);
+				that.configClickable($lbx);
 
 
 			}).fail(function () {
@@ -85,12 +97,12 @@ define([
 		/*---------------------------------------------------------------------------------------------
 		-------------------------IMAGE  GALLERY
 		---------------------------------------------------------------------------------------------*/
-		loadGallery: function (images, params) {
+		loadGallery: function ($lbx, images, params) {
 			var aImages = images.split(",");
 
 			//remove folders
 			aImages = this.cleanGallery(aImages);
-			this.generateGallery(aImages, params);
+			this.generateGallery($lbx, aImages, params);
 
 
 		},
@@ -107,7 +119,7 @@ define([
 
 			return newArray;
 		},
-		generateGallery: function (aImages, params) {
+		generateGallery: function ($lbx, aImages, params) {
 			var that = this;
 			var modulo = (aImages.length % 6 === 0) ? 6 : 4;
 			var lineCounter = 1;
@@ -115,8 +127,8 @@ define([
 			var $row;
 			var $img;
 			var bootstrap = (modulo === 6) ? "col-md-2" : "col-md-3";
-			var obj = params.lbx.obj;
-			var src = obj.$el.find("img").attr("src");
+
+			var src = this.$el.find("img").attr("src");
 
 			$gallery.append("<input type='hidden' id='LOM-src' class='LOM-attr-value' name='src' value='" + src + "'>");
 
@@ -162,12 +174,13 @@ define([
 
 			});
 			$(".LOM-img-btn").dblclick(function () {
+				console.log("wow")
 				var popParams = {};
 				//send title and action
-				var save = (Utils.lang === "en") ? "Save Configuration" : "Sauvegarder la configuration"
-				popParams.lbx = that.defaultLbxSettings("Configuration", "config", save);
-				popParams.config = that.configLbxSettings();
-				that.submitConfig(popParams);
+				//var save = (Utils.lang === "en") ? "Save Configuration" : "Sauvegarder la configuration"
+				//popParams.lbx = that.defaultLbxSettings("Configuration", "config", save);
+				//popParams.config = that.configLbxSettings();
+				that.submitConfig($lbx, params);
 
 			});
 
@@ -245,10 +258,9 @@ define([
 		-------------------------GRAPHIC DESCRIPTION
 		---------------------------------------------------------------------------------------------*/
 
-		loadGraphicDesc: function (params) {
-			var obj = params.lbx.obj;
-			var $img = params.config.$paramTarget;
-			var $lbx = $("#" + params.lbx.targetId);
+		loadGraphicDesc: function ($lbx, params) {
+			var obj = params.obj;
+			var $img = this.$el;
 			var $altInput = $lbx.find("input[name=\"alt\"]");
 
 			$lbx.prepend("<div class=\"row\" style=\"margin-left: -15px; margin-right: -15px;\"></div>");
@@ -267,15 +279,14 @@ define([
 			var that = this;
 			$col.find("#graph-desc").change(function () {
 				if ($(this).is(":checked")) {
-					that.addGraphDesc(obj, $img, $lbx, $altInput, $row, $col);
-				}
-				else {
-					that.removeGraphDesc(obj, $img, $lbx, $altInput, $row, $col);
+					that.addGraphDesc(obj, $img, $lbx, $altInput);
+				} else {
+					that.removeGraphDesc(obj, $img, $lbx, $altInput);
 				}
 			});
 		},
 
-		addGraphDesc: function (obj, $img, $lbx, $altInput, $row, $col) {
+		addGraphDesc: function (obj, $img, $lbx, $altInput) {
 			//Disable alt field and add value
 			$altInput.attr("disabled", true);
 			$altInput.val(((Utils.lang === "en") ? "Long description follows" : "La description longue suit"));
@@ -284,12 +295,12 @@ define([
 			this.permissions.subElements.details = true;
 			this.hasGraphDesc = true;
 
-			this.editor.targetParent = obj;
+			this.editor.targetParent = this;
 			this.editor.$target = $img.closest(".LOM-element").children(".LOM-holder");
 			this.editor.createElement("details", $.parseJSON('{"subtype": "graphDesc"}'), false);
 		},
 
-		removeGraphDesc: function (obj, $img, $lbx, $altInput, $row, $col) {
+		removeGraphDesc: function (obj, $img, $lbx, $altInput) {
 			//Enable alt field and remove value
 			$altInput.attr("disabled", false);
 			$altInput.val("");
@@ -307,9 +318,10 @@ define([
 		-------------------------CLICKABLE
 		---------------------------------------------------------------------------------------------*/
 
-		configClickable: function () {
+		configClickable: function ($lbx) {
+
 			var that = this;
-			var $body = $("#custom_lbx");
+			var $body = $("#generic_LBX");
 			$body.append("<div id='LOM-clickable-action-container'></div>");
 			var $action = $("#LOM-clickable-action-container");
 			$action.append("<h3>" + ((Utils.lang === "en") ? "Clickable Actions" : "Actions au clic") + "</h3>");

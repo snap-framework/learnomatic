@@ -17,7 +17,7 @@
 		
 		content: '';			
 		position: absolute;
-		@include iconpack(edit, md, disabled);
+		@include iconpack(edit, md, #808080);
 		left: -35px;
     	margin-top: -7px;
 
@@ -41,3 +41,16 @@
 		
 	}
 }
+
+/* ********************************************
+ * * A11Y scanner
+ * *******************************************/
+ /*html.LOM-show-CKE-a11y-suggestions .cke_a11yc_ui_form_actionset*/.cke_a11yc_ui_form{
+	 display:none;
+ }
+
+
+ .cke_wysiwyg_frame ,.cke_contents{
+	 min-height:100vh!important;
+ }
+ 

@@ -2564,7 +2564,7 @@ function qsBeta(objAcc, paramObj) {
 					//MAKE .qs-get-current-question STATIC IN RECAP
 					$(recapTemplateElem).find('.qs-get-current-question').removeClass('qs-get-current-question').html(iCounter);
 					//console.error($(recapTemplateElem).find('.qs-get-current-question'));
-					$("#" + recapItemID + " .qs-post-feedback").find('a, input[type=button]').remove();
+					$("#" + recapItemID + " .qs-post-feedback").find('a[class^=\'qs-\'], input[type=button][class^=\'qs-\']').remove();
 
 				}
 			}

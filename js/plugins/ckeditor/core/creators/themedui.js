@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -239,6 +239,9 @@ CKEDITOR.replaceClass = 'ckeditor';
 
 			// Delay to avoid race conditions (setMode inside setMode).
 			setTimeout( function() {
+				if ( editor.isDestroyed() || editor.isDetached() ) {
+					return;
+				}
 				editor.fire( 'mode' );
 				callback && callback.call( editor );
 			}, 0 );
@@ -248,9 +251,13 @@ CKEDITOR.replaceClass = 'ckeditor';
 	/**
 	 * Resizes the editor interface.
 	 *
-	 *		editor.resize( 900, 300 );
+	 * **Note:** Since 4.14.1 this method accepts numeric or absolute CSS length units.
 	 *
-	 *		editor.resize( '100%', 450, true );
+	 * ```javascript
+	 *	editor.resize( 900, 300 );
+	 *
+	 *	editor.resize( '5in', 450, true );
+	 * ```
 	 *
 	 * @param {Number/String} width The new width. It can be an integer denoting a value
 	 * in pixels or a CSS size value with unit.
@@ -280,11 +287,17 @@ CKEDITOR.replaceClass = 'ckeditor';
 			outer = container;
 		}
 
+		if ( width || width === 0 ) {
+			width = convertCssUnitToPx( width );
+		}
+
 		// Set as border box width. (https://dev.ckeditor.com/ticket/5353)
 		outer.setSize( 'width', width, true );
 
 		// WebKit needs to refresh the iframe size to avoid rendering issues. (1/2) (https://dev.ckeditor.com/ticket/8348)
 		contentsFrame && ( contentsFrame.style.width = '1%' );
+
+		height = convertCssUnitToPx( height );
 
 		// Get the height delta between the outer table and the content area.
 		var contentsOuterDelta = ( outer.$.offsetHeight || 0 ) - ( contents.$.clientHeight || 0 ),
@@ -293,7 +306,7 @@ CKEDITOR.replaceClass = 'ckeditor';
 			resultContentsHeight = Math.max( height - ( isContentHeight ? 0 : contentsOuterDelta ), 0 ),
 			resultOuterHeight = ( isContentHeight ? height + contentsOuterDelta : height );
 
-		contents.setStyle( 'height', resultContentsHeight + 'px' );
+		contents.setStyle( 'height', CKEDITOR.tools.cssLength( resultContentsHeight ) );
 
 		// WebKit needs to refresh the iframe size to avoid rendering issues. (2/2) (https://dev.ckeditor.com/ticket/8348)
 		contentsFrame && ( contentsFrame.style.width = '100%' );
@@ -319,15 +332,16 @@ CKEDITOR.replaceClass = 'ckeditor';
 		return forContents ? this.ui.space( 'contents' ) : this.container;
 	};
 
+	function convertCssUnitToPx( unit ) {
+		return CKEDITOR.tools.convertToPx( CKEDITOR.tools.cssLength( unit ) );
+	}
+
 	function createInstance( element, config, data, mode ) {
-		if ( !CKEDITOR.env.isCompatible )
+		element = CKEDITOR.editor._getEditorElement( element );
+
+		if ( !element ) {
 			return null;
-
-		element = CKEDITOR.dom.element.get( element );
-
-		// Avoid multiple inline editor instances on the same element.
-		if ( element.getEditor() )
-			throw 'The editor instance "' + element.getEditor().name + '" is already attached to the provided element.';
+		}
 
 		// Create the editor instance.
 		var editor = new CKEDITOR.editor( config, element, mode );
@@ -346,6 +360,10 @@ CKEDITOR.replaceClass = 'ckeditor';
 
 		// Once the editor is loaded, start the UI.
 		editor.on( 'loaded', function() {
+			if ( editor.isDestroyed() || editor.isDetached() ) {
+				return;
+			}
+
 			loadTheme( editor );
 
 			if ( mode == CKEDITOR.ELEMENT_MODE_REPLACE && editor.config.autoUpdateElement && element.$.form )
@@ -492,7 +510,7 @@ CKEDITOR.config.startupMode = 'wysiwyg';
  *
  * @event resize
  * @param {CKEDITOR.editor} editor This editor instance.
- * @param {Object} data Available since CKEditor 4.5.
+ * @param {Object} data Available since CKEditor 4.5.0.
  * @param {Number} data.outerHeight The height of the entire area that the editor covers.
  * @param {Number} data.contentsHeight Editable area height in pixels.
  * @param {Number} data.outerWidth The width of the entire area that the editor covers.

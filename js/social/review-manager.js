@@ -32,40 +32,39 @@ define([
 		 * **********************************************/
 		popReviews: function (element) {
 			var that = this;
-			$.magnificPopup.open({
-				items: {
-					src: this.root.relPath + 'templates/social/reviewLbx-ui_en.html'
-				},
-				type: 'ajax',
-				removalDelay: 500,
-				callbacks: {
-					beforeOpen: function () {
-						this.st.mainClass = "mfp-zoom-in";
-					},
-					ajaxContentAdded: function () {
-						var $popper = $(this.content);
-						that.$modal = $popper.children("#LOM-review-box");
-						that.setupNav();
-						that.setupMain();
-						that.populate();
-						that.setupGoto();
-
-						//modify the display
-						if (typeof element !== "undefined") {
-							that.$modal.addClass("LOM-review-element").attr("data-element-id", element.id);
-							that.activateElement(element);
-						} else {
-							var uid = that.$pages.children("li").eq(0).attr("data-page-uid")
-							that.activatePage(uid);
-						}
-
-						that.setupAddReview();
-
-
-					}
-				},
-				midClick: true
+			this.root.lbxController.pop({
+				action: this.reviewPopped,
+				obj: this,
+				title: "Reviews",
+				file: "templates/social/reviewLbx-ui_en.html",
+				element: element
 			});
+
+
+		},
+
+		reviewPopped: function ($popper, params) {
+			var that = params.obj;
+			var element = params.element;
+			that.$modal = $popper;
+			that.setupNav();
+
+			that.setupMain();
+
+			that.populate();
+			that.setupGoto();
+
+			//modify the display
+			if (typeof element !== "undefined") {
+				that.$modal.addClass("LOM-review-element").attr("data-element-id", element.id);
+				that.activateElement(element);
+			} else {
+				var uid = that.$pages.children("li").eq(0).attr("data-page-uid")
+				that.activatePage(uid);
+			}
+
+			that.setupAddReview();
+
 
 		},
 
@@ -97,7 +96,7 @@ define([
 				e.stopPropagation();
 
 				var courseCode = $(this).parent().attr("data-course");
-				var pageUid = that.$pages.children("li[data-page-uid*='" + courseCode + "']").eq(0).attr("data-page-uid");
+				var pageUid = that.$pages.children("li[data-page-uid*=\"" + courseCode + "?\"]").eq(0).attr("data-page-uid");
 				that.activatePage(pageUid);
 
 				return false;
@@ -115,24 +114,25 @@ define([
 		 * *******************************************************/
 		populate: function () {
 			var revList = this.parent.commsByType["review"];
+			if (typeof revList !== "undefined") {
+				for (var i = 0; i < revList.length; i++) {
+					//appendPage
+					this.appendPage(revList[i].course, revList[i].page);
+					//create page reviews
+					this.appendReview(revList[i], this.$main);
 
-			for (var i = 0; i < revList.length; i++) {
-				//appendPage
-				this.appendPage(revList[i].course, revList[i].page);
-				//create page reviews
-				this.appendReview(revList[i], this.$main);
-
-			}
-			if (this.root.type === "editor") {
-				var location = this.root.session.user.location;
-
-				//check if the page exists
-				if (this.$pages.children("[data-page-uid='" + location.code + "']").length === 0) {
-
-					// create a page that doesnt exist.
-					this.appendPage(location.course.code, location.page);
 				}
+				if (this.root.type === "editor") {
+					var location = this.root.session.user.location;
 
+					//check if the page exists
+					if (this.$pages.children("[data-page-uid='" + location.code + "']").length === 0) {
+
+						// create a page that doesnt exist.
+						this.appendPage(location.course.code, location.page);
+					}
+
+				}
 			}
 		},
 
@@ -312,7 +312,7 @@ define([
 			$li.addClass("LOM-course-active");
 
 			// HIDE/SHOW PAGES
-			var $pages = this.$pages.children("li[data-page-uid*='" + courseCode + "']");
+			var $pages = this.$pages.children("li[data-page-uid*='" + courseCode + "?']");
 			this.$pages.children().hide();
 			$pages.show();
 

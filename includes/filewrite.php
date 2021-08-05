@@ -114,6 +114,13 @@ function dispatcher($json){
 		case "removeWarning":
 			removeWarning($received);
 			break;
+			case "transfertheme":
+			//echo $received->filename;
+			transferTheme($received);
+			break;
+		case "getvars":
+			getVars($received);
+			break;
 	}
 }
 
@@ -320,18 +327,36 @@ function findEmptySpace($contentFolder, $folderNum){
 	} 	
 }
 
-function moveFile2($oldfile, $newFile, $from, $to){
-	echo "<p>move ".$from.$oldfile." to ".$to.$newFile."</p>"; 
-	if (file_exists ($from.$oldfile)){
-		
-		rename($from.$oldfile, $to.$newFile);
-		
-	}
-	
-	//
-	
-	
-}
+// source https://www.geeksforgeeks.org/copy-the-entire-contents-of-a-directory-to-another-directory-in-php/
+function custom_copy($src, $dst) {  
+  
+    // open the source directory 
+    $dir = opendir($src);  
+  
+    // Make the destination directory if not exist 
+    @mkdir($dst);  
+  
+    // Loop through the files in source directory 
+    while( $file = readdir($dir) ) {  
+  
+        if (( $file != '.' ) && ( $file != '..' )) {  
+            if ( is_dir($src . '/' . $file) )  
+            {  
+  
+                // Recursively calling custom copy function 
+                // for sub directory  
+                custom_copy($src . '/' . $file, $dst . '/' . $file);  
+  
+            }  
+            else {  
+                copy($src . '/' . $file, $dst . '/' . $file);  
+            }  
+        }  
+    }  
+  
+    closedir($dir); 
+}  
+
 
 
 
@@ -378,6 +403,14 @@ function getRole($received){
 	return false;
 
 }
+	function transferTheme($received){
+		$current=$received->course."/theme";
+		$newFolder= $received->filename;
+		delete_directory($received->course."/theme");
+		mkdir($current);
+		custom_copy($newFolder, $current);
+		echo true;
+	}
 
 
 

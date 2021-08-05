@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -53,7 +53,7 @@
 	}
 
 	CKEDITOR.plugins.add( 'copyformatting', {
-		lang: 'az,de,en,it,ja,nb,nl,oc,pl,pt-br,ru,sv,tr,zh,zh-cn',
+		lang: 'ar,az,bg,cs,da,de,el,en,en-au,eo,es-mx,et,eu,fa,fr,gl,hr,hu,it,ja,ko,ku,lv,nb,nl,oc,pl,pt,pt-br,ro,ru,sk,sq,sr,sr-latn,sv,tr,uk,vi,zh,zh-cn',
 		icons: 'copyformatting',
 		hidpi: true,
 
@@ -1106,7 +1106,7 @@
 	 *
 	 *		config.copyFormatting_outerCursor = false;
 	 *
-	 * Read more in the {@glink guide/dev_copyformatting documentation}
+	 * Read more in the {@glink features/copyformatting documentation}
 	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
@@ -1126,7 +1126,7 @@
 	 *		config.copyFormatting_allowRules = true; // Disables filtering.
 	 *
 	 *
-	 * Read more in the {@glink guide/dev_copyformatting documentation}
+	 * Read more in the {@glink features/copyformatting documentation}
 	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
@@ -1145,7 +1145,7 @@
 	 *		config.copyFormatting_disallowRules = 'span(important)'; // Disallows spans with "important" class.
 	 *
 	 *
-	 * Read more in the {@glink guide/dev_copyformatting documentation}
+	 * Read more in the {@glink features/copyformatting documentation}
 	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
@@ -1169,7 +1169,7 @@
 	 *		// If set to "true", enables all contexts.
 	 *		config.copyFormatting_allowedContexts = true;
 	 *
-	 * Read more in the {@glink guide/dev_copyformatting documentation}
+	 * Read more in the {@glink features/copyformatting documentation}
 	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
@@ -1187,7 +1187,7 @@
 	 *
 	 *		config.copyFormatting_keystrokeCopy = false;
 	 *
-	 * Read more in the {@glink guide/dev_copyformatting documentation}
+	 * Read more in the {@glink features/copyformatting documentation}
 	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
@@ -1205,7 +1205,7 @@
 	 *
 	 *		config.copyFormatting_keystrokePaste = false;
 	 *
-	 * Read more in the {@glink guide/dev_copyformatting documentation}
+	 * Read more in the {@glink features/copyformatting documentation}
 	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0

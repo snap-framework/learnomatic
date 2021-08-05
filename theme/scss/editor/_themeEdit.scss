@@ -1,0 +1,146 @@
+/*-------------------- THEMES EDITING -------------------*/
+.LOM-vars-list{
+    fieldset{
+        padding-left:30px;
+        display:block;
+
+        &.LOM-color-changed:before,
+        &.LOM-color-modified:before,
+        &.LOM-color-custom:before
+        {@include iconpack(edit, md, #ccc);}
+        &.LOM-color-missing:before,
+        &.LOM-color-obsolete:before
+        {@include iconpack(warning, md, #ccc);}
+
+        &.LOM-color-changed,
+        &.LOM-color-missing,
+        &.LOM-color-modified,
+        &.LOM-color-custom,
+        &.LOM-color-obsolete{
+            //background-color:#f0f0f0;
+            &:before{
+                content:'';
+                position: absolute;
+                display: inline-block!important;
+                overflow: hidden;
+                left: 10px;
+                color: transparent;
+               height: 25px;
+               width: 25px;
+            }
+        }
+        &:hover{
+            background-color:#e1e1e1;
+            /*cursor:pointer;
+            @include iconpack(preview, md, #ccc);
+            content:'';
+            height: 25px;
+            width: 25px;
+            position: absolute;*/
+        
+        }
+    }
+    .LOM-color-preview{
+        width:1em;
+        height:1em;
+        display:inline-block;
+        outline:1px black solid;
+        margin-right:10px;
+    }
+    .LOM-set-transparent{
+        display:inline-block;
+        text-indent: -9999px;
+
+        width: 30px;
+        background-image: url('images/transparent.jpg');
+        background-repeat: repeat;
+    }
+    h2, h3{
+        text-transform:capitalize;
+    }
+    h2{
+       border-bottom:solid 1px black;
+    }
+    h3{
+        font-size:1.1em;
+        margin-top:0px;
+}
+
+
+    [data-group]{
+        button.LOM-colors-save-subgroup{
+            margin-top:20px;
+
+        }
+    }
+    [data-subgroup]{
+        padding-top:30px;
+    }
+
+
+    .LOM-blocked &{
+        opacity:0.3;
+    }
+}
+
+.LOM-colors-basic{
+    .LOM-color-extended,.LOM-colors-details{
+        display:none;
+    }
+}
+
+/* ******************************************************
+ * demo
+ * ******************************************************/
+
+ #Iconography_ribbons{
+     span{
+         position:absolute;
+         display:block;
+     }
+ }
+
+ /* ***********************************************************************
+ * new DEMOS
+ * ************************************************************************/
+ .LOM-demo-highlight{
+    outline:#555 solid 2px;
+}
+
+ /* ***********************************************************************
+ * BLOCKED
+ * ************************************************************************/
+.LOM-blocked{
+    &>p{
+       opacity:0.3; 
+    }
+}
+.LOM-blocker{
+    content:'';
+    display:block;
+
+
+    position:absolute;
+    top:0px;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    &:before{
+        content:'';
+        display:block;
+        background-color:black;
+        opacity:0.3;
+        position:absolute;
+        top:0px;
+        left:0px;
+        right:0px;
+        bottom:0px;
+
+    }
+    p{
+        padding: 3em;
+        margin:1em;
+        text-align: center;
+        background-color: grey;
+    }
+}

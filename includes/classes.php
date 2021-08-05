@@ -2,7 +2,7 @@
 
 //class for getting data from javascript
 class DataReceive {
-	private $filename="";
+	public $filename="";
 	private $content="";
 }
 /* *************************************************
@@ -14,6 +14,7 @@ class CourseObj{
 	public $teams=null;//json_decode('{}');
 	private $location="";
 	public $users=null;//json_decode('{}');
+	public $version="0.0.0";
 	
 	public function init($name, $code, $teams, $location){
 		$this->name=$name;
@@ -22,6 +23,7 @@ class CourseObj{
 		$this->location="courses/".$location;
 		
 		$this->refreshCourseInfo();
+		$this->refreshVersion();
 	}
 	
 	private function getinfoFile(){
@@ -70,6 +72,28 @@ class CourseObj{
 		echo $json->teams;
 
 		
+	}
+
+	private function getPackageFile(){
+		return $this->location."/package.json";
+	}	
+
+	private function refreshVersion(){
+		$filename = $this->getPackageFile();
+
+		if (file_exists($filename)) {
+			//exists
+			$string = file_get_contents($filename);
+			$json = json_decode($string);
+			
+			$this->version=$json->version;
+
+
+		} else {
+			
+			$this->version="0.0.0";
+
+		}			
 	}
 }
 

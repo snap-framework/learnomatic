@@ -1,0 +1,58 @@
+
+
+
+
+/* *************************************************************
+ * Standard text element
+ * ************************************************************/
+ [data-lom-element="text"]{
+
+    
+
+
+}
+
+
+
+
+ 
+
+
+/* *************************************************************
+ * ribbons
+ * ************************************************************/
+// --------- NOTE: to change the background color
+// --------- use  _vars.scss variable $default-icon-bg-color 
+// --------- to apply to all, or $ribbon-bg-color for specific
+
+// example .LOM-ribbon.icon-tip
+
+
+
+
+
+ 
+/* *************************************************************
+ * iconbox
+ * ************************************************************/
+// example .LOM-iconbox.icon-nicetoknow
+
+
+
+
+
+
+ 
+/* *************************************************************
+ * Other
+ * ************************************************************/
+
+ /*---------------------- Adding style for lists ----------------------*/
+#dynamic_content .LOM-element[data-lom-element="text"] ul{
+	li{
+		position: relative;
+		margin-top: 15px;
+		
+
+	}
+}

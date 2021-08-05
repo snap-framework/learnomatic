@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -114,7 +114,7 @@ CKEDITOR.plugins.add( 'resize', {
  * The minimum editor width, in pixels, when resizing the editor interface by using the resize handle.
  * Note: It falls back to editor's actual width if it is smaller than the default value.
  *
- * Read more in the {@glink guide/dev_resize documentation}
+ * Read more in the {@glink features/resize documentation}
  * and see the {@glink examples/resize example}.
  *
  *		config.resize_minWidth = 500;
@@ -127,7 +127,7 @@ CKEDITOR.plugins.add( 'resize', {
  * The minimum editor height, in pixels, when resizing the editor interface by using the resize handle.
  * Note: It falls back to editor's actual height if it is smaller than the default value.
  *
- * Read more in the {@glink guide/dev_resize documentation}
+ * Read more in the {@glink features/resize documentation}
  * and see the {@glink examples/resize example}.
  *
  *		config.resize_minHeight = 600;
@@ -139,7 +139,7 @@ CKEDITOR.plugins.add( 'resize', {
 /**
  * The maximum editor width, in pixels, when resizing the editor interface by using the resize handle.
  *
- * Read more in the {@glink guide/dev_resize documentation}
+ * Read more in the {@glink features/resize documentation}
  * and see the {@glink examples/resize example}.
  *
  *		config.resize_maxWidth = 750;
@@ -151,7 +151,7 @@ CKEDITOR.plugins.add( 'resize', {
 /**
  * The maximum editor height, in pixels, when resizing the editor interface by using the resize handle.
  *
- * Read more in the {@glink guide/dev_resize documentation}
+ * Read more in the {@glink features/resize documentation}
  * and see the {@glink examples/resize example}.
  *
  *		config.resize_maxHeight = 600;
@@ -163,7 +163,7 @@ CKEDITOR.plugins.add( 'resize', {
 /**
  * Whether to enable the resizing feature. If this feature is disabled, the resize handle will not be visible.
  *
- * Read more in the {@glink guide/dev_resize documentation}
+ * Read more in the {@glink features/resize documentation}
  * and see the {@glink examples/resize example}.
  *
  *		config.resize_enabled = false;
@@ -176,12 +176,12 @@ CKEDITOR.plugins.add( 'resize', {
  * The dimensions for which the editor resizing is enabled. Possible values
  * are `both`, `vertical`, and `horizontal`.
  *
- * Read more in the {@glink guide/dev_resize documentation}
+ * Read more in the {@glink features/resize documentation}
  * and see the {@glink examples/resize example}.
  *
  *		config.resize_dir = 'both';
  *
- * @since 3.3
+ * @since 3.3.0
  * @cfg {String} [resize_dir='vertical']
  * @member CKEDITOR.config
  */
