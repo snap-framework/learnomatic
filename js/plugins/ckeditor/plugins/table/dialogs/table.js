@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -58,6 +58,17 @@
 			title: editor.lang.table.title,
 			minWidth: 310,
 			minHeight: CKEDITOR.env.ie ? 310 : 280,
+
+			getModel: function( editor ) {
+				if ( this.dialog.getName() !== 'tableProperties' ) {
+					return null;
+				}
+
+				var selection = editor.getSelection(),
+					range = selection && selection.getRanges()[ 0 ];
+
+				return range ? range._getTableElement( { table: 1 } ) : null;
+			},
 
 			onLoad: function() {
 				var dialog = this;
@@ -429,8 +440,7 @@
 							requiredContent: 'table[cellspacing]',
 							controlStyle: 'width:3em',
 							label: editor.lang.table.cellSpace,
-							//'default': editor.filter.check( 'table[cellspacing]' ) ? 1 : 0,
-							'default': 0,
+							'default': editor.filter.check( 'table[cellspacing]' ) ? 1 : 0,
 							validate: CKEDITOR.dialog.validate.number( editor.lang.table.invalidCellSpacing ),
 							setup: function( selectedTable ) {
 								this.setValue( selectedTable.getAttribute( 'cellSpacing' ) || '' );
